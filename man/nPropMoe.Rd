@@ -10,15 +10,15 @@ Calculates a simple random sample size based on a specified margin of error.
 \usage{
 nPropMoe(moe.sw, e, alpha = 0.05, pU, N = Inf)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{moe.sw}{
 switch for setting desired margin of error (1 = CI half-width on the proportion;
-2 = CI half-width on a proportion divided by \eqn{p_U)}
+2 = CI half-width on a proportion divided by \eqn{p_U})
 }
   \item{e}{
-desired margin of error; either \eqn{e=z_{1-\alpha/2}\sqrt{V(\bar{y_s})}} or
-\eqn{e=z_{1-\alpha/2}CV(\bar{y_s})}
+%desired margin of error; either \eqn{e=z_{1-\alpha/2}\sqrt{V(\eqn{p_s})}} or
+desired margin of error; either \eqn{e=z_{1-\alpha/2}\sqrt{V(p_s)}} or
+\eqn{e=z_{1-\alpha/2}CV(p_s)}
 }
   \item{alpha}{
 1 - (confidence level)
@@ -32,9 +32,9 @@ number of units in finite population
 }
 \details{
 The margin of error can be set as the half-width of a normal approximation
-confidence interval, \eqn{e=z_{1-\alpha/2}\sqrt{V(\bar{y_s})}}, or as the half-width
+confidence interval, \eqn{e=z_{1-\alpha/2}\sqrt{V(p_s)}}, or as the half-width
 of a normal approximation confidence interval divided by the population proportion,
-\eqn{e=z_{1-\alpha/2}CV(\bar{y_s})}. The type of margin of error is selected by the
+\eqn{e=z_{1-\alpha/2}CV(p_s)}. The type of margin of error is selected by the
 parameter \code{moe.sw} where \code{moe.sw=1} sets \eqn{e=z_{1-\alpha/2}\sqrt{V(p_s)}} and \code{moe.sw=2} sets i.e., \eqn{e=\frac{z_{1-\alpha/2}\sqrt{V(p_s)}}{p_U}}.
 }
 \value{

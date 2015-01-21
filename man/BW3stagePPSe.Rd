@@ -78,7 +78,7 @@ MDpop <- MDarea.pop
 require(sampling)
 require(reshape)      # has function that allows renaming variables
     # make counts of SSUs and elements per PSU
-xx <- do.call("rbind",list(by(1:nrow(MDpop),MDpop$PSU,head,1)))
+xx <- do.call("rbind",list(by(1:nrow(MDpop),MDpop$SSU,head,1)))
 pop.tmp <- MDpop[xx,]
 Ni <- table(pop.tmp$PSU)
 Qi <- table(MDarea.pop$PSU)

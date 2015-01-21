@@ -65,7 +65,23 @@ strAlloc <- function(n.tot=NULL, Nh=NULL, Sh = NULL, cost=NULL, ch=NULL,
         nh <- n.cost * ph.cost
     }
 
-    list("allocation" = alloc,
+    if (any(nh > Nh)){
+        viol <- (1:length(nh))[nh>Nh]
+        warning("nh is larger than Nh in strata: ", viol, "\n")
+    }
+    if (alloc != "prop"){
+        a.se <- sqrt(sum(Nh*(Nh/nh - 1)*(Sh^2))/N^2)
+        list("allocation" = alloc,
+          Nh = Nh,
+          Sh = Sh,
+          nh = nh,
+          "nh/n" = nh/sum(nh),
+          "anticipated SE of estimated mean" = a.se)
+    }
+    else {
+        list("allocation" = alloc,
+          Nh = Nh,
           nh = nh,
           "nh/n" = nh/sum(nh))
+    }
 }

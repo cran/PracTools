@@ -47,10 +47,14 @@ type of allocation; must be one of \code{"prop"}, \code{"neyman"}, \code{"totcos
 }
 
 \value{
-    List with values:
+    For proportional allocation, a list with values:
     \item{alloc}{type of allocation: \code{"prop"}, \code{"neyman"}, \code{"totcost"}, \code{"totvar"}}
+    \item{Nh}{vector of population sizes (\eqn{N_h}) or pop stratum proportions (\eqn{W_h})}
     \item{nh}{vector of stratum sample sizes}
     \item{"nh/n"}{proportion of sample allocated to each stratum}
+    For other allocations, the three components above plus:
+    \item{Sh}{stratum unit standard deviations (\eqn{S_h})}
+    \item{"anticipated SE of estimated mean"}{Anticipated SE of the estimated mean for the computed allocation} 
 }
 \references{
  Cochran, W.G. (1977). \emph{Sampling Techniques}. John Wiley & Sons.
