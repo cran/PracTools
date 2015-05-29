@@ -38,11 +38,9 @@ Substance Abuse and Mental Health Services Administration
 }
 \references{
 Manderscheid, R.W. and Henderson, M.J. (2002). Mental Health, United States, 2002.
-
 DHHS Publication No. SMA04-3938. Rockville MD USA: Substance Abuse and
 Mental Health Services Administration.
 
-Available at \url{http://mentalhealth.samhsa.gov/publications/allpubs/SMA04-3938/AppendixA.asp}
 }
 
 \seealso{

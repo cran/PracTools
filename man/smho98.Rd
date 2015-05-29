@@ -19,14 +19,14 @@ Data from the 1998 Survey of Mental Health Organizations (SMHO)
        5 = General Hospital, public, inpatient or residential care;
        6 = General Hospital, public, outpatient care only;
        7 = General Hospital, private, inpatient or residential care;
-       8 = General Hospital, private, outpatient care only;       
+       8 = General Hospital, private, outpatient care only;
        9 = Military Veterans, inpatient or residential care;
        10 = Military Veterans, outpatient care only;
        11 = Partial Care
        12 = Outpatient care, private;
-       13 = Outpatient care, public;       
+       13 = Outpatient care, public;
        14 = Multi-service, private;
-       15 = Multi-service, public;       
+       15 = Multi-service, public;
        16 = Substance Abuse)
        }
     \item{\code{BEDS}}{Total inpatient beds}
@@ -54,11 +54,8 @@ Substance Abuse and Mental Health Services Administration
 }
 \references{
 Manderscheid, R.W. and Henderson, M.J. (2002). Mental Health, United States, 2002.
-
 DHHS Publication No. SMA04-3938. Rockville MD USA: Substance Abuse and
 Mental Health Services Administration.
-
-Available at \url{http://mentalhealth.samhsa.gov/publications/allpubs/SMA04-3938/AppendixA.asp}
 }
 
 \seealso{
