@@ -16,7 +16,7 @@ BW2stagePPS(X, pp, psuID)
  data vector; length is the number of elements in the population.
 }
   \item{pp}{
- vector of 1-draw probabilities for the PSUs. This vector must be as long as \code{X}. Each element in a given PSU should have the same value in \code{pp}. PSUs must be in the same order as in \code{X}.
+ vector of one-draw probabilities for the PSUs; length is number of PSUs in population.
 }
   \item{psuID}{
  vector of PSU identification numbers.  This vector must be as long as \code{X}. Each element in a given PSU should have the same value in \code{psuID}. PSUs must be in the same order as in \code{X}.
@@ -44,7 +44,7 @@ BW2stagePPS(X, pp, psuID)
 \references{
 Cochran, W.G. (1977, pp.308-310). \emph{Sampling Techniques}. New York: John Wiley & Sons.
 
-Saerndal,C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
+S{\"a}aerndal,C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
 
 Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.3.2). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
 

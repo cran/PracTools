@@ -23,13 +23,13 @@ NRFUopt(Ctot=NULL, c1, c2, theta, CV0=NULL, CVpop=NULL, N=Inf, type.sw)
 }
 
 \details{
-\code{NRFUopt} computes the optimal values of the first-phase sample size and the second-phase sampling fraction in a two-phase sample. Both stages are assumed to be selected using simple random sampling without replacement. If \code{type.sw="cost"}, the optima are computed for a target total, expected cost across both phases.If \code{type.sw="cv"}, the optima are computed for a target coefficient of variation for an estimated mean.
+\code{NRFUopt} computes the optimal values of the first-phase sample size and the second-phase sampling fraction in a two-phase sample. Both stages are assumed to be selected using simple random sampling without replacement. If \code{type.sw="cost"}, the optima are computed for a target total, expected cost across both phases. If \code{type.sw="cv"}, the optima are computed for a target coefficient of variation for an estimated mean.
 }
 
 \value{
  List object with values:
   \item{allocation}{type of allocation: either "fixed cost" or "fixed CV"}
-  \item{"Total variable cost"}{expected total cost: fixed cost if \code{type.sw="cost"} or computed cost if \code{type.sw="cv"}}
+  \item{"Total variable cost"}{expected total cost: fixed cost if \code{type.sw="cost"} or computed cost if \code{type.sw="cv"}; unrounded sample sizes are used in calculation}
   \item{"Response rate"}{first-phase response rate}
   \item{CV}{anticipated coefficient of variation (CV) if \code{type.sw="cost"} or target CV if \code{type.sw="cv"}}
   \item{v.opt}{optimal fraction of first-phase nonrespondents to select for second-phase follow-up}

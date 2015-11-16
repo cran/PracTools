@@ -7,3 +7,7 @@ export(BW2stagePPS , BW2stagePPSe , BW2stageSRS ,
  gamEst , gammaFit , HMT, nCont , nContMoe ,nDomain, nDep2sam , nLogOdds ,
  NRadjClass, NRFUopt, nProp , nProp2sam , nPropMoe ,
  nWilson , pclass, strAlloc , wtdvar)
+importFrom("stats", "binomial", "glm", "lsfit", "median", "pnorm",
+     "qnorm", "quantile", "quasibinomial", "rgamma", "var",
+     "weighted.mean")
+     importFrom("utils", "head")

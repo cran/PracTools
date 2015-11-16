@@ -16,7 +16,7 @@ BW3stagePPS(X, pp, psuID, ssuID)
  data vector; length is the number of elements in the population.
 }
   \item{pp}{
- vector of 1-draw probabilities for the PSUs. This vector must be as long as \code{X} and will contain the same value for the units that are in the same PSU. PSUs must be in the same order as in \code{X}.
+  vector of one-draw probabilities for the PSUs; length is number of PSUs in population.
 }
   \item{psuID}{
  vector of PSU identification numbers.  This vector must be as long as \code{X}. Each element in a given PSU should have the same value in \code{psuID}. PSUs must be in the same order as in \code{X}.
