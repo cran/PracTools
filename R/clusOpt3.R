@@ -21,7 +21,7 @@ clusOpt3 <- function(unit.cost, delta1, delta2, unit.rv, k1=1, k2=1, CV0=NULL, t
 
     if (cal.sw == 1){
         m.opt <- tot.cost / (C1 + C2*n.opt + C3*n.opt*q.opt)
-        CV <- sqrt(unit.rv/m.opt/n.opt/q.opt * (delta1*n.opt*q.opt + 1 + delta2*(q.opt-1)))
+        CV <- sqrt(unit.rv/m.opt/n.opt/q.opt * (k1*delta1*n.opt*q.opt + k2*(1 + delta2*(q.opt-1))))
         cost.chk <- C1*m.opt + C2*m.opt*n.opt + C3*m.opt*n.opt*q.opt
 
         output <-
@@ -42,7 +42,7 @@ clusOpt3 <- function(unit.cost, delta1, delta2, unit.rv, k1=1, k2=1, CV0=NULL, t
     }
     if (cal.sw == 2) {
         m.opt <- unit.rv/CV0^2/n.opt/q.opt * (k1*delta1*n.opt*q.opt + k2*(1 + delta2*(q.opt-1)))
-        CV.chk <- sqrt(unit.rv/m.opt/n.opt/q.opt * (delta1*n.opt*q.opt + 1 + delta2*(q.opt-1)))
+        CV.chk <- sqrt(unit.rv/m.opt/n.opt/q.opt * (k1*delta1*n.opt*q.opt + k2*(1 + delta2*(q.opt-1))))
         cost.chk <- C1*m.opt + C2*m.opt*n.opt + C3*m.opt*n.opt*q.opt
 
         output <-

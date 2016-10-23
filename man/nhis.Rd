@@ -13,12 +13,12 @@ Demographic variables from a U.S. national household survey
   A data frame with 3,911 observations on the following 16 variables.
   \describe{
     \item{\code{ID}}{Identification variable}
-    \item{\code{stratum}}{Sample design stratum (1-100)}
+    \item{\code{stratum}}{Sample design stratum}
     \item{\code{psu}}{Primary sampling unit, numbered within each stratum (1,2)}
     \item{\code{svywt}}{survey weight}
     \item{\code{sex}}{Gender (1 = male; 2 = female)}
     \item{\code{age}}{Age, continuous}
-    \item{\code{age_r}}{Recoded age 
+    \item{\code{age_r}}{Recoded age
                (3 = 18-24 years;
                4 = 25-44 years;
                5 = 45-64 years;
@@ -26,11 +26,11 @@ Demographic variables from a U.S. national household survey
                7 = 70-74 years;
                8 = 75 years and older)
     }
-    \item{\code{hisp}}{Hispanic ethnicity 
+    \item{\code{hisp}}{Hispanic ethnicity
                (1 = Hispanic;
                2 = Non-Hispanic)
      }
-    \item{\code{marital}}{Marital status 
+    \item{\code{marital}}{Marital status
                (1 = Separated;
                2 = Divorced;
                3 = Married;
@@ -38,14 +38,14 @@ Demographic variables from a U.S. national household survey
                5 = Widowed;
                9 = Unknown marital status)
      }
-    \item{\code{parents}}{Parent(s) of sample person present in the family 
+    \item{\code{parents}}{Parent(s) of sample person present in the family
                (1 = Mother, no father;
                2 = Father, no mother;
                3 = Mother and father;
                4 = Neither mother nor father)
      }
     \item{\code{parents_r}}{Parent(s) of sample person present in the family recode (1 = Yes; 2 = No)}
-    \item{\code{educ}}{Education 
+    \item{\code{educ}}{Education
                (1 = 8th grade or less;
                2 = 9-12th grade, no high school diploma;
                3 = High school graduate;
@@ -56,7 +56,7 @@ Demographic variables from a U.S. national household survey
                8 = Bachelor's degree (BA, BS, AB, BBA);
                9 = Master's, professional, or doctoral degree)
      }
-    \item{\code{educ_r}}{Education recode 
+    \item{\code{educ_r}}{Education recode
                (1 = High school, general education development degree (GED), or less;
                2 = Some college;
                3 = Bachelor's or associate's degree;

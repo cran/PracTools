@@ -50,7 +50,7 @@ and elements be input. (Use \code{\link{BW2stagePPSe}} if only a sample of PSUs,
 \references{
 Hansen,M.H., Hurwitz,W.N., and Madow,W.G. (1953, chap. 9, p.211). \emph{Sample Survey Methods and Theory}, Vol.I. John Wiley & Sons.
 
-Saerndal,C.E., Swensson, B., and Wretman, J. (1992, p.149). \emph{Model Assisted Survey Sampling}. Springer.
+Saerndal, C.E., Swensson, B., and Wretman, J. (1992, p.149). \emph{Model Assisted Survey Sampling}. Springer.
 
 Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.2.4). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
 }

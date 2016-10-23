@@ -14,7 +14,7 @@ clusOpt2 <- function(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.s
         m.opt <- tot.cost / (C1 + C2*n.opt)
         if (m.opt < 0) stop(paste("m.opt is negative. Check inputs. m.opt=",m.opt,"\n"))
 
-        CV <- sqrt(unit.rv/m.opt/n.opt*(1 + delta*(n.opt-1)))
+        CV <- sqrt(unit.rv/m.opt/n.opt*k*(1 + delta*(n.opt-1)))
         output <-
            structure(list(C1 = C1,
                           C2 = C2,

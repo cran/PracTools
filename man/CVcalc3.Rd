@@ -10,7 +10,7 @@ either with probability proportional to size (\emph{pps}) or with equal probabil
 are selected via simple random sampling (\emph{srs}).
 }
 \usage{
-CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=NULL, 
+CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=NULL,
             Bsq=NULL, Wsq=NULL, W2sq=NULL, W3sq=NULL)
 }
 
@@ -37,7 +37,7 @@ CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=N
   measure of homogeneity between PSUs equal to \eqn{B^2/(B^2 + W^2)} if PSUs are selected by simple random sampling; or, equal to \eqn{S_{U1(pwr)}^2} divided by \eqn{t_{U}^2} if PSUs are selected by \emph{ppswr}
  }
  \item{delta2}{
-  measure of homogeneity between SSUs within PSUs, equal to \eqn{W_{2}^{2}/(W_{2}^{2} + W_{3}^{2})} 
+  measure of homogeneity between SSUs within PSUs, equal to \eqn{W_{2}^{2}/(W_{2}^{2} + W_{3}^{2})}
  }
   \item{Bsq}{
   unit relvariance of PSU totals, equal to population variance of totals divided by \eqn{\bar{t}_{U}^2}
@@ -67,7 +67,7 @@ CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=N
 \references{
 Cochran, W.G. (1977, pp.308-310). \emph{Sampling Techniques}. New York: John Wiley & Sons.
 
-Saerndal,C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
+Saerndal, C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
 
 Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.2.4). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
 

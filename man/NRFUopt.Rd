@@ -41,7 +41,7 @@ NRFUopt(Ctot=NULL, c1, c2, theta, CV0=NULL, CVpop=NULL, N=Inf, type.sw)
 }
 
 \references{
-Saerndal,C.E., Swensson, B., and Wretman, J. (1992, examples 15.4.4 and 15.4.5). \emph{Model Assisted Survey Sampling}. New York: Springer.
+Saerndal, C.E., Swensson, B., and Wretman, J. (1992, examples 15.4.4 and 15.4.5). \emph{Model Assisted Survey Sampling}. New York: Springer.
 
 Valliant, R., Dever, J., Kreuter, F. (2013, chap.17). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
 }

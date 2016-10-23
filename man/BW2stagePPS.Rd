@@ -44,7 +44,7 @@ BW2stagePPS(X, pp, psuID)
 \references{
 Cochran, W.G. (1977, pp.308-310). \emph{Sampling Techniques}. New York: John Wiley & Sons.
 
-S{\"a}aerndal,C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
+Saerndal, C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
 
 Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.3.2). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
 

@@ -13,7 +13,7 @@ Socioeconomic variables from a U.S. national household survey
   \describe{
     \item{\code{HHX}}{Household identification variable}
     \item{\code{PX}}{Person identifier within household}
-    \item{\code{STRATUM}}{Sample design stratum (1-100)}
+    \item{\code{STRATUM}}{Sample design stratum}
     \item{\code{PSU}}{Primary sampling unit, numbered within each stratum (1,2)}
     \item{\code{WTFA}}{survey weight}
     \item{\code{SEX}}{Gender (1 = male; 2 = female)}

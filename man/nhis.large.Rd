@@ -12,7 +12,7 @@ Demographic and health related variables from a U.S. national household survey
   A data frame with 21,588 observations on the following 18 variables.
   \describe{
     \item{\code{ID}}{Identification variable}
-    \item{\code{stratum}}{Sample design stratum (1-100)}
+    \item{\code{stratum}}{Sample design stratum}
     \item{\code{psu}}{Primary sampling unit, numbered within each stratum (1,2)}
     \item{\code{svywt}}{survey weight}
     \item{\code{sex}}{Gender (1 = male; 2 = female)}
