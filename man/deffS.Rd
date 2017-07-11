@@ -15,7 +15,7 @@ deffS(p, w, y)
   \item{y}{vector of the sample values of an analysis variable}
 }
 \details{
-The Spencer design effect is the ratio of the variance of the \emph{pwr-}estimator of the total of \eqn{y}, assuming that a single-stage sample is selected with replacement, to the variance of the total estimated in \emph{srswr}. Varying selection probabilities can be used. 
+The Spencer design effect is the ratio of the variance of the \emph{pwr-}estimator of the total of \eqn{y}, assuming that a single-stage sample is selected with replacement, to the variance of the total estimated in \emph{srswr}. Varying selection probabilities can be used.
 }
 \value{
   numeric design effect
@@ -33,7 +33,7 @@ Valliant, R., Dever, J., Kreuter, F. (2013, chap. 14). \emph{Practical Tools for
 Richard Valliant, Jill A. Dever, Frauke Kreuter
 }
 \seealso{
-\code{\link{deffS}}, \code{\link{deffH}}
+\code{\link{deff}}, \code{\link{deffCR}}, \code{\link{deffH}}, \code{\link{deffK}}
 }
 \examples{
 set.seed(-500398777)

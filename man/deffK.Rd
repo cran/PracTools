@@ -31,7 +31,7 @@ Valliant, R., Dever, J., Kreuter, F. (2013, chap. 14). \emph{Practical Tools for
 Richard Valliant, Jill A. Dever, Frauke Kreuter
 }
 \seealso{
-\code{\link{deffS}}, \code{\link{deffH}}
+\code{\link{deff}}, \code{\link{deffCR}}, \code{\link{deffH}}, \code{\link{deffS}}
 }
 \examples{
 data(nhis)

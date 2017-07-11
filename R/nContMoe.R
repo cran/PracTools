@@ -7,11 +7,15 @@ nContMoe <- function(moe.sw, e, alpha=0.05, CVpop=NULL, S2=NULL, ybarU=NULL, N=I
         stop("alpha must be in (0,1).\n")
     if (sum(sapply(list(e, N), is.null) != 0))
         stop("e and N cannot be NULL.\n")
-    if (any(e <= 0) || any(e >= 1)) stop("e must be in (0,1).\n")
+    e.chk <- any(e <= 0) || any(e >= 1)
+#    if (any(e <= 0) || any(e >= 1)) stop("e must be in (0,1).\n")
+    if (e.chk) stop("e must be in (0,1).\n")
     if (length(alpha) > 1) stop("alpha must be scalar.\n")
 
-    if (any(N <= 0, S2 <= 0, CVpop <= 0))
-        stop("None of N, S2, or CVpop can be <= 0\n")
+#    if (any(N <= 0, S2 <= 0, CVpop <= 0))
+#        stop("None of N, S2, or CVpop can be <= 0\n")
+    N.chk <- any(N <= 0, S2 <= 0, CVpop <= 0)
+    if (N.chk) stop("None of N, S2, or CVpop can be <= 0\n")
 
     if (moe.sw==1){
         if (is.null(S2))

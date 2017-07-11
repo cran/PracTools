@@ -56,10 +56,15 @@ BW3stagePPSe <- function(dat, v, Ni, Qi, Qij, m){
     W3 <- sum(Ni^2/ni/m/pp^2 * sV3ib)
     W3 <- W3 / t.pwr^2
 
+    y.mn <- sum(dat$w * y) / sum(dat$w)
+    V <- wtdvar(x=y, w=dat$w)
+    k1 <- (B + W)/(V/y.mn^2)
+    k2 <- (W2 + W3)/(V/y.mn^2)
+
     delta1 <- B / (B + W)
     delta2 <- W2 / (W2 + W3)
 
     c(Vpsu=Vpsu, Vssu=Vssu, Vtsu=Vtsu,
-      B=B, W=W, W2=W2, W3=W3,
+      B=B, W=W, k1=k1, W2=W2, W3=W3, k2=k2,
       delta1=delta1, delta2=delta2)
 }

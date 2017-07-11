@@ -12,16 +12,16 @@ deffH(w, y, x)
 \arguments{
   \item{w}{vector of inverses of selection probabilities for a sample}
   \item{y}{vector of the sample values of an analysis variable}
-  \item{x}{vector of covariates used to construct a GREG estimator of the total of \eqn{y}.  This vector does not include the intercept.}
+  \item{x}{matrix of covariates used to construct a GREG estimator of the total of \eqn{y}.  This matrix does not include the intercept.}
 }
 \details{
-The Henry design effect is the ratio of the variance of the general regression (GREG) estimator of a total of \eqn{y} to the variance of the estimated total in \emph{srswr}. The sample is selected in a single-stage and with replacement.  Varying selection probabilities can be used. The model for the GREG is assumed to be \eqn{y = \alpha + \beta x + \epsilon}, i.e., the model has an intercept.  }
+The Henry design effect is the ratio of the variance of the general regression (GREG) estimator of a total of \eqn{y} to the variance of the estimated total in \emph{srswr}. Calculations for the Henry \emph{deff} are done as if the sample is selected in a single-stage and with replacement.  Varying selection probabilities can be used. The model for the GREG is assumed to be \eqn{y = \alpha + \beta x + \epsilon}, i.e., the model has an intercept.  }
 \value{
   numeric design effect
 }
 
 \references{
-Henry, K.A., and Valliant, R. (2015). A Design Effect Measure for Calibration Weighting in Single-stage Samples. \emph{Survey Methodology}, 41, to be published.
+Henry, K.A., and Valliant, R. (2015). A Design Effect Measure for Calibration Weighting in Single-stage Samples. \emph{Survey Methodology}, 41, 315-331.
 
 Valliant, R., Dever, J., Kreuter, F. (2013, chap. 14). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
 }
@@ -30,7 +30,7 @@ Valliant, R., Dever, J., Kreuter, F. (2013, chap. 14). \emph{Practical Tools for
 Richard Valliant, Jill A. Dever, Frauke Kreuter
 }
 \seealso{
-\code{\link{deffK}}, \code{\link{deffS}}
+\code{\link{deff}}, \code{\link{deffCR}}, \code{\link{deffK}}, \code{\link{deffS}}
 }
 \examples{
 set.seed(-500398777)

@@ -29,7 +29,7 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp)
 }
   \item{m}{number of sample PSUs}
   \item{pp}{
- vector of 1-draw probabilities for the PSUs. This vector must be as long as \code{X}. Each element in a given PSU should have the same value in \code{pp}. Vector must be in the same order as \code{X}.
+ vector of 1-draw probabilities for the PSUs. The length of this vector is the number of PSUs in the sample. Vector must be in the same order as \code{Ni} and \code{ni}.
   }
 }
 \details{
@@ -48,6 +48,7 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp)
   \item{Vssu}{estimated within PSU unit variance}
   \item{B}{estimated between PSU unit relvariance}
   \item{W}{estimated within PSU unit relvariance}
+  \item{k}{estimated ratio of \code{B+W} to estimated unit relvariance of the analysis variable}  
   \item{delta}{intraclass correlation estimated as \code{B/(B+W)}}
 }
 

@@ -8,8 +8,12 @@ nPropMoe <- function(moe.sw, e, alpha=0.05, pU, N=Inf){
         stop("alpha must be in (0,1).\n")
     if (sum(sapply(list(e, N, pU), is.null) != 0))
         stop("e, N, and pU cannot be NULL.\n")
-    if (any(e <= 0) || any(e >= 1)) stop("e must be in (0,1).\n")
-    if (any(pU <= 0) || any(pU >= 1)) stop("pU must be in (0,1).\n")
+    e.chk <- any(e <= 0) || any(e >= 1)
+    if (e.chk) stop("e must be in (0,1).\n")
+
+    pU.chk <- any(pU <= 0) || any(pU >= 1)
+    if (pU.chk) stop("pU must be in (0,1).\n")
+
     if (N <= 0) stop("N must be positve.\n")
     if (length(alpha) > 1) stop("alpha must be scalar.\n")
 

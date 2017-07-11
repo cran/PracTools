@@ -1,8 +1,10 @@
-CVcalc3 <- function(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, 
+CVcalc3 <- function(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1,
                 delta1=NULL, delta2=NULL, Bsq=NULL, Wsq=NULL, W2sq=NULL, W3sq=NULL){
-    if (any(is.null(V),is.null(m),is.null(nbar),is.null(qbar))){
-         stop("V, m, nbar, qbar must be specified.\n")
+    Vm.nbar.chk <- any(is.null(V),is.null(m),is.null(nbar))
+    if (Vm.nbar.chk){
+         stop("V, m, and nbar must be specified.\n")
     }
+
     if (sum(sapply(list(Bsq, Wsq, delta1), is.null)) == 3){
         stop("Either (Bsq,Wsq) or delta1 must be specified.\n")
     }
@@ -33,10 +35,12 @@ CVcalc3 <- function(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1,
         warning("W3sq specified without W2sq. delta2 used, W3sq ignored.\n")
     }
 
-    if (any(V < 0, m < 0, nbar < 0, qbar < 0, k1 < 0, k2 < 0, 
-            delta1 < 0, delta2 < 0, Bsq < 0, Wsq < 0, W2sq < 0, W3sq < 0)){
+    Vm.etal.chk <- any(V < 0, m < 0, nbar < 0, qbar < 0, k1 < 0, k2 < 0,
+            delta1 < 0, delta2 < 0, Bsq < 0, Wsq < 0, W2sq < 0, W3sq < 0)
+    if (Vm.etal.chk){
         stop("Illegal negative parameter specified.\n")
     }
+
     if (sum(sapply(list(Bsq, Wsq, delta1), is.null)) == 0){
         if (delta1 != Bsq/(Bsq + Wsq)){
             stop("Bsq, Wsq, and delta1 are inconsistent. Specify only (Bsq,Wsq) or delta1.\n")
@@ -53,7 +57,7 @@ CVcalc3 <- function(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1,
             stop("V, k1, Bsq, and Wsq are inconsistent. Specify only (V,k) or (V,Bsq,Wsq).\n")
         }
     }
-    
+
     if (sum(sapply(list(k2, Bsq, Wsq, V), is.null)) == 0){
         if (k2 != (W2sq + W3sq)/V){
             stop("V, k2, W2sq, and W3sq are inconsistent. Specify only (V,k2) or (V,W2sq,W3sq).\n")

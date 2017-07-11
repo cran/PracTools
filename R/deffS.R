@@ -2,7 +2,7 @@ deffS <- function(p, w, y){
     if (any(w <= 0))
         warning("Some weights are less than or equal to 0.\n")
     if (any(p <= 0))
-        warning("Some 1-draw selecti0on probabilities are less than or equal to 0.\n")
+        warning("Some 1-draw selection probabilities are less than or equal to 0.\n")
 
     n <- length(w)
     dK <- deffK(w)

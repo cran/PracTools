@@ -1,7 +1,10 @@
 
 clusOpt3fixedPSU <- function(unit.cost, m, delta1, delta2, unit.rv, k1=1, k2=1, CV0=NULL, tot.cost=NULL, cal.sw){
-    if (any(delta1 < 0) | any(delta1 > 1)) stop("delta1 must be in [0,1].\n")
-    if (any(delta2 < 0) | any(delta2 > 1)) stop("delta2 must be in [0,1].\n")
+    if (m<0) stop("m must be positive.\n")
+    delta1.chk <- any(delta1 < 0 | delta1 > 1)
+    if (delta1.chk) stop("delta1 must be in [0,1].\n")
+   delta2.chk <- any(delta2 < 0 | delta2 > 1)
+    if (delta2.chk) stop("delta2 must be in [0,1].\n")
     if (!is.null(CV0) & !is.null(tot.cost))
         stop("CV0 and C.prime cannot both be non-null.\n")
     if (is.null(CV0) & is.null(tot.cost))
@@ -20,8 +23,8 @@ clusOpt3fixedPSU <- function(unit.cost, m, delta1, delta2, unit.rv, k1=1, k2=1, 
 
     if (cal.sw == 1){
         n <- C.prime/(C2 + C3*q.opt)
-        if (n < 0) stop(paste("n is negative. Check inputs. n=",n,"\n"))
-
+        n.chk <- any(n < 0)
+        if (n.chk) stop(paste("n is negative. Check inputs. n=",n,"\n"))
         tot.cost <- C1*m + C2*m*n + C3*m*n*q.opt
         CV <- sqrt(unit.rv/m/n/q.opt * (k1*delta1*n*q.opt + k2*(1 + delta2*(q.opt-1))))
 
@@ -44,8 +47,8 @@ clusOpt3fixedPSU <- function(unit.cost, m, delta1, delta2, unit.rv, k1=1, k2=1, 
     }
     if (cal.sw == 2) {
         n <- k2*(1 + delta2*(q.opt-1)) / q.opt / (CV0^2*m/unit.rv - k1*delta1)
-        if (n < 0) stop(paste("n is negative. Check inputs. n=",n,"\n"))
-
+        n.chk <- any(n < 0)
+        if (n.chk) stop(paste("n is negative. Check inputs. n=",n,"\n"))
         tot.cost <- C1*m + C2*m*n + C3*m*n*q.opt
         CV.chk <- sqrt(unit.rv/m/n/q.opt * (k1*delta1*n*q.opt + k2*(1+ delta2*(q.opt-1))))
 

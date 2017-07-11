@@ -64,7 +64,7 @@ Groupings to form the variables \code{PSU} and \code{SSU} were done after sortin
 }
 
 \source{
-2000 U.S. decennial census, \url{http://www.census.gov/main/www/cen2000.html}
+2000 U.S. decennial census, \code{http://www.census.gov/main/www/cen2000.html}
 }
 
 \examples{

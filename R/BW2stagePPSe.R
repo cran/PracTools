@@ -8,7 +8,7 @@ BW2stagePPSe <- function(Ni, ni, X, psuID, w, m, pp){
     Vi <- Ni * (Ni/ni - 1) * S2i
     F2 <- sum( (1-pi.star )/pi.star^2 * Vi )
     F1 <- by(w*X, psuID, sum)
-    v1 <- m * var(F1)    
+    v1 <- m * var(F1)
 
     Vpsu <- v1 - F2
     Vssu <- sum(Vi / (pi.star)^2)
@@ -17,5 +17,9 @@ BW2stagePPSe <- function(Ni, ni, X, psuID, w, m, pp){
     W <- sum(Ni^2 * S2i / m / pp^2) / t.pwr^2
     delta <- B / (B + W)
 
-    c(Vpsu=Vpsu, Vssu=Vssu, B=B, W=W, delta=delta)
+    V <- wtdvar(x=X, w=w)
+    y.mn <- sum(w*X)/sum(w)
+    k <- (B + W)/(V/y.mn^2)
+
+    c(Vpsu=Vpsu, Vssu=Vssu, B=B, W=W, k=k, delta=delta)
 }

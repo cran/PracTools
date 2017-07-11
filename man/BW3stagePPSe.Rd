@@ -52,8 +52,10 @@ and the same number of elements are selected within each sample SSU.
   \item{Vtsu}{estimated third-stage unit variance}
   \item{B}{estimated between PSU unit relvariance}
   \item{W}{estimated within PSU unit relvariance computed as if the sample were two-stage}
+  \item{k1}{estimated ratio of \code{B+W} to estimated unit relvariance of the analysis variable}
   \item{W2}{estimated unit relvariance among SSU totals}
   \item{W3}{estimated third-stage unit relvariance among elements within PSU/SSUs}
+  \item{k2}{estimated ratio of \code{W2+W3} to estimated unit relvariance of the analysis variable}
   \item{delta1}{homogeneity measure among elements within PSUs estimated as \eqn{B^2/(B^2+W^2)}}
   \item{delta2}{homogeneity measure among elements within SSUs estimated as \eqn{W_{2}^2/(W_{2}^2 + W_{3}^2)}}
 }

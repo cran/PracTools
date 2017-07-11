@@ -1,7 +1,9 @@
 CVcalc2 <- function(V=NULL, m=NULL , nbar=NULL, k=1, delta=NULL, Bsq=NULL, Wsq=NULL){
-    if (any(is.null(V),is.null(m),is.null(nbar))){
+    Vm.nbar.chk <- any(is.null(V),is.null(m),is.null(nbar))
+    if (Vm.nbar.chk){
          stop("V, m, and nbar must be specified.\n")
     }
+
     if (sum(sapply(list(Bsq, Wsq, delta), is.null)) == 3){
         stop("Either (Bsq,Wsq) or delta must be specified.\n")
     }
@@ -16,7 +18,8 @@ CVcalc2 <- function(V=NULL, m=NULL , nbar=NULL, k=1, delta=NULL, Bsq=NULL, Wsq=N
     if (is.null(Bsq) & !is.null(Wsq) & !is.null(delta)){
         warning("Wsq specified without Bsq. delta used, Wsq ignored.\n")
     }
-    if (any(V < 0, m < 0, nbar < 0, k < 0, delta < 0, Bsq < 0, Wsq < 0)){
+    Vm.nbar.delta.BsqWsq.chk <- any(V < 0, m < 0, nbar < 0, k < 0, delta < 0, Bsq < 0, Wsq < 0)
+    if (Vm.nbar.delta.BsqWsq.chk){
         stop("Illegal negative parameter specified.\n")
     }
     if (sum(sapply(list(Bsq, Wsq, delta), is.null)) == 0){

@@ -1,6 +1,7 @@
 
 clusOpt2fixedPSU <- function(C1, C2, m, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.sw){
-    if (any(delta < 0) | any(delta > 1)) stop("delta must be in [0,1].\n")
+    delta.chk <- any(delta < 0 | delta > 1)
+    if (delta.chk) stop("delta must be in [0,1].\n")
     if (!is.null(CV0) & !is.null(tot.cost))
         stop("CV0 and tot.cost cannot both be non-null.\n")
     if (is.null(CV0) & is.null(tot.cost))
@@ -12,7 +13,8 @@ clusOpt2fixedPSU <- function(C1, C2, m, delta, unit.rv, k=1, CV0=NULL, tot.cost=
 
     if (cal.sw == 1){
         n <- (tot.cost - C1*m)/C2/m
-        if (n < 0) stop(paste("n is negative. Check inputs. n=",n,"\n"))
+        n.chk <- any(n < 0)
+        if (n.chk) stop(paste("n is negative. Check inputs. n=",n,"\n"))
         CV <- sqrt(unit.rv*k/m/n*(1 + delta*(n-1)))
         output <-
            structure(list(C1 = C1,
@@ -28,7 +30,8 @@ clusOpt2fixedPSU <- function(C1, C2, m, delta, unit.rv, k=1, CV0=NULL, tot.cost=
     }
     if (cal.sw == 2) {
         n <- (1 - delta) / (CV0^2*m/unit.rv/k - delta)
-        if (n < 0) stop(paste("n is negative. Check inputs. n=",n,"\n"))
+        n.chk <- any(n < 0)
+        if (n.chk) stop(paste("n is negative. Check inputs. n=",n,"\n"))
         cost <- C1*m + C2*m*n
         output <-
            structure(list(C1 = C1,

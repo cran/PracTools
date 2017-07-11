@@ -7,8 +7,8 @@ nCont <- function(CV0=NULL, V0=NULL, S2=NULL, ybarU=NULL, N=Inf, CVpop=NULL){
         stop("At least one of CV0 or V0 must be specified\n")
     if (sum(sapply(list(CV0, V0), is.null)) == 0)
         stop("Only one of CV0 or V0 can be specified\n")
-    if (any(N <= 0, S2 <= 0, CV0 <= 0, V0 <= 0, CVpop <= 0))
-        stop("N, S2, CV0, V0, and CVpop cannot be <= 0.\n")
+    N.etal.chk <- any(N <= 0, S2 <= 0, CV0 <= 0, V0 <= 0, CVpop <= 0)
+    if (N.etal.chk) stop("N, S2, CV0, V0, and CVpop cannot be <= 0.\n")
 
     if (sum(sapply(list(S2, ybarU, CVpop), is.null)) == 0){
         warning("S2, ybarU, and CVpop all specified. CVpop ignored.\n")

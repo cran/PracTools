@@ -5,6 +5,7 @@ pclass <- function (formula, data=NULL, link="logit", numcl=5, type, design=NULL
         stop("type must be wtd or unwtd.\n")
 
     if (type == "unwtd"){
+        if (is.null(data)) stop("With type=unwtd data cannot be NULL.\n")
         reg <- glm(formula, family = binomial(link = link), data)
     }
     else {

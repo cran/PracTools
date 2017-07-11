@@ -42,7 +42,7 @@ The elements within clusters for this illustrative population are individual per
 }
 
 \source{
-Current Population Survey, \url{http://www.census.gov/cps/}
+Current Population Survey, \code{https://www.census.gov/programs-surveys/cps.html}
 }
 
 \examples{
