@@ -1,6 +1,5 @@
 \name{wtdvar}
 \alias{wtdvar}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Compute weighted variance
 }
@@ -8,15 +7,17 @@ Compute weighted variance
 Compute an estimate of a population unit variance from a complex sample with survey weights.
 }
 \usage{
-wtdvar(x,w)
+wtdvar(x,w,na.rm=TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
  data vector
 }
   \item{w}{
  vector of survey weights; must be same length as \code{x}
+}
+  \item{na.rm}{
+ remove missing values (TRUE or FALSE)
 }
 }
 \details{
