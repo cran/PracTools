@@ -12,7 +12,7 @@ NRadjClass(ID, NRclass, resp, preds=NULL, wts=NULL, type)
 \arguments{
   \item{ID}{identification value for a unit}
   \item{NRclass}{vector of classes to use for nonresponse adjustment. Length is number of respondents plus nonrespondents}
-  \item{resp}{indicator for whether unit is anonrespondent (must be coded 0) or respondent (must be coded 1)}
+  \item{resp}{indicator for whether unit is a nonrespondent (must be coded 0) or respondent (must be coded 1)}
   \item{preds}{response probabilities, typically estimated from a binary regression model as in \code{pclass}}
   \item{wts}{vector of survey weights, typically base weights or base weights adjusted for unknown eligibility}
   \item{type}{type of adjustment computed within each value of \code{NRclass}. Allowable codes are 1, 2, 3, 4, or 5.

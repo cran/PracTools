@@ -1,7 +1,7 @@
 \name{clusOpt3fixedPSU}
 \alias{clusOpt3fixedPSU}
 \title{
-Compute optimal number of sample secondary sampling units (SSUs) and elements per primary sampling unit (PSU) in a three-stage sample when the sample of PSUs is fixed
+Compute optimal number of sample secondary sampling units (SSUs) and elements per SSU for a fixed set of primary sampling units (PSUs) in a three-stage sample
 }
 \description{
 Compute the sample sizes that minimize the variance of the \emph{pwr}-estimator of a total in a three-stage sample when the PSU sample is fixed.

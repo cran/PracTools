@@ -28,18 +28,16 @@ CVcalc2(V=NULL, m=NULL , nbar=NULL, k=1, delta=NULL, Bsq=NULL, Wsq=NULL)
   measure of homogeneity equal to \eqn{B^2/(B^2 + W^2)}
  }
   \item{Bsq}{
-  unit relvariance of PSU totals, equal to population variance of totals divided by \eqn{\bar{t}_{U}^2} if PSUs are selected by simple random sampling; or, equal to \eqn{S_{U1(pwr)}^2} divided by \eqn{t_{U}^2} if PSUs are selected by \emph{ppswr}
+  unit relvariance of PSU totals
  }
   \item{Wsq}{
-  within PSU relvariance, equal to average element population variance divided by \eqn{\bar{y}_{U}^2}
+  within PSU relvariance
  }
 
 }
 \details{
 \code{CVcalc2} computes the coefficient of variation of an estimated total for a two-stage sample.  PSUs can be selected either with varying probabilities
-  and with replacement or with equal probabilities and with replacement. Elements within PSUs are selected by simple random sampling.
-  The \eqn{CV} formula is appropriate for approximating the relvariance of the probability-with-replacement (\emph{pwr})-estimator of a total when
-  the same number of elements is selected within each sample PSU.
+  and with replacement or with equal probabilities and with replacement. Elements within PSUs are selected by simple random sampling.   The \eqn{CV} formula is appropriate for approximating the relvariance of the probability-with-replacement (\emph{pwr})-estimator of a total when the same number of elements is selected within each sample PSU. See Sections 9.2.1--9.2.3 of Valliant, Dever, and Kreuter (2013) for details of formulas.
 }
 
 \value{

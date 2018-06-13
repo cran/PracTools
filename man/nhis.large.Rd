@@ -98,7 +98,7 @@ Demographic and health related variables from a U.S. national household survey
   }
 }
 \details{
-The National Health Interview Survey (NHIS) is used to monitor health conditions in the U.S. Data are collected through personal household interviews. Demographic variables and a few health related variables are included in this subset. The \code{nhis.large} data set contains observations on 21,588 persons. \code{nhis.large} is a set of 21,588 persons extracted from the 2003 U.S. survey. The file contains only persons 18 years and older.
+The National Health Interview Survey (NHIS) is used to monitor health conditions in the U.S. Data are collected through personal household interviews. Demographic variables and a few health related variables are included in this subset. The \code{nhis.large} data set contains observations on 21,588 persons extracted from the 2003 U.S. NHIS survey. The file contains only persons 18 years and older.
 }
 
 \source{

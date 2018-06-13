@@ -5,9 +5,7 @@
 Coefficient of variation of an estimated total in a 3-stage sample
 }
 \description{
-Compute the coefficient of variation of an estimated total in a three-stage design. Primary sampling units (PSUs) can be selected
-either with probability proportional to size (\emph{pps}) or with equal probability. Secondary units and elements within SSUs
-are selected via simple random sampling (\emph{srs}).
+Compute the coefficient of variation of an estimated total in a three-stage design. Primary sampling units (PSUs) can be selected either with probability proportional to size (\emph{pps}) or with equal probability. Secondary units and elements within SSUs are selected via simple random sampling (\emph{srs}). 
 }
 \usage{
 CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=NULL,
@@ -34,7 +32,7 @@ CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=N
   ratio of \eqn{W_{2}^{2} + W_{3}^{2}} to \eqn{V}. Default value is 1.
  }
  \item{delta1}{
-  measure of homogeneity between PSUs equal to \eqn{B^2/(B^2 + W^2)} if PSUs are selected by simple random sampling; or, equal to \eqn{S_{U1(pwr)}^2} divided by \eqn{t_{U}^2} if PSUs are selected by \emph{ppswr}
+  measure of homogeneity between PSUs equal to \eqn{B^2/(B^2 + W^2)}
  }
  \item{delta2}{
   measure of homogeneity between SSUs within PSUs, equal to \eqn{W_{2}^{2}/(W_{2}^{2} + W_{3}^{2})}
@@ -57,7 +55,7 @@ CVcalc3(V=NULL, m=NULL , nbar=NULL, qbar=NULL, k1=1, k2=1, delta1=NULL, delta2=N
 \code{CVcalc3} computes the coefficient of variation of an estimated total for a three-stage sample.  PSUs can be selected either with varying probabilities
   and with replacement or with equal probabilities and with replacement. SSUs and elements within SSUs are selected by simple random sampling.
   The \eqn{CV} formula is appropriate for approximating the relvariance of the probability-with-replacement (\emph{pwr})-estimator of a total when
-  the same number of SSUs is selected in each PSU and the same number of elements is selected within each sample SSU.
+  the same number of SSUs is selected in each PSU and the same number of elements is selected within each sample SSU. See Sect. 9.2.4 of Valliant, Dever, and Kreuter (2013) for details of formulas.
 }
 
 \value{
