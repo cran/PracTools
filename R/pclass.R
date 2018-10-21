@@ -29,7 +29,8 @@ pclass <- function (formula, data=NULL, link="logit", numcl=5, type, design=NULL
     if (link == "cloglog"){
         preds <- 1- exp(-exp(L.hat) )
     }
-
+    
+    preds <- jitter(preds)
     pcuts <- seq(0, 1, 1/numcl)
     quintiles <- quantile(preds, probs = pcuts)
 
