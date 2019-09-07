@@ -7,9 +7,9 @@ nContMoe <- function(moe.sw, e, alpha=0.05, CVpop=NULL, S2=NULL, ybarU=NULL, N=I
         stop("alpha must be in (0,1).\n")
     if (sum(sapply(list(e, N), is.null) != 0))
         stop("e and N cannot be NULL.\n")
-    e.chk <- any(e <= 0) || any(e >= 1)
-#    if (any(e <= 0) || any(e >= 1)) stop("e must be in (0,1).\n")
-    if (e.chk) stop("e must be in (0,1).\n")
+    e.chk1 <- any(e <= 0)
+    if (e.chk1) stop("e must be greater than 0.\n")
+    if (moe.sw == 1 & any(e >= 1)) warning("WARNING: e >= 1. This parameter setting leads to the lower limit of a 2-sided \n alpha level confidence interval being 0 or less. You may want to adjust the value of e.\n")
     if (length(alpha) > 1) stop("alpha must be scalar.\n")
 
 #    if (any(N <= 0, S2 <= 0, CVpop <= 0))
