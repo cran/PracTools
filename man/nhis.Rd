@@ -72,7 +72,7 @@ Data are collected through personal household interviews. Only demographic varia
 }
 \source{
 National Health Interview Survey of 2003 conducted by the U.S. National Center for Health Statistics.
-\url{http://www.cdc.gov/nchs/nhis.htm}
+\url{https://www.cdc.gov/nchs/nhis.htm}
 }
 
 \seealso{

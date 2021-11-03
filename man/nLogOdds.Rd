@@ -41,7 +41,7 @@ or as the CI half-width as a proportion of the population value \code{pU} (\code
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 3). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 3). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

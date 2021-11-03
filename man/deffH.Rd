@@ -23,7 +23,7 @@ The Henry design effect is the ratio of the variance of the general regression (
 \references{
 Henry, K.A., and Valliant, R. (2015). A Design Effect Measure for Calibration Weighting in Single-stage Samples. \emph{Survey Methodology}, 41, 315-331.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 14). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 14). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

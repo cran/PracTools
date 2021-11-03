@@ -43,7 +43,7 @@ random sampling at each stage or \emph{ppswr} at the first stage and \emph{srs} 
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.3.3).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.3.3).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

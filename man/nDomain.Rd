@@ -40,7 +40,7 @@ number of units in full finite population (not just the domain population)
 \details{
 If \code{CV0d} is the desired target, then the unit CV, \code{CVpopd},
 or the domain population mean and variance, \code{ybarUd} and \code{S2d}, must also be provided.
-If \code{V0d} is the constrained value, then \code{ybarUd} must be also be included in the function call. \code{CV0d} 
+If \code{V0d} is the constrained value, then \code{ybarUd} must be also be included in the function call. \code{CV0d}
 will then be computed as \code{sqrt(V0d)/ybarUd}.
 }
 \value{
@@ -48,7 +48,7 @@ will then be computed as \code{sqrt(V0d)/ybarUd}.
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, sec. 3.5.2). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sec. 3.5.2). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{
@@ -72,4 +72,4 @@ nDomain(CV0d=0.05, ybarUd=50, S2d=100, N=Inf, Pd=0.5, est.type="mean")
 %\keyword{ ~kwd1 }
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
 \keyword{methods}
-\keyword{survey} 
+\keyword{survey}

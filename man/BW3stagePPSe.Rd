@@ -8,7 +8,7 @@ Estimated relvariance components for 3-stage sample
 Estimate components of relvariance for a sample design where primary sampling units (PSUs) are selected with probability proportional to size with replacement (\emph{ppswr}) and secondary sampling units (SSUs) and elements within SSUs are selected via simple random sampling (\emph{srs}). The input is a sample selected in this way.
 }
 \usage{
-BW3stagePPSe(dat, v, Ni, Qi, Qij, m)
+BW3stagePPSe(dat, v, Ni, Qi, Qij, m, lonely.SSU = "mean", lonely.TSU = "mean")
 }
 
 \arguments{
@@ -34,7 +34,12 @@ BW3stagePPSe(dat, v, Ni, Qi, Qij, m)
  vector of numbers of elements in the population in the sample SSUs
 }
   \item{m}{number of sample PSUs}
-
+  \item{lonely.SSU}{
+ indicator for how singleton SSUs should be handled when computing the within PSU unit relvariance. Allowable values are \code{"mean"} and \code{"zero"}.
+}
+ \item{lonely.TSU}{
+ indicator for how singleton third-stage units (TSUs) should be handled when computing the within SSU unit relvariance. Allowable values are \code{"mean"} and \code{"zero"}.
+}
 }
 \details{
 \code{BW3stagePPSe} computes the between and within population relvariance components appropriate
@@ -43,6 +48,8 @@ SSUs and elements within SSUs are selected by simple random sampling.
 The estimated components are appropriate for approximating the relvariance of the
 \emph{pwr}-estimator of a total when the same number of SSUs are selected within each PSU,
 and the same number of elements are selected within each sample SSU.
+
+If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample. \code{lonely.TSU} has a similar purpose for third-stage units.
 }
 
 \value{
@@ -63,7 +70,7 @@ and the same number of elements are selected within each sample SSU.
 \references{
 Hansen, M.H., Hurwitz, W.N., and Madow, W.G. (1953, chap. 9, sect. 10). \emph{Sample Survey Methods and Theory}, Vol.II. New York: John Wiley & Sons.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.4.2). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.4.2). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{
@@ -75,10 +82,11 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 \examples{
 \dontrun{
     # select 3-stage sample from Maryland population
+set.seed(-780087528)
 data(MDarea.pop)
 MDpop <- MDarea.pop
 require(sampling)
-require(reshape)      # has function that allows renaming variables
+require(plyr)      # has function that allows renaming variables
     # make counts of SSUs and elements per PSU
 xx <- do.call("rbind",list(by(1:nrow(MDpop),MDpop$SSU,head,1)))
 pop.tmp <- MDpop[xx,]
@@ -135,7 +143,8 @@ w2ij <- 1 / samclus$p1i / samclus$p2i
 samdat <- data.frame(psuID = samclus$PSU, ssuID = samclus$SSU,
                      w1i = w1i, w2ij = w2ij, w = wt,
                      samclus[, c("y1","y2","y3","ins.cov", "hosp.stay")])
-BW3stagePPSe(dat=samdat, v="y1", Ni=Ni.sam, Qi=Qi.sam, Qij=Qij.sam, m)
+BW3stagePPSe(dat=samdat, v="y1", Ni=Ni.sam, Qi=Qi.sam, Qij=Qij.sam, m,
+    lonely.SSU = "mean", lonely.TSU = "mean")
 }
 }
 

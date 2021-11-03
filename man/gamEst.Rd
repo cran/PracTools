@@ -33,7 +33,7 @@ The function \code{gamEst} estimates the power \eqn{\gamma} in a model where the
 The estimate of \eqn{\gamma}.
 }
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 \author{
 Richard Valliant, Jill A. Dever, Frauke Kreuter

@@ -1,5 +1,6 @@
 
-BW3stagePPSe <- function(dat, v, Ni, Qi, Qij, m){
+BW3stagePPSe <- function(dat, v, Ni, Qi, Qij, m, lonely.SSU = "mean", lonely.TSU = "mean"){
+  browser()
     y <- dat[, v]
         # 3rd stage conditional wts
     wk.ij <- dat$w / dat$w2ij
@@ -33,16 +34,56 @@ BW3stagePPSe <- function(dat, v, Ni, Qi, Qij, m){
     t.pwr <- sum(dat$w * y)
 
     S2ai <- by(as.vector(tij), INDICES = dat[xx.ssu,]$psuID, var)
+    S2ai.miss <- is.na(S2ai)
+    if (lonely.SSU == "mean"){
+      S2ai[S2ai.miss] <- mean(S2ai[!S2ai.miss])
+    }
+    else if (lonely.SSU == "zero"){
+      S2ai[S2ai.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.SSU: ", lonely.SSU, "\n")}
+
     S3ij <- by(y, INDICES = dat$ssuID, var)
     V3ij <- Qij * (Qij/qij - 1) * S3ij
     V3ijb <- Qij^2 * S3ij
     S2bi <- by(as.vector(V3ij), INDICES = dat[xx.ssu,]$psuID, sum)/ni
+    S2bi.miss <- is.na(S2bi)
+    if (lonely.SSU == "mean"){
+      S2bi[S2bi.miss] <- mean(S2bi[!S2bi.miss])
+    }
+    else if (lonely.SSU == "zero"){
+      S2bi[S2bi.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.SSU: ", lonely.SSU, "\n")}
+
     sV3i <- by(as.vector(V3ij), INDICES = dat[xx.ssu,]$psuID, sum)
     sV3ib <- by(as.vector(V3ijb), INDICES = dat[xx.ssu,]$psuID, sum)
+    sV3ib.miss <- is.na(sV3ib)
+    if (lonely.TSU == "mean"){
+      sV3ib[!sV3ib.miss] <- mean(sV3ib[!sV3ib.miss])
+    }
+    else if (lonely.TSU == "zero"){
+      sV3ib[!sV3ib.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.TSU: ", lonely.TSU, "\n")}
 
     S1a <- sum((ti/pp - t.pwr)^2)/(m-1)
     S1b <- sum(Ni^2/ni/pp^2*((1-f2i)*S2ai + f2i*S2bi))/m
-    V3i <- by(y, INDICES = dat$psuID, wtdvar, w = dat$w)
+#    V3i <- by(y, INDICES = dat$psuID, FUN = wtdvar, w = dat$w)
+    V3i <- vector("numeric", length = length(unique(dat$psuID)))
+    PSUs <- unique(dat$psuID)
+    for (ind in 1:length(PSUs)) {
+      pick <- dat$psuID == PSUs[ind]
+      V3i[ind] <- wtdvar(y[pick], w = dat$w[pick])
+    }
+    V3i.miss <- is.na(V3i)
+    if (lonely.SSU == "mean"){
+      V3i[V3i.miss] <- mean(V3i[!V3i.miss])
+    }
+    else if (lonely.SSU == "zero"){
+      V3i[V3i.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.SSU: ", lonely.SSU, "\n")}
 
     Vtsu <- sum(Ni^2/ni^2 * w1i.psu^2 * sV3i)
     Vssu <- sum(Ni^2/ni/(m*pp)^2*(1-f2i)*(S2ai - S2bi))

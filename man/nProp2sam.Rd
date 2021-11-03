@@ -56,7 +56,7 @@ The samples have a specified proportion of units in common.
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 4). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 4). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 
 Woodward, M. (1992). Formulas for Sample Size, Power, and Minimum Detectable Relative Risk in Medical Studies.  \emph{The Statistician}, 41, 185-196.
 }

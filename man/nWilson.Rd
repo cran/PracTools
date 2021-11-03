@@ -38,7 +38,7 @@ half-width as a proportion of the population value \eqn{p_U} (\code{moe.sw=2}).
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter,F. (2013, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter,F. (2018, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 
 Wilson, E.B. (1927). Probable inference, the law of succession, and statistical inference.  \emph{Journal of the American Statistical Association}, 22, 209-212.
 }

@@ -21,11 +21,11 @@ deff(w, x=NULL, y=NULL, p=NULL, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, ty
   \item{type}{type of allocation; must be one of \code{"kish"}, \code{"henry"}, \code{"spencer"}, \code{"cr"}}
 }
 \details{
-\code{deff} calls one of \code{deffK}, \code{deffH}, \code{deffS}, or \code{deffCR} depending on the value of the \code{type} parameter. The Kish design effect is the ratio of the variance of an estimated mean in stratified simple random sampling without replacement (\emph{stsrswor}) to the variance of the estimated mean in \emph{srswor}, assuming that all stratum unit variances are equal. In that case, proportional allocation with equal weighting is optimal. deffK equals 1 + relvar(w) where relvar is relvariance of the vector of survey weights. This measure is not appropriate in samples where unequal weighting is more efficient than equal weighting. 
+\code{deff} calls one of \code{deffK}, \code{deffH}, \code{deffS}, or \code{deffCR} depending on the value of the \code{type} parameter. The Kish design effect is the ratio of the variance of an estimated mean in stratified simple random sampling without replacement (\emph{stsrswor}) to the variance of the estimated mean in \emph{srswor}, assuming that all stratum unit variances are equal. In that case, proportional allocation with equal weighting is optimal. deffK equals 1 + relvar(w) where relvar is relvariance of the vector of survey weights. This measure is not appropriate in samples where unequal weighting is more efficient than equal weighting.
 
-The Henry design effect is the ratio of the variance of the general regression (GREG) estimator of a total of \eqn{y} to the variance of the estimated total in \emph{srswr}. Calculations for the Henry \emph{deff} are done as if the sample is selected in a single-stage and with replacement.  Varying selection probabilities can be used. The model for the GREG is assumed to be \eqn{y = \alpha + \beta x + \epsilon}, i.e., the model has an intercept. 
+The Henry design effect is the ratio of the variance of the general regression (GREG) estimator of a total of \eqn{y} to the variance of the estimated total in \emph{srswr}. Calculations for the Henry \emph{deff} are done as if the sample is selected in a single-stage and with replacement.  Varying selection probabilities can be used. The model for the GREG is assumed to be \eqn{y = \alpha + \beta x + \epsilon}, i.e., the model has an intercept.
 
-The Spencer design effect is the ratio of the variance of the \emph{pwr}-estimator of the total of \emph{y}, assuming that a single-stage sample is selected with replacement, to the variance of the total estimated in \emph{srswr}. Varying selection probabilities can be used. 
+The Spencer design effect is the ratio of the variance of the \emph{pwr}-estimator of the total of \emph{y}, assuming that a single-stage sample is selected with replacement, to the variance of the total estimated in \emph{srswr}. Varying selection probabilities can be used.
 
 The Chen-Rust \emph{deff} accounts for stratification, clustering, and unequal weights, but does not account for the use of any auxiliary data in the estimator of a mean. The Chen-Rust \emph{deff} returned here is appropriate for stratified, two-stage sampling.}
 \value{
@@ -47,7 +47,7 @@ Park, I., and Lee, H. (2004). Design Effects for the Weighted Mean and Total Est
 
 Spencer, B. D. (2000). An Approximate Design Effect for Unequal Weighting When Measurements May Correlate With Selection Probabilities. Survey Methodology, 26, 137-138.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 14). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 14). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

@@ -1,10 +1,19 @@
 
-BW2stagePPSe <- function(Ni, ni, X, psuID, w, m, pp){
+BW2stagePPSe <- function(Ni, ni, X, psuID, w, m, pp, lonely.SSU = "mean"){
     fi <- ni / Ni
     t.pwr <- sum(w*X)
     pi.star <- m * pp
 
     S2i <- by(X, INDICES = psuID, FUN = var)
+    S2i.miss <- is.na(S2i)
+    if (lonely.SSU == "mean"){
+      S2i[S2i.miss] <- mean(S2i[!S2i.miss])
+    }
+    else if (lonely.SSU == "zero"){
+      S2i[S2i.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.SSU: ", lonely.SSU, "\n")}
+
     Vi <- Ni * (Ni/ni - 1) * S2i
 #    F2 <- sum( (1-pi.star )/pi.star^2 * Vi ) # used in v.0.7 and earlier
     F2 <- sum(Vi /pp^2) / m^2

@@ -41,7 +41,7 @@ parameter \code{moe.sw} where \code{moe.sw=1} sets \eqn{e=z_{1-\alpha/2}\sqrt{V(
     numeric sample size
 }
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

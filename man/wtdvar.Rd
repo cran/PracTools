@@ -29,7 +29,7 @@ wtdvar(x,w,na.rm=TRUE)
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 9). \emph{Practical Tools for Designing and Weighting Survey Samples}. Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 9). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. Springer.
 }
 
 \author{

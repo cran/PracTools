@@ -1,623 +1,568 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<title>Two-stage Sampling</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<meta name="author" content="Richard Valliant, Jill A. Dever, and Frauke Kreuter" />
-
-<meta name="date" content="2020-08-03" />
-
-<title>Variance Component Estimation in Multistage Sampling</title>
-
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
   }
-});
+};
 </script>
 
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
 
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+   pre .literal {
+     color: #990073
+   }
 
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
 </style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
 
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
 }
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
 }
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
+
+h1 {
+   font-size:2.2em;
 }
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
+
+h2 {
+   font-size:1.8em;
 }
-#TOC ul ul {
-margin-left: -2em;
+
+h3 {
+   font-size:1.4em;
 }
-#TOC li {
-line-height: 16px;
+
+h4 {
+   font-size:1.0em;
 }
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
+
+h5 {
+   font-size:0.9em;
 }
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
+
+h6 {
+   font-size:0.8em;
 }
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
 }
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
+
+pre, img {
+  max-width: 100%;
 }
 pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
+  overflow-x: auto;
 }
-pre:not([class]) {
-background-color: #f7f7f7;
+pre code {
+   display: block; padding: 0.5em;
 }
+
 code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
+  font-size: 92%;
+  border: 1px solid #ccc;
 }
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
 
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
 </style>
-
 
 
 
 </head>
 
 <body>
-
-
-
-
-<h1 class="title toc-ignore">Variance Component Estimation in Multistage Sampling</h1>
-<h4 class="author">Richard Valliant, Jill A. Dever, and Frauke Kreuter</h4>
-<h4 class="date">2020-08-03</h4>
-
-
-
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   TeX: { equationNumbers: { autoNumber: "AMS" } }
 });
 </script>
-<p>To allocate a sample among different stages of sampling, the contributions of the different stages to the variance of an estimator must be considered. These components of variance generally depend on the analysis variable and also on the form of the estimator. This vignette covers some basic variance results for linear estimators in two-stage and three-stage sampling and how the components can be estimated with functions in <code>PracTools</code>. Technical background is in <span class="citation">Valliant, Dever, and Kreuter (2018)</span>, ch.9. First, the package must be loaded with</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(PracTools)</span></code></pre></div>
+
+<p>To allocate a sample among different stages of sampling, the contributions of the different stages to the variance of an estimator must be considered.  These components of variance generally depend on the analysis variable and also on the form of the estimator.  This vignette covers some basic variance results for linear estimators in two-stage and three-stage sampling and how the components can be estimated with functions in <code>PracTools</code>.  Technical background is in @VDK.2018, ch.9. First, the package must be loaded with </p>
+
+<pre><code class="r">library(PracTools)
+</code></pre>
+
 <p>Alternatively, <code>require(PracTools)</code> can be used.</p>
-<div id="two-stage-sampling" class="section level2">
+
 <h2>Two-stage Sampling</h2>
-<p>Consider a two-stage sample design in which the first-stage units are selected using <span class="math inline">\(\pi ps\)</span> sampling, i.e., with varying probabilities and without replacement. We will also refer to this as <em>ppswor</em> sampling. Elements are selected at the second stage via simple random sampling without replacement (<em>srswor</em>). Quite a bit of notation is needed, even in this fairly simple case:</p>
-<p><span class="math inline">\(\small U\)</span> = universe of PSUs</p>
-<p><span class="math inline">\(\small M\)</span> = number of PSUs in universe</p>
-<p><span class="math inline">\(\small U_{i}\)</span> = universe of elements in PSU <span class="math inline">\(\small i\)</span></p>
-<p><span class="math inline">\(\small N_{i}\)</span> = number of elements in the population for PSU <span class="math inline">\(\small i\)</span></p>
-<p><span class="math inline">\(\small N=\sum _{i\in U}N_{i}\)</span> is the total number of elements in the population</p>
-<p><span class="math inline">\(\small \pi_{i}\)</span> = selection probability of PSU <span class="math inline">\(\small i\)</span></p>
-<p><span class="math inline">\(\small \pi_{ij}\)</span> = joint selection probability of PSUs <span class="math inline">\(\small i\)</span> and <span class="math inline">\(\small j\)</span></p>
-<p><span class="math inline">\(\small m\)</span> = number of sample PSUs</p>
-<p><span class="math inline">\(\small n_{i}\)</span> = number of sample elements in PSU <span class="math inline">\(\small i\)</span></p>
-<p><span class="math inline">\(\small s\)</span> = set of sample PSUs</p>
-<p><span class="math inline">\(\small s_{i}\)</span> = set of sample elements in PSU <span class="math inline">\(\small i\)</span></p>
-<p><span class="math inline">\(\small y_{k}\)</span> = analysis variable for element <span class="math inline">\(\small k\)</span> in PSU <span class="math inline">\(\small i\)</span> (subscript <span class="math inline">\(\small i\)</span> is implied)</p>
-<p><span class="math inline">\(\small \bar{y}_{U}\)</span> = mean per element in the population</p>
-<p><span class="math inline">\(\small \bar{y}_{Ui}\)</span> = mean per element in the population in PSU <span class="math inline">\(\small i\)</span></p>
-<p>The <span class="math inline">\(\small \pi\)</span>-estimator of the population total, <span class="math inline">\(\small t_{U} =\sum _{i\in U}\sum _{k\in U_{i} }y_{k}\)</span>, of an analysis variable <span class="math inline">\(\small y\)</span> is</p>
-<p><span class="math display">\[\small \hat{t}_{\pi } =\sum _{i\in s}\frac{\hat{t}_{i} }{\pi _{i} }\]</span></p>
-<p>where <span class="math inline">\(\small \hat{t}_{i} =\left({N_{i}/ n_{i} } \right)\sum _{k\in s_{i} }y_{k}\)</span>, which is the estimate of the total for PSU <span class="math inline">\(\small i\)</span> with a simple random sample. The design variance of the estimated total can be written as the sum of two components: <span class="math display">\[\begin{equation} \label{eq:pivar}
-\small {V}\left(\hat{t}_{\pi } \right)=\sum _{i\in U}\sum _{j\in U}\left(\pi _{ij} -\pi _{i} \pi _{j} \right)\frac{t_{i} }{\pi _{i} } \frac{t_{j} }{\pi _{j} }   +\sum _{i\in U}\frac{N_{i} ^{2} }{\pi _{i} n_{i} } \left(1-\frac{n_{i} }{N_{i} } \right)S_{U2i}^{2}
-\end{equation}\]</span> where</p>
-<p><span class="math display">\[\small S_{U2i}^{2} = \sum_{k\in U_{i} }\left(y_{k} -\bar{y}_{Ui} \right)^{2}  / \left(N_{i} -1\right) \]</span></p>
-<p>is the unit variance of <span class="math inline">\(\small y\)</span> among the elements in PSU <span class="math inline">\(\small i\)</span>.</p>
-<p>Formula <span class="math inline">\(\small \eqref{eq:pivar}\)</span> is difficult or impossible to use for sample size computations because the number of PSUs in the sample is not exposed. Another is to analyze <em>srswor</em> sampling of PSUs and SSUs as in Example 1 below. Determining sample sizes this way does not mean that you are necessarily locked into selecting PSUs and elements within PSUs via <em>srswor</em> or <em>srswr</em>. Basing sample sizes on a design that is less complicated than the one that will actually be used is a common approach, although it can be deceptive for some analysis variables.</p>
-<div id="special-case-srswor-at-first-and-second-stages" class="section level3">
+
+<p>Consider a two-stage sample design in which the first-stage units are selected using \(\pi ps\) sampling, i.e., with varying probabilities and without replacement.  We will also refer to this as <em>ppswor</em> sampling. Elements are selected at the second stage via simple random sampling without replacement (<em>srswor</em>).  Quite a bit of notation is needed, even in this fairly simple case:</p>
+
+<p>\(\small U\) = universe of PSUs</p>
+
+<p>\(\small M\) = number of PSUs in universe</p>
+
+<p>\(\small U_{i}\) = universe of elements in PSU \(\small i\)</p>
+
+<p>\(\small N_{i}\) = number of elements in the population for PSU \(\small i\)</p>
+
+<p>\(\small N=\sum _{i\in U}N_{i}\) is the total number of elements in the population </p>
+
+<p>\(\small \pi_{i}\) = selection probability of PSU \(\small i\)</p>
+
+<p>\(\small \pi_{ij}\) = joint selection probability of PSUs \(\small i\) and \(\small j\)</p>
+
+<p>\(\small m\) = number of sample PSUs</p>
+
+<p>\(\small n_{i}\) = number of sample elements in PSU \(\small i\)</p>
+
+<p>\(\small s\) = set of sample PSUs</p>
+
+<p>\(\small s_{i}\) = set of sample elements in PSU \(\small i\)</p>
+
+<p>\(\small y_{k}\) = analysis variable for element \(\small k\) in PSU \(\small i\) (subscript \(\small i\) is implied)</p>
+
+<p>\(\small \bar{y}_{U}\) = mean per element in the population</p>
+
+<p>\(\small \bar{y}_{Ui}\) = mean per element in the population in PSU \(\small i\)</p>
+
+<p>The \(\small \pi\)-estimator of the population total, \(\small t_{U} =\sum _{i\in U}\sum _{k\in U_{i} }y_{k}\), of an analysis variable \(\small y\) is</p>
+
+<p>\[\small \hat{t}_{\pi } =\sum _{i\in s}\frac{\hat{t}_{i} }{\pi _{i} }\]</p>
+
+<p>where \(\small \hat{t}_{i} =\left({N_{i}/ n_{i} } \right)\sum _{k\in s_{i} }y_{k}\), which is the estimate of the total for PSU \(\small i\) with a simple random sample.  The design variance of the estimated total can be written as the sum of two components:
+\begin{equation} \label{eq:pivar}
+\small {V}\left(\hat{t}<em>{\pi } \right)=\sum _{i\in U}\sum _{j\in U}\left(\pi _{ij} -\pi _{i} \pi _{j} \right)\frac{t</em>{i} }{\pi <em>{i} } \frac{t</em>{j} }{\pi <em>{j} }   +\sum _{i\in U}\frac{N</em>{i} <sup>{2}</sup> }{\pi <em>{i} n</em>{i} } \left(1-\frac{n<em>{i} }{N</em>{i} } \right)S_{U2i}<sup>{2}</sup>
+\end{equation}
+where</p>
+
+<p>\[\small S_{U2i}^{2} = \sum_{k\in U_{i} }\left(y_{k} -\bar{y}_{Ui} \right)^{2}  / \left(N_{i} -1\right) \]</p>
+
+<p>\noindent is the unit variance of \(\small y\) among the elements in PSU \(\small i\).</p>
+
+<p>Formula \(\small \eqref{eq:pivar}\) is difficult or impossible to use for sample size computations because the number of PSUs in the sample is not exposed.  Another is to analyze <em>srswor</em> sampling of PSUs and SSUs as in Example 1 below.  Determining sample sizes this way does not mean that you are necessarily locked into selecting PSUs and elements within PSUs via <em>srswor</em> or <em>srswr</em>. Basing sample sizes on a design that is less complicated than the one that will actually be used is a common approach, although it can be deceptive for some analysis variables.</p>
+
 <h3>Special case: <em>srswor</em> at first and second stages</h3>
-<p>Suppose the first stage is an <em>srswor</em> of <span class="math inline">\(\small m\)</span> out of <span class="math inline">\(\small M\)</span> PSUs and the second stage is a sample of <span class="math inline">\(\small n_{i}\)</span> elements selected by <em>srswor</em> from the population of <span class="math inline">\(\small N_{i}\)</span>. The <span class="math inline">\(\small \pi\)</span>-estimator is</p>
-<p><span class="math display">\[ 
+
+<p>Suppose the first stage is an <em>srswor</em> of \(\small m\) out of \(\small M\) PSUs and the second stage is a sample of \(\small n_{i}\) elements selected by <em>srswor</em> from the population of \(\small N_{i}\).  The \(\small \pi\)-estimator is</p>
+
+<p>\[ 
 \small \hat{t}_{\pi} = \frac{M}{m} \sum_{i \in s} \frac{N_{i} }{n_{i} } \sum_{k \in s_{i} } y_{k} 
-\]</span></p>
-<p>Its variance is equal to <span class="math display">\[\begin{equation} \label{srs.relvar.gen}
-   \small V\left(\hat{t}_{\pi } \right)=\frac{M^{2} }{m} \frac{M-m}{M} S_{U1}^{2} +\frac{M}{m} \sum _{i\in U}\frac{N_{i}^{2} }{n_{i} } \frac{N_{i} -n_{i} }{N_{i} } S_{U2i}^{2}
-\end{equation}\]</span> where <span class="math inline">\(\small S_{U1}^{2} =\frac{\sum _{i\in U}\left(t_{i} -\bar{t}_{U} \right)^{2}}{M-1}\)</span> with <span class="math inline">\(t_{i}\)</span> being the population total of <span class="math inline">\(\small y\)</span> in PSU <span class="math inline">\(\small i\)</span> and <span class="math inline">\(\small \bar{t}_{U} ={\sum _{i\in U}t_{i} / M}\)</span> is the mean total per PSU.</p>
-<p>If <span class="math inline">\(\bar{n}\)</span> elements are selected in each PSU and the sampling fractions of PSUs and elements within PSUs are all small, then the relvariance can be written as <span class="math display">\[\begin{equation} \label{eq:relvarsrs}
-  \small \frac{V(\hat{t}_{\pi})}{t_{U}^2} = \frac{B^2}{m} + \frac{W^2}{m\bar{n}}
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(\small B^{2} ={S_{U1}^{2} / \bar{t}_{U}^{2} = M^{2}S_{U1}^2/t_{U}^2 }\)</span> is the unit relvariance among PSU totals and <span class="math inline">\(\small W^{2} = M \sum _{i\in U}N_{i}^{2} S_{U2i}^{2}/t_{U}^2\)</span>. The term <span class="math inline">\(\small B^{2}\)</span> is called the “between (PSU) component” while <span class="math inline">\(\small W^{2}\)</span> is the “within component”. Expression <span class="math inline">\(\small \eqref{eq:relvarsrs}\)</span> is the form used in the R function, <code>BW2stageSRS</code>. Textbooks often list a specialized form of <span class="math inline">\(\small \eqref{eq:relvarsrs}\)</span> that requires that all PSUs have the same size, <span class="math inline">\(\small N_i \equiv \bar{N}\)</span>, and that <span class="math inline">\(\small \bar{n}\)</span> elements are selected in each. In that case, the second-stage sampling fraction is <span class="math inline">\({\bar{n} / \bar{N}}\)</span>. This implies that the sample is self-weighting: <span class="math inline">\(\small \pi _{i} \pi _{k\left|i\right. } = m\bar{n}/M\bar{N}\)</span>. The relvariance based on <span class="math inline">\(\small \eqref{srs.relvar.gen}\)</span> then simplifies to the less general form <span class="math display">\[\begin{equation} \notag
-   \small \frac{V(\hat{t}_{\pi})}{t_{U}^2} = \frac{1}{m} \frac{M-m}{M} B^{2} +\frac{1}{m\bar{n}} \frac{\bar{N}-\bar{n}}{\bar{N}} W^{2} \notag
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(\small W^{2} =\frac{1}{M\bar{y}_{U}^{2} } \sum _{i\in U}S_{U2i}^{2}\)</span>.</p>
-<p>Assuming that <span class="math inline">\(\small \bar{n}\)</span> elements are selected in each sample PSU, and <span class="math inline">\(\small m/M\)</span> and <span class="math inline">\(\small \bar{n}/N_{i}\)</span> are both small, the more general form of the relvariance in <span class="math inline">\(\small \eqref{eq:relvarsrs}\)</span> can also be written in terms of a measure of homogeneity <span class="math inline">\(\small \delta\)</span> as follows:</p>
-<p><span class="math display">\[\begin{equation} \label{eq:deltavar.2st}
-   \small \frac{V\left(\hat{t}_{\pi } \right)}{t_{U}^{2} } \doteq \frac{\tilde{V}}{m\bar{n}} k \left[1+\delta \left(\bar{n}-1\right)\right]
-\end{equation}\]</span> where <span class="math inline">\(\small \tilde{V}= S_{U}^2/\bar{y}_{U}^{2}\)</span>, <span class="math inline">\(\small k=(B^2 + W^2)/\tilde{V}\)</span>, and</p>
-<p><span class="math display">\[\begin{equation} \label{eq:delta}
-   \small \delta = \frac{B^{2} }{B^{2} +W^{2} }. 
-\end{equation}\]</span> With some effort, it can be shown that when <span class="math inline">\(\small N_{i}=\bar{N}\)</span> and both <span class="math inline">\(\small M\)</span> and <span class="math inline">\(\small \bar{N}\)</span> are large,</p>
-<p><span class="math display">\[\begin{equation}
-  \small \frac{S_{U}^{2} }{\bar{y}_{U}^{2} }  = {\frac{1}{\bar{y}_{U}^{2} } \frac{\sum _{i\in U}\sum _{k\in U_{i}}\left(y_{k} -\bar{y}_{U} \right)^{2} }{\left(N-1\right)} } \notag \\
-  \small {\doteq B^{2} +W^{2} } \notag
-\end{equation}\]</span> i.e., the population relvariance can be written as the sum of between and within relvariances. If <span class="math inline">\(\small k=1\)</span>, <span class="math inline">\(\small \eqref{eq:deltavar.2st}\)</span> equals the expression found in many textbooks. However, when the population count of elements per cluster varies, <span class="math inline">\(\small k\)</span> may be far from 1, as will be illustrated in an example below. In those cases, <span class="math inline">\(\small \eqref{eq:deltavar.2st}\)</span> with an estimate of the actual <span class="math inline">\(\small k\)</span> should be used for determining sample sizes and computing advance estimates of coefficients of variation.</p>
-<p>Expressions <span class="math inline">\(\small \eqref{eq:relvarsrs}\)</span> and <span class="math inline">\(\small \eqref{eq:deltavar.2st}\)</span> are useful for sample size calculation since the number of sample PSUs and sample units per PSU are explicit in the formula. Equation <span class="math inline">\(\small \eqref{eq:deltavar.2st}\)</span> also connects the variance of the estimated total to the variance that would be obtained from a simple random sample since <span class="math inline">\(\small \tilde{V}/m\bar{n}\)</span> is the relvariance of the estimated total in an <em>srswor</em> of size <span class="math inline">\(\small m\bar{n}\)</span> when the sampling fraction is small. The product <span class="math inline">\(\small k[1 + \delta(\bar{n}-1)]\)</span> is a type of design effect. When <span class="math inline">\(\small k=1\)</span>, the term <span class="math inline">\(\small 1+\delta \left(\bar{n}-1\right)\)</span> is the approximate design effect found in many textbooks.</p>
-<p>The next example uses the <code>MDarea.pop</code> from <code>PracTools</code>. This dataset is based on the U.S. Census counts from the year 2000 for Anne Arundel County in the US state of Maryland. The geographic divisions used in this dataset are called tracts and block groups. Tracts are constructed by the US Census Bureau to have a desired population size of 4,000 people. Block groups (BGs) are smaller with a target size of 1,500 people. Counts of persons in the dataset are the same for most tracts and block groups as in the 2000 Census.</p>
+\]</p>
+
+<p>\noindent Its variance is equal to
+\begin{equation} \label{srs.relvar.gen}
+   \small V\left(\hat{t}<em>{\pi } \right)=\frac{M<sup>{2}</sup> }{m} \frac{M-m}{M} S</em>{U1}<sup>{2}</sup> +\frac{M}{m} \sum <em>{i\in U}\frac{N</em>{i}<sup>{2}</sup> }{n<em>{i} } \frac{N</em>{i} -n<em>{i} }{N</em>{i} } S<em>{U2i}<sup>{2}</sup>
+\end{equation}
+where $\small S</em>{U1}<sup>{2}</sup> =\frac{\sum <em>{i\in U}\left(t</em>{i} -\bar{t}<em>{U} \right)<sup>{2}}{M-1}$</sup> with $t</em>{i}$ being the population total of \(\small y\) in PSU \(\small i\) and \(\small \bar{t}_{U} ={\sum _{i\in U}t_{i}  /  M}\) is the mean total per PSU. </p>
+
+<p>If \(\bar{n}\) elements are selected in each PSU and the sampling fractions of PSUs and elements within PSUs are all small, then the relvariance can be written as
+\begin{equation} \label{eq:relvarsrs}
+  \small \frac{V(\hat{t}<em>{\pi})}{t</em>{U}<sup>2}</sup> = \frac{B<sup>2}{m}</sup> + \frac{W<sup>2}{m\bar{n}}</sup>
+\end{equation}</p>
+
+<p>where \(\small B^{2} ={S_{U1}^{2} / \bar{t}_{U}^{2} = M^{2}S_{U1}^2/t_{U}^2 }\) is the unit relvariance among PSU totals and \(\small W^{2} = M \sum _{i\in U}N_{i}^{2} S_{U2i}^{2}/t_{U}^2\). The term \(\small B^{2}\) is called the &ldquo;between (PSU) component&rdquo; while \(\small W^{2}\) is the &ldquo;within component&rdquo;.  Expression \(\small \eqref{eq:relvarsrs}\) is the form used in the R function, <code>BW2stageSRS</code>.  Textbooks often list a specialized form of \(\small \eqref{eq:relvarsrs}\) that requires that all PSUs have the same size, \(\small N_i \equiv \bar{N}\), and that \(\small \bar{n}\) elements are selected in each.  In that case, the second-stage sampling fraction is \({\bar{n} / \bar{N}}\).  This implies that the sample is self-weighting: \(\small \pi _{i} \pi _{k\left|i\right. } = m\bar{n}/M\bar{N}\).  The relvariance based on \(\small \eqref{srs.relvar.gen}\) then simplifies to the less general form
+\begin{equation} \notag
+   \small \frac{V(\hat{t}<em>{\pi})}{t</em>{U}<sup>2}</sup> = \frac{1}{m} \frac{M-m}{M} B<sup>{2}</sup> +\frac{1}{m\bar{n}} \frac{\bar{N}-\bar{n}}{\bar{N}} W<sup>{2}</sup> \notag
+\end{equation}</p>
+
+<p>where \(\small W^{2} =\frac{1}{M\bar{y}_{U}^{2} } \sum _{i\in U}S_{U2i}^{2}\).</p>
+
+<p>Assuming that \(\small \bar{n}\) elements are selected in each sample PSU, and \(\small m/M\) and \(\small \bar{n}/N_{i}\) are both small, the more general form of the relvariance in \(\small \eqref{eq:relvarsrs}\) can also be written in terms of a measure of homogeneity \(\small \delta\) as follows:</p>
+
+<p>\begin{equation} \label{eq:deltavar.2st}
+   \small \frac{V\left(\hat{t}<em>{\pi } \right)}{t</em>{U}<sup>{2}</sup> } \doteq \frac{\tilde{V}}{m\bar{n}} k \left[1+\delta \left(\bar{n}-1\right)\right]
+\end{equation}
+where \(\small \tilde{V}= S_{U}^2/\bar{y}_{U}^{2}\), \(\small k=(B^2 + W^2)/\tilde{V}\), and</p>
+
+<p>\begin{equation} \label{eq:delta}
+   \small \delta = \frac{B<sup>{2}</sup> }{B<sup>{2}</sup> +W<sup>{2}</sup> }. 
+\end{equation}
+With some effort, it can be shown that when \(\small N_{i}=\bar{N}\) and both \(\small M\) and \(\small \bar{N}\) are large,</p>
+
+<p>\begin{equation}
+  \small \frac{S<em>{U}<sup>{2}</sup> }{\bar{y}</em>{U}<sup>{2}</sup> }  = {\frac{1}{\bar{y}<em>{U}<sup>{2}</sup> } \frac{\sum _{i\in U}\sum _{k\in U</em>{i}}\left(y<em>{k} -\bar{y}</em>{U} \right)<sup>{2}</sup> }{\left(N-1\right)} } \notag \
+  \small {\doteq B<sup>{2}</sup> +W<sup>{2}</sup> } \notag
+\end{equation}
+i.e., the population relvariance can be written as the sum of between and within relvariances.  If \(\small k=1\), \(\small \eqref{eq:deltavar.2st}\) equals the expression found in many textbooks. However, when the population count of elements per cluster varies, \(\small k\) may be far from 1, as will be illustrated in an example below. In those cases, \(\small \eqref{eq:deltavar.2st}\) with an estimate of the actual \(\small k\) should be used for determining sample sizes and computing advance estimates of coefficients of variation.</p>
+
+<p>Expressions \(\small \eqref{eq:relvarsrs}\) and \(\small \eqref{eq:deltavar.2st}\) are useful for sample size calculation since the number of sample PSUs and sample units per PSU are explicit in the formula.  Equation \(\small \eqref{eq:deltavar.2st}\) also connects the variance of the estimated total to the variance that would be obtained from a simple random sample since \(\small \tilde{V}/m\bar{n}\) is the relvariance of the estimated total in an <em>srswor</em> of size \(\small m\bar{n}\) when the sampling fraction is small. The product \(\small k[1 + \delta(\bar{n}-1)]\) is a type of design effect. When \(\small k=1\), the term \(\small 1+\delta \left(\bar{n}-1\right)\) is the approximate design effect found in many textbooks.</p>
+
+<p>The next example uses the <code>MDarea.pop</code> from <code>PracTools</code>. This dataset is based on the U.S. Census counts from the year 2000 for Anne Arundel County in the US state of Maryland. The geographic divisions used in this dataset are called tracts and block groups.  Tracts are constructed by the US Census Bureau to have a desired population size of 4,000 people.  Block groups (BGs) are smaller with a target size of 1,500 people.  Counts of persons in the dataset are the same for most tracts and block groups as in the 2000 Census.</p>
+
 <ul>
-<li><strong>Example. Between and within variance components in <em>srs/srs</em> design</strong> The R function <code>BW2stageSRS</code> will calculate the unit relvariance of a population, <span class="math inline">\(\small B^{2} + W^{2}\)</span> for comparison, the ratio <span class="math inline">\(\small k=(B^2+W^2)/(S_{U}^{2}/\bar{y}_{U}^2)\)</span>, and the full version of <span class="math inline">\(\small \delta\)</span> in <span class="math inline">\(\small \eqref{eq:delta}\)</span>. The function assumes that the entire sampling frame is an input. The full R code for this example is in the file <code>Example 9.2.R</code>, available at <a href="https://umd.app.box.com/v/PracTools2ndEdition">bookfiles</a>. We first compute the results using the <code>PSU</code> and <code>SSU</code> variables as clusters. These fields are created so that all <code>PSU</code>s have the same size; likewise, all <code>SSU</code>s have the same size. For the variable <code>y1</code> in the Maryland population, the code is</li>
+<li><strong>Example. Between and within variance components in <em>srs/srs</em> design</strong>
+The R function <code>BW2stageSRS</code> will calculate the unit relvariance of a population, \(\small B^{2} + W^{2}\) for comparison, the ratio \(\small k=(B^2+W^2)/(S_{U}^{2}/\bar{y}_{U}^2)\), and the full version of \(\small \delta\) in \(\small \eqref{eq:delta}\).  The function assumes that the entire sampling frame is an input.  The full R code for this example is in the file <code>Example 9.2.R</code>, available at <a href="https://umd.app.box.com/v/PracTools2ndEdition">bookfiles</a>.  We first compute the results using the <code>PSU</code> and <code>SSU</code> variables as clusters. These fields are created so that all <code>PSU</code>s have the same size; likewise, all <code>SSU</code>s have the same size.  For the variable <code>y1</code> in the Maryland population, the code is</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a> <span class="kw">require</span>(PracTools)</span>
-<span id="cb2-2"><a href="#cb2-2"></a> <span class="kw">data</span>(MDarea.pop)</span>
-<span id="cb2-3"><a href="#cb2-3"></a> <span class="kw">BW2stageSRS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>PSU)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; 0.007859299 1.455263645 1.462741186 1.463122944 1.000260988 0.005371592</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a> <span class="kw">BW2stageSRS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>SSU)</span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  0.03653178  1.42770886  1.46274119  1.46424065  1.00102510  0.02494930</span></span></code></pre></div>
-<p>The values of <span class="math inline">\(\small \delta\)</span> are 0.005 for <code>PSU</code> and 0.025 for <code>SSU</code>. Next, to illustrate the dramatic effect that varying sizes of clusters can have, we compute the same statistics as above using tracts and block groups (BGs) within tracts as clusters. These vary substantially in the number of persons in each cluster. A new variable called <code>trtBG</code> is computed since the values of the variable, <code>BLKGROUP</code>, are nested within each tract:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>   trtBG &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">*</span>MDarea.pop<span class="op">$</span>TRACT <span class="op">+</span><span class="st"> </span>MDarea.pop<span class="op">$</span>BLKGROUP</span>
-<span id="cb3-2"><a href="#cb3-2"></a>   <span class="kw">BW2stageSRS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>TRACT)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt;   0.2604683   1.8390286   1.4627412   2.0994969   1.4353167   0.1240623</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>   <span class="kw">BW2stageSRS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">psuID=</span>trtBG)</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;   0.3488622   1.9498600   1.4627412   2.2987221   1.5715167   0.1517635</span></span></code></pre></div>
-<p>The value of <span class="math inline">\(\small \delta\)</span> is 0.124 <code>TRACT</code>s are clusters and 0.152 when <code>trtBG</code> defines clusters. The measures of homogeneity increase substantially when tracts or BGs are clusters compared to the <code>PSU</code> and <code>SSU</code> results. This is entirely due to the increase in <span class="math inline">\(\small B^{2}\)</span> when units with highly variable sizes are used and an <em>srs</em> is selected. For example, <span class="math inline">\(\small B^{2} =0.0079\)</span> for <code>y1</code> when <code>PSU</code> is a cluster but is 0.2605 when <code>TRACT</code> is a cluster.</p>
-</div>
-<div id="more-general-two-stage-designs" class="section level3">
+
+<pre><code class="r"> require(PracTools)
+ data(MDarea.pop)
+ BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$PSU)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt; 0.007859299 1.455263645 1.462741186 1.463122944 1.000260988 0.005371592
+ BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$SSU)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt;  0.03653178  1.42770886  1.46274119  1.46424065  1.00102510  0.02494930
+</code></pre>
+
+<p>The values of \(\small \delta\) are 0.005 for <code>PSU</code> and 0.025 for <code>SSU</code>.  Next, to illustrate the dramatic effect that varying sizes of clusters can have, we compute the same statistics as above using tracts and block groups (BGs) within tracts as clusters. These vary substantially in the number of persons in each cluster. A new variable called <code>trtBG</code> is computed since the values of the variable, <code>BLKGROUP</code>, are nested within each tract:</p>
+
+<pre><code class="r">   trtBG &lt;- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
+   BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$TRACT)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt;   0.2604683   1.8390286   1.4627412   2.0994969   1.4353167   0.1240623
+   BW2stageSRS(MDarea.pop$y1, psuID=trtBG)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt;   0.3488622   1.9498600   1.4627412   2.2987221   1.5715167   0.1517635
+</code></pre>
+
+<p>The value of \(\small \delta\) is 0.124 <code>TRACT</code>s are clusters and 0.152 when <code>trtBG</code> defines clusters. The measures of homogeneity increase substantially when tracts or BGs are clusters compared to the <code>PSU</code> and <code>SSU</code> results. This is entirely due to the increase in \(\small B^{2}\) when units with highly variable sizes are used and an <em>srs</em> is selected.  For example, \(\small B^{2} =0.0079\) for <code>y1</code> when <code>PSU</code> is a cluster but is 0.2605 when <code>TRACT</code> is a cluster. </p>
+
 <h3>More General Two-stage Designs</h3>
-<p>Variances of estimators in two-stage designs more complicated than simple random sampling at each stage can be written as a sum of components. However, these have limited usefulness in determining sample sizes for the same reason that <span class="math inline">\(\small \eqref{eq:pivar}\)</span> is not. A more convenient formulation is the case where PSUs are selected with varying probabilities but with replacement, and the sample within each PSU is selected by <em>srswor</em>. With-replacement designs may not often be used in practice but have simple variance formulae. The <em>pwr</em>-estimator of a total <span class="citation">(Särndal, Swensson, and Wretman 1992)</span> is <span class="math display">\[
+
+<p>Variances of estimators in two-stage designs more complicated than simple random sampling at each stage can be written as a sum of components.  However, these have limited usefulness in determining sample sizes for the same reason that \(\small \eqref{eq:pivar}\) is not. A more convenient formulation is the case where PSUs are selected with varying probabilities but with replacement, and the sample within each PSU is selected by <em>srswor</em>.  With-replacement designs may not often be used in practice but have simple variance formulae.  The <em>pwr</em>-estimator of a total [@SSW.92] is
+\[
 \small \hat{t}_{pwr} =\frac{1}{m} \sum _{i\in s}\frac{\hat{t}_{i} }{p_{i} }
-\]</span> where <span class="math inline">\(\small \hat{t}_{i} =\frac{N_{i} }{n_{i} } \sum _{k\in s_{i} }y_{k}\)</span> is the estimated total for PSU <span class="math inline">\(\small i\)</span> from a simple random sample and <span class="math inline">\(\small p_{i}\)</span> is the one-draw selection probability of PSU <span class="math inline">\(\small i\)</span>. The variance of <span class="math inline">\(\small \hat{t}_{pwr}\)</span> is</p>
-<p><span class="math display">\[\begin{equation} \label{eq:v2st}
-   \small V\left(\hat{t}_{pwr} \right)=\frac{1}{m} \sum _{i\in U}p_{i} \left(\frac{t_{i} }{p_{i} } -t_{U} \right)^{2}  +\sum _{i\in U}\frac{N_{i} ^{2} }{mp_{i} n_{i} } \left(1-\frac{n_{i} }{N_{i} } \right)S_{U2i}^{2}.
-\end{equation}\]</span></p>
-<p>Making the assumption that <span class="math inline">\(\small \bar{n}\)</span> elements are selected in each PSU, the variance reduces to <span class="math display">\[
+\]
+where \(\small \hat{t}_{i} =\frac{N_{i} }{n_{i} } \sum _{k\in s_{i} }y_{k}\) is the estimated total for PSU \(\small i\) from a simple random sample and \(\small p_{i}\) is the one-draw selection probability of PSU \(\small i\).  The variance of \(\small \hat{t}_{pwr}\) is</p>
+
+<p>\begin{equation} \label{eq:v2st}
+   \small V\left(\hat{t}<em>{pwr} \right)=\frac{1}{m} \sum _{i\in U}p</em>{i} \left(\frac{t<em>{i} }{p</em>{i} } -t<em>{U} \right)<sup>{2}</sup>  +\sum _{i\in U}\frac{N</em>{i} <sup>{2}</sup> }{mp<em>{i} n</em>{i} } \left(1-\frac{n<em>{i} }{N</em>{i} } \right)S_{U2i}<sup>{2}.</sup>
+\end{equation}</p>
+
+<p>\noindent Making the assumption that \(\small \bar{n}\) elements are selected in each PSU, the variance reduces to
+\[
 \small V\left(\hat{t}_{pwr} \right)=\frac{S_{U1\left(pwr\right)}^{2} }{m} +\frac{1}{m\bar{n}} \sum _{i\in U}\left(1-\frac{\bar{n}}{N_{i} } \right)\frac{N_{i}^{2} S_{U2i}^{2} }{p_{i} }
-\]</span> where, in this case, <span class="math inline">\(S_{U1\left(pwr\right)}^{2} =\sum _{i\in U}p_{i} \left(\frac{t_{i} }{p_{i} } -t_{U} \right)^{2}\)</span>. Dividing this by <span class="math inline">\(t_{U}^{2}\)</span> and assuming that the within-PSU sampling fraction, <span class="math inline">\(\bar{n} / N_{i}\)</span>, is negligible, we obtain the relvariance of <span class="math inline">\(\hat{t}_{pwr}\)</span> as, approximately, <span class="math display">\[\begin{equation} \label{eq:vpwr.2st}
-   \small \frac{V\left(\hat{t}_{pwr} \right)}{t_{U}^{2} } \doteq \frac{B^{2} }{m} +\frac{W^{2} }{m\bar{n}} =\frac{\tilde{V}}{m\bar{n}} k \left[1+\delta \left(\bar{n}-1\right)\right]
-\end{equation}\]</span></p>
-<p>with <span class="math inline">\(\small \tilde{V}=S_{U}^2/\bar{y}_{U}^2\)</span>, <span class="math inline">\(\small k=(B^2 + W^2)/\tilde{V}\)</span>, <span class="math display">\[\begin{equation} \label{eq:B2.2st.pwr}
-   \small B^{2} =\frac{S_{U1\left(pwr\right)}^{2} }{t_{U}^{2} } ,
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation} \label{eq:W2.2st.pwr}
-   \small W^{2} =\frac{1}{t_{U}^{2} } \sum _{i\in U}N_{i}^{2} \frac{S_{U2i}^{2} }{p_{i} },
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation} \label{eq:delta.2st.pwr}
-   \small \delta =B^{2} \left/ \left(B^{2} +W^{2} \right) \right. 
-\end{equation}\]</span></p>
-<p>Expression <span class="math inline">\(\small \eqref{eq:vpwr.2st}\)</span> has the same form as <span class="math inline">\(\small \eqref{eq:deltavar.2st}\)</span> but with different definitions of <span class="math inline">\(\small B^2\)</span> and <span class="math inline">\(\small W^2\)</span>. Expression <span class="math inline">\(\small \eqref{eq:vpwr.2st}\)</span> also has the interpretation of an <em>srs</em> variance of an unclustered variance, <span class="math inline">\(\small \tilde{V}/m\bar{n}\)</span>, times a design effect, <span class="math inline">\(\small k[1 + \delta(\bar{n}-1)]\)</span>, in the same way that <span class="math inline">\(\small \eqref{eq:deltavar.2st}\)</span> did.</p>
+\]
+where, in this case, \(S_{U1\left(pwr\right)}^{2} =\sum _{i\in U}p_{i} \left(\frac{t_{i} }{p_{i} } -t_{U} \right)^{2}\).  Dividing this by \(t_{U}^{2}\) and assuming that the within-PSU sampling fraction, \(\bar{n} / N_{i}\), is negligible, we obtain the relvariance of \(\hat{t}_{pwr}\) as, approximately,
+\begin{equation} \label{eq:vpwr.2st}
+   \small \frac{V\left(\hat{t}<em>{pwr} \right)}{t</em>{U}<sup>{2}</sup> } \doteq \frac{B<sup>{2}</sup> }{m} +\frac{W<sup>{2}</sup> }{m\bar{n}} =\frac{\tilde{V}}{m\bar{n}} k \left[1+\delta \left(\bar{n}-1\right)\right]
+\end{equation}</p>
+
+<p>\noindent with \(\small \tilde{V}=S_{U}^2/\bar{y}_{U}^2\), \(\small k=(B^2 + W^2)/\tilde{V}\),
+\begin{equation} \label{eq:B2.2st.pwr}
+   \small B<sup>{2}</sup> =\frac{S<em>{U1\left(pwr\right)}<sup>{2}</sup> }{t</em>{U}<sup>{2}</sup> } ,
+\end{equation}</p>
+
+<p>\begin{equation} \label{eq:W2.2st.pwr}
+   \small W<sup>{2}</sup> =\frac{1}{t<em>{U}<sup>{2}</sup> } \sum _{i\in U}N</em>{i}<sup>{2}</sup> \frac{S<em>{U2i}<sup>{2}</sup> }{p</em>{i} },
+\end{equation}</p>
+
+<p>\begin{equation} \label{eq:delta.2st.pwr}
+   \small \delta =B<sup>{2}</sup> \left/ \left(B<sup>{2}</sup> +W<sup>{2}</sup> \right) \right. 
+\end{equation}</p>
+
+<p>Expression \(\small \eqref{eq:vpwr.2st}\) has the same form as \(\small \eqref{eq:deltavar.2st}\) but with different definitions of \(\small B^2\) and \(\small W^2\). Expression \(\small \eqref{eq:vpwr.2st}\) also has the interpretation of an <em>srs</em> variance of an unclustered variance, \(\small \tilde{V}/m\bar{n}\), times a design effect, \(\small k[1 + \delta(\bar{n}-1)]\), in the same way that \(\small \eqref{eq:deltavar.2st}\) did.</p>
+
 <ul>
-<li><strong>Example. Between and within variance components in <em>ppswr/srs</em> design</strong> This example repeats the calculations in the example above for the variables in the Maryland area population. Assume that clusters will be selected proportional to the count of persons in each cluster. The function <code>BW2stagePPS</code> computes the population values of <span class="math inline">\(\small B^{2}\)</span>, <span class="math inline">\(\small W^{2}\)</span>, and <span class="math inline">\(\small \delta\)</span> shown in <span class="math inline">\(\small \eqref{eq:B2.2st.pwr}\)</span>, <span class="math inline">\(\small \eqref{eq:W2.2st.pwr}\)</span>, and <span class="math inline">\(\small \eqref{eq:delta.2st.pwr}\)</span> which are appropriate for <em>ppswr</em> sampling of clusters. The code for <code>y1</code> using <code>PSU</code> or <code>SSU</code> as clusters is shown below. The variables, <code>pp.PSU</code> and <code>pp.SSU</code>, hold the one-draw probabilities <span class="math inline">\(\small p_{i}\)</span> that appear in <span class="math inline">\(\small \eqref{eq:v2st}\)</span>:</li>
+<li><strong>Example. Between and within variance components in <em>ppswr/srs</em> design</strong>
+This example repeats the calculations in the example above for the variables in the Maryland area population.  Assume that clusters will be selected proportional to the count of persons in each cluster.  The function <code>BW2stagePPS</code> computes the population values of \(\small B^{2}\), \(\small W^{2}\), and \(\small \delta\) shown in \(\small \eqref{eq:B2.2st.pwr}\), \(\small \eqref{eq:W2.2st.pwr}\), and \(\small \eqref{eq:delta.2st.pwr}\) which are appropriate for <em>ppswr</em> sampling of clusters.  The code for <code>y1</code> using <code>PSU</code> or <code>SSU</code> as clusters is shown below.  The variables, <code>pp.PSU</code> and <code>pp.SSU</code>, hold the one-draw probabilities \(\small p_{i}\) that appear in \(\small \eqref{eq:v2st}\):</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a> pp.PSU &lt;-<span class="st"> </span><span class="kw">table</span>(MDarea.pop<span class="op">$</span>PSU) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>(MDarea.pop)</span>
-<span id="cb4-2"><a href="#cb4-2"></a> pp.SSU &lt;-<span class="st"> </span><span class="kw">table</span>(MDarea.pop<span class="op">$</span>SSU) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>(MDarea.pop)</span>
-<span id="cb4-3"><a href="#cb4-3"></a> <span class="kw">BW2stagePPS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">pp=</span>pp.PSU, <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>PSU)</span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; 0.007762335 1.455263403 1.462741186 1.463025738 1.000194534 0.005305672</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a> <span class="kw">BW2stagePPS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">pp=</span>pp.SSU, <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>SSU)</span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt;  0.03644120  1.42770995  1.46274119  1.46415115  1.00096392  0.02488896</span></span></code></pre></div>
-<p>The code for PSUs that are tracts and block groups is</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a> pp.trt &lt;-<span class="st"> </span><span class="kw">table</span>(MDarea.pop<span class="op">$</span>TRACT) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>(MDarea.pop)</span>
-<span id="cb5-2"><a href="#cb5-2"></a> pp.BG &lt;-<span class="st"> </span><span class="kw">table</span>(trtBG) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>(MDarea.pop)</span>
-<span id="cb5-3"><a href="#cb5-3"></a> <span class="kw">BW2stagePPS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">pp=</span>pp.trt, <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>TRACT)</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt; 0.009171403 1.453908596 1.462741186 1.463079999 1.000231629 0.006268559</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a> <span class="kw">BW2stagePPS</span>(MDarea.pop<span class="op">$</span>y1, <span class="dt">pp=</span>pp.BG, <span class="dt">psuID=</span>trtBG)</span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  0.01602891  1.44780622  1.46274119  1.46383513  1.00074787  0.01094994</span></span></code></pre></div>
-<p>The between term when clusters are defined by <code>PSU</code> is about the same as when clusters are selected by <em>srs</em> because <code>PSU</code>’s all have the same size. With PSUs being either tracts or block groups in the <em>ppswr/srswor</em> design, the between term is much smaller than the within, compared to the results in the <em>srs/srs</em> example. For example, with <code>y1</code> and <em>srs</em> sampling of tracts, <span class="math inline">\(\small B^2=0.2604\)</span> but for <em>pps</em> sampling of tracts <span class="math inline">\(\small B^2=0.0091\)</span>.</p>
-<p>When clusters are selected by <em>srs</em>, <span class="math inline">\(\small S_{U1}^{2}\)</span> is the variance of the cluster totals around the average cluster total. In contrast, with <em>pps</em> sampling of clusters, <span class="math inline">\(\small S_{U1\left(pwr\right)}^{2}\)</span> is the variance of the estimated population totals, <span class="math inline">\(\small t_{i} \left/ p_{i} \right.\)</span> around the population total, <span class="math inline">\(\small t_{U}\)</span>. When clusters are selected with probability proportional to <span class="math inline">\(\small N_{i}\)</span>, then <span class="math inline">\(\small t_{i} \left/ p_{i} \right. = N_{i} \bar{y}_{Ui}\)</span>. If these one-cluster estimates of the population total are fairly accurate, as they are here, the <span class="math inline">\(\small B^{2}\)</span> term can be quite small. This leads to much smaller values of <span class="math inline">\(\small \delta\)</span> in <em>pps</em> sampling of clusters. This implies that the negative effect of clustering on the variance is lessened for a design that selects clusters with <span class="math inline">\(\small pp(N_i)\)</span>. This kind of comparison explains most practitioners’ preference for <em>pps</em> sampling of clusters, especially when the clusters vary in population size.</p>
-</div>
-</div>
-<div id="general-three-stage-designs" class="section level2">
+
+<pre><code class="r"> pp.PSU &lt;- table(MDarea.pop$PSU) / nrow(MDarea.pop)
+ pp.SSU &lt;- table(MDarea.pop$SSU) / nrow(MDarea.pop)
+ BW2stagePPS(MDarea.pop$y1, pp=pp.PSU, psuID=MDarea.pop$PSU)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt; 0.007762335 1.455263403 1.462741186 1.463025738 1.000194534 0.005305672
+ BW2stagePPS(MDarea.pop$y1, pp=pp.SSU, psuID=MDarea.pop$SSU)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt;  0.03644120  1.42770995  1.46274119  1.46415115  1.00096392  0.02488896
+</code></pre>
+
+<p>The code for PSUs that are tracts and block groups is </p>
+
+<pre><code class="r"> pp.trt &lt;- table(MDarea.pop$TRACT) / nrow(MDarea.pop)
+ pp.BG &lt;- table(trtBG) / nrow(MDarea.pop)
+ BW2stagePPS(MDarea.pop$y1, pp=pp.trt, psuID=MDarea.pop$TRACT)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt; 0.009171403 1.453908596 1.462741186 1.463079999 1.000231629 0.006268559
+ BW2stagePPS(MDarea.pop$y1, pp=pp.BG, psuID=trtBG)
+#&gt;          B2          W2 unit relvar       B2+W2           k       delta 
+#&gt;  0.01602891  1.44780622  1.46274119  1.46383513  1.00074787  0.01094994
+</code></pre>
+
+<p>The between term when clusters are defined by <code>PSU</code> is about the same as when clusters are selected by <em>srs</em> because <code>PSU</code>&#39;s all have the same size. With PSUs being either tracts or block groups in the <em>ppswr/srswor</em> design, the between term is much smaller than the within, compared to the results in the <em>srs/srs</em> example.  For example, with  <code>y1</code> and <em>srs</em> sampling of tracts, \(\small B^2=0.2604\) but for <em>pps</em> sampling of tracts \(\small B^2=0.0091\). </p>
+
+<p>When clusters are selected by <em>srs</em>, \(\small S_{U1}^{2}\) is the variance of the cluster totals around the average cluster total.  In contrast, with <em>pps</em> sampling of clusters, \(\small S_{U1\left(pwr\right)}^{2}\) is the variance of the estimated population totals, \(\small t_{i} \left/ p_{i} \right.\) around the population total, \(\small t_{U}\).  When clusters are selected with probability proportional to \(\small N_{i}\), then \(\small t_{i} \left/ p_{i} \right.  = N_{i} \bar{y}_{Ui}\).  If these one-cluster estimates of the population total are fairly accurate, as they are here, the \(\small B^{2}\) term can be quite small.  This leads to much smaller values of  \(\small \delta\) in <em>pps</em> sampling of clusters. This implies that the negative effect of clustering on the variance is lessened for a design that selects clusters with \(\small pp(N_i)\). This kind of comparison explains most practitioners&#39; preference for <em>pps</em> sampling of clusters, especially when the clusters vary in population size.</p>
+
 <h2>General Three-stage Designs</h2>
+
 <p>In the case of with-replacement sampling of PSUs with varying probabilities and srswor at the second and third stages, the relvariance can be written (with a few assumptions) in a form useful for sample size calculations. Treating the case where SSUs are selected via srs (either with or without replacement) is not too unrealistic since SSUs (like block groups) are often created to have about the same population sizes.</p>
-<p>The variance formulae for a three-stage design with <em>ppswor</em> selection of first-stage units is complex enough that it is not useful for sample size planning. See <span class="citation">Valliant, Dever, and Kreuter (2018)</span>, sec. 9.2.4 for details. To obtain a simpler formula, suppose that <span class="math inline">\(\small \bar{n}\)</span> SSUs are sampled in each sample PSU, the sampling fractions of SSUs in each PSU, <span class="math inline">\(\small \bar{n} \left/ N_{i} \right.\)</span>, are small, and <span class="math inline">\(\small \bar{\bar{q}}\)</span> elements are selected in each sample SSU. The relvariance of the <em>pwr</em>-estimator is then</p>
-<p><span class="math display">\[\begin{equation} \label{ZEqnNum518915}
-   \small \frac{V\left(\hat{t}_{pwr} \right)}{t_{U}^{2} } = \frac{B^{2} }{m} +\frac{W_{2}^{2} }{m\bar{n}} + \frac{W_{3}^{2} }{m\bar{n}{\kern 1pt} \bar{\bar{q}}},
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(\small B^{2} =S_{U1\left(pwr\right)}^{2} \left/ t_{U}^{2} \right.\)</span> is given by <span class="math inline">\(\small \eqref{eq:B2.2st.pwr}\)</span>,</p>
-<p><span class="math display">\[\begin{equation} \label{ZEqnNum344483}
-   \small W_{2}^{2} = \frac{1}{t_{U}^{2} } \sum_{i\in U} N_{i}^{2} S_{U2i}^{2} \left/ p_{i} \right. ;
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation} \label{ZEqnNum290646}
-   \small W_{3}^{2} = \frac{1}{t_{U}^{2} } \sum _{i\in U} \frac{N_{i} }{p_{i} } \sum_{j\in U_{i}} Q_{ij}^{2} S_{U3ij}^{2} .
-\end{equation}\]</span></p>
+
+<p>The variance formulae for a three-stage design with <em>ppswor</em> selection of first-stage units is complex enough that it is not useful for sample size planning. See @VDK.2018, sec. 9.2.4 for details.  To obtain a simpler formula, suppose that \(\small \bar{n}\) SSUs are sampled in each sample PSU, the sampling fractions of SSUs in each PSU, \(\small \bar{n} \left/ N_{i} \right.\), are small, and \(\small \bar{\bar{q}}\) elements are selected in each sample SSU.  The relvariance of the <em>pwr</em>-estimator is then</p>
+
+<p>\begin{equation} \label{ZEqnNum518915}
+   \small \frac{V\left(\hat{t}<em>{pwr} \right)}{t</em>{U}<sup>{2}</sup> } = \frac{B<sup>{2}</sup> }{m} +\frac{W<em>{2}<sup>{2}</sup> }{m\bar{n}} + \frac{W</em>{3}<sup>{2}</sup> }{m\bar{n}{\kern 1pt} \bar{\bar{q}}},
+\end{equation}</p>
+
+<p>\noindent where \(\small B^{2} =S_{U1\left(pwr\right)}^{2} \left/ t_{U}^{2} \right.\) is given by \(\small \eqref{eq:B2.2st.pwr}\),</p>
+
+<p>\begin{equation} \label{ZEqnNum344483}
+   \small W<em>{2}<sup>{2}</sup> = \frac{1}{t</em>{U}<sup>{2}</sup> } \sum<em>{i\in U} N</em>{i}<sup>{2}</sup> S<em>{U2i}<sup>{2}</sup> \left/ p</em>{i} \right. ;
+\end{equation}</p>
+
+<p>\begin{equation} \label{ZEqnNum290646}
+   \small W<em>{3}<sup>{2}</sup> = \frac{1}{t</em>{U}<sup>{2}</sup> } \sum <em>{i\in U} \frac{N</em>{i} }{p<em>{i} } \sum</em>{j\in U<em>{i}} Q</em>{ij}<sup>{2}</sup> S_{U3ij}<sup>{2}</sup> .
+\end{equation}</p>
+
 <p>The relvariance can also be written in terms of two measures of homogeneity:</p>
-<p><span class="math display">\[\begin{equation} \label{ZEqnNum836300}
-   \small \frac{V\left(\hat{t}_{pwr} \right)}{t_{U}^{2} } = \frac{\tilde{V}}{m\bar{n}\bar{\bar{q}}} \left\{k_{1} \delta _{1} \bar{n}\bar{\bar{q}}+k_{2} \left[1+\delta _{2} \left(\bar{\bar{q}}-1\right)\right]\right\}
-\end{equation}\]</span> where</p>
-<p><span class="math inline">\(\small k_{1} = (B^2+W^2)/\tilde{V}\)</span> with <span class="math inline">\(\small \tilde{V} = \frac{1}{Q-1} \sum_{i\in U} \sum_{j \in U_{i} } \sum_{k\in U_{ij} } \left(y_{k} - \bar{y}_{U} \right)^2 \left/ \bar{y}_U^2 \right.\)</span> is the unit relvariance of <span class="math inline">\(\small y\)</span> in the population.</p>
-<p><span class="math inline">\(\small k_{2} = (W_{2}^2 + W_{3}^2)/\tilde{V}\)</span></p>
-<p><span class="math inline">\(\small\delta _{1} = B^2/(B^2 + W^2)\)</span></p>
-<p><span class="math inline">\(\small W^{2} = \frac{1}{t_{U}^{2} } \sum_{i\in U} Q_{i}^{2} S_{U3i}^{2} \left/ p_{i} \right.\)</span> with <span class="math inline">\(\small S_{U3i}^{2} =\frac{1}{Q_{i} -1} \sum _{j\in U_{i} }\sum _{k\in U_{ij} }\left(y_{k} -\bar{y}_{Ui} \right)^{2}\)</span> and <span class="math inline">\(\small \bar{y}_{Ui} = \sum _{j\in U_{i} } \sum_{k\in U_{ij} }y_{k} \left/ Q_{i} \right.\)</span>, i.e., <span class="math inline">\(\small S_{U3i}^{2}\)</span> is the element-level variance among all elements in PSU <span class="math inline">\(\small i\)</span></p>
-<p><span class="math inline">\(\small \delta _{2} = W_{2}^2/(W_{2}^2 + W_{3}^2)\)</span></p>
-<p>Note that the term <span class="math inline">\(\small W^{2}\)</span> in <span class="math inline">\(\small \delta_{1}\)</span> does not enter the variance in <span class="math inline">\(\small \eqref{ZEqnNum518915}\)</span> but is defined by analogy to the term in two-stage sampling. If elements were selected directly from the sample PSUs (instead of first sampling SSUs), then <span class="math inline">\(\small W^{2}\)</span> above would be the appropriate within-PSU component.</p>
-<p>The term <span class="math inline">\(\small \delta _{1}\)</span> is a measure of the homogeneity among the PSU totals. If the estimate of the population total from each PSU total, <span class="math inline">\(\small t_{i} \left/ p_{i} \right.\)</span>, was exactly equal to the population total, <span class="math inline">\(\small t_{U}\)</span>, then <span class="math inline">\(\small B^{2} =0\)</span> and <span class="math inline">\(\small \delta _{1} = 0\)</span>. That is, if the variation within PSUs is much larger than the variation among PSU totals, then <span class="math inline">\(\small \delta _{1}\)</span> will be small; this is the typical situation in household surveys <em>if PSUs all have about the same number of elements</em>. As we saw in the earlier example, the condition of equal-sized PSUs can be critically important to insure that <span class="math inline">\(\small B^{2}\)</span> is small.</p>
-<p>If the SSUs all have about the same totals, <span class="math inline">\(\small t_{ij}\)</span>, then <span class="math inline">\(\small W_{2}^{2}\)</span> will be small and <span class="math inline">\(\small \delta _{2} \doteq 0\)</span>. Although attempts may be made to create SSUs that have about the same number of elements <span class="math inline">\(\small Q_{ij}\)</span>, the totals <span class="math inline">\(\small t_{ij}\)</span> of other variables tend to vary, leading to values of <span class="math inline">\(\small \delta _{2}\)</span> that are larger than those of <span class="math inline">\(\small \delta _{1}\)</span>.</p>
-<p>The R function, <code>BW3stagePPS</code>, will calculate <span class="math inline">\(\small B^{2}\)</span>, <span class="math inline">\(\small W^{2}\)</span>, <span class="math inline">\(\small W_{2}^{2}\)</span>, <span class="math inline">\(\small W_{3}^{2}\)</span>, <span class="math inline">\(\small \delta _{1}\)</span>, and <span class="math inline">\(\small \delta _{2}\)</span> defined above for <em>ppswr/srs/srs</em> and <em>srswr/srs/srs</em> sampling. The function is appropriate if an entire frame is available and takes the following parameters:</p>
-<table>
-<colgroup>
-<col width="45%"></col>
-<col width="54%"></col>
-</colgroup>
-<thead>
-<tr class="header">
+
+<p>\begin{equation} \label{ZEqnNum836300}
+   \small \frac{V\left(\hat{t}<em>{pwr} \right)}{t</em>{U}<sup>{2}</sup> } = \frac{\tilde{V}}{m\bar{n}\bar{\bar{q}}} \left{k<em>{1} \delta _{1} \bar{n}\bar{\bar{q}}+k</em>{2} \left[1+\delta _{2} \left(\bar{\bar{q}}-1\right)\right]\right}
+\end{equation}
+where</p>
+
+<p>\(\small k_{1} = (B^2+W^2)/\tilde{V}\) with \(\small \tilde{V} = \frac{1}{Q-1} \sum_{i\in U} \sum_{j \in U_{i} } \sum_{k\in U_{ij} } \left(y_{k} - \bar{y}_{U} \right)^2  \left/ \bar{y}_U^2 \right.\) is the unit relvariance of \(\small y\) in the population.</p>
+
+<p>\(\small k_{2} = (W_{2}^2 + W_{3}^2)/\tilde{V}\)</p>
+
+<p>\(\small\delta _{1} = B^2/(B^2 + W^2)\)</p>
+
+<p>\(\small W^{2} = \frac{1}{t_{U}^{2} } \sum_{i\in U} Q_{i}^{2} S_{U3i}^{2} \left/ p_{i}  \right.\) with \(\small S_{U3i}^{2} =\frac{1}{Q_{i} -1} \sum _{j\in U_{i} }\sum _{k\in U_{ij} }\left(y_{k} -\bar{y}_{Ui} \right)^{2}\) and \(\small \bar{y}_{Ui} = \sum _{j\in U_{i} } \sum_{k\in U_{ij} }y_{k}  \left/  Q_{i} \right.\), i.e., \(\small S_{U3i}^{2}\) is the element-level variance among all elements in PSU \(\small i\)</p>
+
+<p>\(\small \delta _{2} = W_{2}^2/(W_{2}^2 + W_{3}^2)\)</p>
+
+<p>Note that the term \(\small W^{2}\) in \(\small \delta_{1}\) does not enter the variance in \(\small \eqref{ZEqnNum518915}\) but is defined by analogy to the term in two-stage sampling.  If elements were selected directly from the sample PSUs (instead of first sampling SSUs), then \(\small W^{2}\) above would be the appropriate within-PSU component.</p>
+
+<p>The term \(\small \delta _{1}\) is a measure of the homogeneity among the PSU totals.  If the estimate of the population total from each PSU total, \(\small t_{i} \left/ p_{i} \right.\), was exactly equal to the population total, \(\small t_{U}\), then \(\small B^{2} =0\) and \(\small \delta _{1} = 0\).  That is, if the variation within PSUs is much larger than the variation among PSU totals, then \(\small \delta _{1}\) will be small; this is the typical situation in household surveys <em>if PSUs all have about the same number of elements</em>.  As we saw in the earlier example, the condition of equal-sized PSUs can be critically important to insure that \(\small B^{2}\) is small.</p>
+
+<p>If the SSUs all have about the same totals, \(\small t_{ij}\), then \(\small W_{2}^{2}\) will be small and \(\small \delta _{2} \doteq 0\).  Although attempts may be made to create SSUs that have about the same number of elements \(\small Q_{ij}\), the totals \(\small t_{ij}\) of other variables tend to vary, leading to values of \(\small \delta _{2}\) that are larger than those of \(\small \delta _{1}\).</p>
+
+<p>The R function, <code>BW3stagePPS</code>, will calculate \(\small B^{2}\), \(\small W^{2}\), \(\small W_{2}^{2}\), \(\small W_{3}^{2}\), \(\small \delta _{1}\), and \(\small \delta _{2}\) defined above for <em>ppswr/srs/srs</em> and <em>srswr/srs/srs</em> sampling.  The function is appropriate if an entire frame is available and takes the following parameters:</p>
+
+<table><thead>
+<tr>
 <th align="left">Parameter</th>
 <th align="left">Description</th>
 </tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><img width="100/"></td>
-<td align="left"><img width="500/"></td>
+</thead><tbody>
+<tr>
+<td align="left"><img width=100/></td>
+<td align="left"><img width=500/></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"><code>X</code></td>
 <td align="left">data vector; length is the number of elements in the population.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"><code>pp</code></td>
 <td align="left">vector of one-draw probabilities for the PSUs; length is number of PSUs in population.</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"><code>psuID</code></td>
 <td align="left">vector of PSU identification numbers. This vector must be as long as X. Each element in a given PSU should have the same value in psuID. PSUs must be in the same order as in X.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"><code>ssuID</code></td>
-<td align="left">vector of SSU identification numbers. This vector must be as long as X. Each element in a given SSU should have the same value in ssuID. PSUs and SSUs must be in the same order as in X. ssuID should have the form <code>psuID||(ssuID within PSU)</code>.</td>
+<td align="left">vector of SSU identification numbers. This vector must be as long as X. Each element in a given SSU should have the same value in ssuID. PSUs and SSUs must be in the same order as in X. ssuID should have the form psuID</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
+
 <ul>
-<li><strong>Example. Variance components in three stage <em>srswr/srs/srs</em> and <em>ppswr/srs/srs</em> designs</strong>. In the Maryland population suppose that suppose that tracts and BGs within tracts are the first- and second-stage units, and that persons are elements in a three-stage design. All three stages are selected by <em>srs</em>. The call to <code>BW3stagePPS</code> for the variable <code>y1</code> in an <em>srswr/srs/srs</em> design is:</li>
+<li><strong>Example. Variance components in three stage <em>srswr/srs/srs</em> and <em>ppswr/srs/srs</em> designs</strong>.
+In the Maryland population suppose that suppose that tracts and BGs within tracts are the first- and second-stage units, and that persons are elements in a three-stage design. All three stages are selected by <em>srs</em>.  The call to <code>BW3stagePPS</code> for the variable <code>y1</code> in an <em>srswr/srs/srs</em> design is:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a> M &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(MDarea.pop<span class="op">$</span>TRACT))</span>
-<span id="cb6-2"><a href="#cb6-2"></a> trtBG &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">*</span>MDarea.pop<span class="op">$</span>TRACT <span class="op">+</span><span class="st"> </span>MDarea.pop<span class="op">$</span>BLKGROUP</span>
-<span id="cb6-3"><a href="#cb6-3"></a> pp.trt &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">/</span>M,M)</span>
-<span id="cb6-4"><a href="#cb6-4"></a> <span class="kw">BW3stagePPS</span>(<span class="dt">X=</span>MDarea.pop<span class="op">$</span>y1, <span class="dt">pp=</span>pp.trt,</span>
-<span id="cb6-5"><a href="#cb6-5"></a>       <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>TRACT, <span class="dt">ssuID=</span>trtBG)</span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt;           B           W          W2          W3 unit relvar          k1 </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;   0.2577266   1.8390286   0.2698581   2.1083645   1.4627412   1.4334423 </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;          k2      delta1      delta2 </span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;   1.6258670   0.1229169   0.1134705</span></span></code></pre></div>
-<p>We repeat the calculation but assuming <em>ppswr</em> sampling of PSUs. The calculation for <code>y1</code> using tracts and block groups as the first- and second-stage sampling units is done via this call:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a> trtBG &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">*</span>MDarea.pop<span class="op">$</span>TRACT <span class="op">+</span><span class="st"> </span>MDarea.pop<span class="op">$</span>BLKGROUP</span>
-<span id="cb7-2"><a href="#cb7-2"></a> pp.trt &lt;-<span class="st"> </span><span class="kw">table</span>(MDarea.pop<span class="op">$</span>TRACT) <span class="op">/</span><span class="st"> </span><span class="kw">nrow</span>(MDarea.pop)</span>
-<span id="cb7-3"><a href="#cb7-3"></a> <span class="kw">BW3stagePPS</span>(<span class="dt">X=</span>MDarea.pop<span class="op">$</span>y1, <span class="dt">pp=</span>pp.trt,</span>
-<span id="cb7-4"><a href="#cb7-4"></a>       <span class="dt">psuID=</span>MDarea.pop<span class="op">$</span>TRACT, <span class="dt">ssuID=</span>trtBG)</span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;           B           W          W2          W3 unit relvar          k1 </span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt; 0.009171403 1.453908596 0.249889887 1.687254100 1.462741186 1.000231629 </span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;          k2      delta1      delta2 </span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; 1.324324498 0.006268559 0.128999129</span></span></code></pre></div>
-<p>Notice that <span class="math inline">\(\small \delta_1 = 0.123\)</span> with <em>srs</em> sampling of tracts but is 0.006 when tracts are sampled proportional to their population sizes.</p>
-<p>An important practical, sample design problem that we do not cover in this vignette is how to estimate variance components and measures of homogeneity from a complex, multistage sample. This topic is covered in detail in section 9.4 of <span class="citation">Valliant, Dever, and Kreuter (2018)</span>. The <code>PracTools</code> package includes a variety of other functions relevant to two- and three-stage sampling that are also not discussed in this vignette:</p>
-<table>
-<colgroup>
-<col width="45%"></col>
-<col width="54%"></col>
-</colgroup>
-<thead>
-<tr class="header">
+
+<pre><code class="r"> M &lt;- length(unique(MDarea.pop$TRACT))
+ trtBG &lt;- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
+ pp.trt &lt;- rep(1/M,M)
+ BW3stagePPS(X=MDarea.pop$y1, pp=pp.trt,
+       psuID=MDarea.pop$TRACT, ssuID=trtBG)
+#&gt;           B           W          W2          W3 unit relvar          k1 
+#&gt;   0.2577266   1.8390286   0.2707206   2.1083645   1.4627412   1.4334423 
+#&gt;          k2      delta1      delta2 
+#&gt;   1.6264566   0.1229169   0.1137919
+</code></pre>
+
+<p>We repeat the calculation but assuming <em>ppswr</em> sampling of PSUs.  The calculation for <code>y1</code> using tracts and block groups as the first- and second-stage sampling units is done via this call:</p>
+
+<pre><code class="r"> trtBG &lt;- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
+ pp.trt &lt;- table(MDarea.pop$TRACT) / nrow(MDarea.pop)
+ BW3stagePPS(X=MDarea.pop$y1, pp=pp.trt,
+       psuID=MDarea.pop$TRACT, ssuID=trtBG)
+#&gt;           B           W          W2          W3 unit relvar          k1 
+#&gt; 0.009171403 1.453908596 0.271630074 1.687254100 1.462741186 1.000231629 
+#&gt;          k2      delta1      delta2 
+#&gt; 1.339187133 0.006268559 0.138665715
+</code></pre>
+
+<p>Notice that \(\small \delta_1 = 0.123\) with <em>srs</em> sampling of tracts but is 0.006 when tracts are sampled proportional to their population sizes.</p>
+
+<p>An important practical, sample design problem that we do not cover in this vignette is how to estimate variance components and measures of homogeneity from a complex, multistage sample. This topic is covered in detail in section 9.4 of @VDK.2018.  The <code>PracTools</code> package includes a variety of other functions relevant to two- and three-stage sampling that are also not discussed in this vignette:</p>
+
+<table><thead>
+<tr>
 <th align="left">Function</th>
 <th align="left">Description</th>
 </tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><img width="100/"></td>
-<td align="left"><img width="500/"></td>
+</thead><tbody>
+<tr>
+<td align="left"><img width=100/></td>
+<td align="left"><img width=500/></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">BW2stagePPSe</td>
 <td align="left">Estimate components of relvariance for a sample design where primary sampling units (PSUs) are selected with <em>pps</em> and elements are selected via <em>srs</em>. The input is a sample selected in this way.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">BW3stagePPSe</td>
 <td align="left">Estimate components of relvariance for a sample design where primary sampling units (PSUs) are selected with probability proportional to size with replacement (ppswr) and secondary sampling units (SSUs) and elements within SSUs are selected via simple random sampling (srs). The input is a sample selected in this way.</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">clusOpt2</td>
 <td align="left">Compute the sample sizes that minimize the variance of the <em>pwr</em>-estimator of a total in a two-stage sample.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">clusOpt2fixedPSU</td>
 <td align="left">Compute the optimum number of sample elements per primary sampling unit (PSU) for a fixed set of PSUs.</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">clusOpt3</td>
 <td align="left">Compute the sample sizes that minimize the variance of the <em>pwr</em>-estimator of a total in a three-stage sample.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">clusOpt3fixedPSU</td>
 <td align="left">Compute the sample sizes that minimize the variance of the <em>pwr</em>-estimator of a total in a three-stage sample when the PSU sample is fixed.</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">CVcalc2</td>
 <td align="left">Compute the coefficient of variation of an estimated total in a two-stage design. Primary sampling units (PSUs) can be selected either with probability proportional to size (<em>pps</em>) or with equal probability. Elements are selected via simple random sampling (<em>srs</em>).</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">CVcalc3</td>
 <td align="left">Compute the coefficient of variation of an estimated total in a three-stage design. Primary sampling units (PSUs) can be selected either with probability proportional to size (<em>pps</em>) or with equal probability. Secondary units and elements within SSUs are selected via simple random sampling (<em>srs</em>).</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">deff</td>
 <td align="left">Compute the Kish, Henry, Spencer, or Chen-Rust design effects.</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div id="references" class="section level2 unnumbered">
+</tbody></table>
+
 <h2>References</h2>
-<div id="refs" class="references">
-<div id="ref-SSW.92">
-<p>Särndal, C.-E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.</p>
-</div>
-<div id="ref-VDK.2018">
-<p>Valliant, R., J. A. Dever, and F. Kreuter. 2018. <em>Practical Tools for Designing and Weighting Survey Samples</em>. 2nd ed. New York: Springer-Verlag.</p>
-</div>
-</div>
-</div>
-
-
-
-<!-- code folding -->
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 
 </body>
+
 </html>

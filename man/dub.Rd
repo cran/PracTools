@@ -45,7 +45,7 @@ Cochran W (1977, sect. 12.3) \emph{Sampling Techniques}. New York: John Wiley & 
 Neyman J (1938) Contribution to the theory of sampling human populations. \emph{Journal
 of the American Statistical Association}, 33(201), 101-116.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 17.5.2).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 17.5.2).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

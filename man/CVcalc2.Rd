@@ -49,7 +49,7 @@ Cochran, W.G. (1977, pp.308-310). \emph{Sampling Techniques}. New York: John Wil
 
 Saerndal, C.E., Swensson, B., and Wretman, J. (1992). \emph{Model Assisted Survey Sampling}. New York: Springer.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.2.1). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.2.1). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 
 }
 

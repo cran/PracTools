@@ -34,7 +34,7 @@ A data frame of respondents only with four columns:
     \item{RR}{nonresponse adjustment for each unit}
 }
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 13).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 13).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

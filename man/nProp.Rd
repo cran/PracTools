@@ -36,7 +36,7 @@ The precision requirement of \eqn{p_s} can be set based on either a target coeff
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 3).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

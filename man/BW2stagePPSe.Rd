@@ -8,7 +8,7 @@ Estimated relvariance components for 2-stage sample
 Estimate components of relvariance for a sample design where primary sampling units (PSUs) are selected with \emph{pps} and elements are selected via \emph{srs}. The input is a sample selected in this way.
 }
 \usage{
-BW2stagePPSe(Ni, ni, X, psuID, w, m, pp)
+BW2stagePPSe(Ni, ni, X, psuID, w, m, pp, lonely.SSU = "mean")
 }
 
 \arguments{
@@ -31,6 +31,9 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp)
   \item{pp}{
  vector of 1-draw probabilities for the PSUs. The length of this vector is the number of PSUs in the sample. Vector must be in the same order as \code{Ni} and \code{ni}.
   }
+    \item{lonely.SSU}{
+ indicator for how singleton SSUs should be handled when computing the within PSU unit relvariance. Allowable values are \code{"mean"} and \code{"zero"}.
+}
 }
 \details{
 \code{BW2stagePPSe} computes the between and within population variance and relvariance
@@ -40,6 +43,9 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp)
     The estimated components are appropriate for approximating the relvariance of the \emph{pwr}-estimator
      of a total when the same number of elements are selected within each sample PSU.
      This function can also be used if PSUs are selected by \emph{srswr} by appropriate definition of \code{pp}.
+
+     If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate
+   an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample.
 }
 
 \value{
@@ -48,14 +54,14 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp)
   \item{Vssu}{estimated within PSU unit variance}
   \item{B}{estimated between PSU unit relvariance}
   \item{W}{estimated within PSU unit relvariance}
-  \item{k}{estimated ratio of \code{B+W} to estimated unit relvariance of the analysis variable}  
+  \item{k}{estimated ratio of \code{B+W} to estimated unit relvariance of the analysis variable}
   \item{delta}{intraclass correlation estimated as \code{B/(B+W)}}
 }
 
 \references{
 Cochran, W.G. (1977, pp.308-310). \emph{Sampling Techniques}. New York: John Wiley & Sons.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.4.1). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.4.1). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{
@@ -63,12 +69,11 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 }
 \seealso{
 \code{\link{BW2stagePPS}}, \code{\link{BW2stageSRS}}, \code{\link{BW3stagePPS}}, \code{\link{BW3stagePPSe}}
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 \dontrun{
 require(sampling)
-require(reshape)      # has function that allows renaming variables
+require(plyr)      # has function that allows renaming variables
 data(MDarea.pop)
 Ni <- table(MDarea.pop$TRACT)
 m <- 20
@@ -96,7 +101,7 @@ wt <- 1/samdat$pi1/samdat$pi2
 
 BW2stagePPSe(Ni = Ni.sam, ni = rep(50,20), X = samdat$y1,
             psuID = samdat$TRACT, w = wt,
-            m = 20, pp = pp)
+            m = 20, pp = pp, lonely.SSU="mean")
 }
 }
 \keyword{methods}

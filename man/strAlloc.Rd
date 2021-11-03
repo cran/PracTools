@@ -54,12 +54,12 @@ type of allocation; must be one of \code{"prop"}, \code{"neyman"}, \code{"totcos
     \item{"nh/n"}{proportion of sample allocated to each stratum}
     For other allocations, the three components above plus:
     \item{Sh}{stratum unit standard deviations (\eqn{S_h})}
-    \item{"anticipated SE of estimated mean"}{Anticipated SE of the estimated mean for the computed allocation} 
+    \item{"anticipated SE of estimated mean"}{Anticipated SE of the estimated mean for the computed allocation}
 }
 \references{
  Cochran, W.G. (1977). \emph{Sampling Techniques}. John Wiley & Sons.
 
- Valliant, R., Dever, J., Kreuter, F. (2013, chap. 3). \emph{Practical Tools for Designing and Weighting Survey Samples}. Springer.
+ Valliant, R., Dever, J., Kreuter, F. (2018, chap. 3). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. Springer.
 }
 \author{
 Richard Valliant, Jill A. Dever, Frauke Kreuter

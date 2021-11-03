@@ -85,10 +85,10 @@ Demographic and health related variables from a U.S. household survey in the sta
                   3 = Attended college or technical school;
                   4 = Graduated from college or technical school)
 }
-    \item{\code{INCOMC3}}{Income category 
+    \item{\code{INCOMC3}}{Income category
                   (1 = Less than $15000;
                    2 = $15000 to less than $25000;
-                   3 = $25000 to less than $35000; 
+                   3 = $25000 to less than $35000;
                    4 = $35000 to less than $50000;
                    5 = $50000 or more)
 }
@@ -119,7 +119,7 @@ The Michigan Behavioral Risk Factor Surveillance Survey (MIBRFSS) is part of a n
 
 \source{
 Michigan Behavioral Risk Factor Surveillance Survey of 2003 sponsored by the U.S. Center for Disease Control.
-\url{http://www.cdc.gov/BRFSS}
+\url{https://www.cdc.gov/brfss/}
 }
 
 \seealso{

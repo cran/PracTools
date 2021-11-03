@@ -43,7 +43,7 @@ clusOpt2(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.sw)
 \references{
 Hansen,M.H., Hurwitz,W.N., and Madow,W.G. (1953, chap. 6, sect. 16).  \emph{Sample Survey Methods and Theory}, Vol.I. John Wiley & Sons.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.3.1).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.3.1).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

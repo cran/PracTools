@@ -1,11 +1,19 @@
 
-BW2stageSRS <- function(X, psuID){
+BW2stageSRS <- function(X, psuID, lonely.SSU = "mean"){
     M <- length(unique(psuID))
     Ni <- table(psuID)
     Nbar <- length(X)/M
 
     ti <- by(X, INDICES = psuID, FUN = sum)
     S2Ui <- by(X, INDICES = psuID, FUN = var)
+    S2Ui.miss <- is.na(S2Ui)
+    if (lonely.SSU == "mean"){
+      S2Ui[S2Ui.miss] <- mean(S2Ui[!S2Ui.miss])
+    }
+    else if (lonely.SSU == "zero"){
+      S2Ui[S2Ui.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.SSU: ", lonely.SSU, "\n")}
 
     tbarU <- mean(ti)
     tU <- M*tbarU

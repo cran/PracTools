@@ -56,7 +56,7 @@ of sample PSUs, SSUs, and elements, i.e., \eqn{C_{1}m + C_{2}m\bar{n} + C_{3}m\b
 \references{
 Hansen,M.H., Hurwitz,W.N., and Madow,W.G. (1953, p. 225).  \emph{Sample Survey Methods and Theory}, Vol.II. John Wiley & Sons.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.3.2).  \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.3.2).  \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

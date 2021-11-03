@@ -8,7 +8,7 @@ Relvariance components for 3-stage sample
 Compute components of relvariance for a sample design where primary sampling units (PSUs) are selected with \emph{ppswr} and secondary sampling units (SSUs) and elements within SSUs are selected via \emph{srs}. The input is an entire sampling frame.
 }
 \usage{
-BW3stagePPS(X, pp, psuID, ssuID)
+BW3stagePPS(X, pp, psuID, ssuID, lonely.SSU = "mean", lonely.TSU = "mean")
 }
 
 \arguments{
@@ -22,7 +22,14 @@ BW3stagePPS(X, pp, psuID, ssuID)
  vector of PSU identification numbers.  This vector must be as long as \code{X}. Each element in a given PSU should have the same value in \code{psuID}. PSUs must be in the same order as in \code{X}.
 }
   \item{ssuID}{
- vector of SSU identification numbers.  This vector must be as long as \code{X}. Each element in a given SSU should have the same value in \code{ssuID}. PSUs and SSUs must be in the same order as in \code{X}. \code{ssuID} should have the form \code{psuID}||(\code{ssuID} within PSU)}.
+ vector of SSU identification numbers.  This vector must be as long as \code{X}. Each element in a given SSU should have the same value in \code{ssuID}. PSUs and SSUs must be in the same order as in \code{X}. \code{ssuID} should have the form \code{psuID}||(\code{ssuID} within PSU).
+ }
+  \item{lonely.SSU}{
+ indicator for how singleton SSUs should be handled when computing the within PSU unit relvariance. Allowable values are \code{"mean"} and \code{"zero"}.
+}
+ \item{lonely.TSU}{
+ indicator for how singleton third-stage units (TSUs) should be handled when computing the within SSU unit relvariance. Allowable values are \code{"mean"} and \code{"zero"}.
+}
 }
 \details{
 \code{BW3stagePPS} computes the between and within population relvariance components
@@ -31,7 +38,11 @@ and with replacement. SSUs and elements within SSUs are selected by simple rando
 The components are appropriate for approximating the relvariance of the \emph{pwr}-estimator of a total
 when the same number of SSUs are selected within each PSU, and the same number of elements are
 selected within each sample SSU. The function requires that an entire sampling frame of PSUs
-and elements be input. (Use \code{\link{BW2stagePPSe}} if only a sample of PSUs, SSUs, and elements is available.)
+and elements be input.
+
+If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample. \code{lonely.TSU} has a similar purpose for third-stage units.
+
+(Use \code{\link{BW2stagePPSe}} if only a sample of PSUs, SSUs, and elements is available.)
 }
 
 \value{
@@ -52,7 +63,7 @@ Hansen,M.H., Hurwitz,W.N., and Madow,W.G. (1953, chap. 9, p.211). \emph{Sample S
 
 Saerndal, C.E., Swensson, B., and Wretman, J. (1992, p.149). \emph{Model Assisted Survey Sampling}. Springer.
 
-Valliant, R., Dever, J., Kreuter, F. (2013, sect. 9.2.4). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, sect. 9.2.4). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{
@@ -68,10 +79,12 @@ MDsub <- MDarea.pop[1:100000,]
 M <- length(unique(MDsub$PSU))
     # srs/srs/srs design
 pp.PSU <- rep(1/M,M)
-BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU)
+BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU, 
+    lonely.SSU = "mean", lonely.TSU = "mean")
     # ppswr/srs/srs design
 pp.PSU <- table(MDsub$PSU) / nrow(MDsub)
-BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU)
+BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU, 
+    lonely.SSU = "mean", lonely.TSU = "mean")
 }
 
 \keyword{methods}

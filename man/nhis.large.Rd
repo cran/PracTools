@@ -103,7 +103,7 @@ The National Health Interview Survey (NHIS) is used to monitor health conditions
 
 \source{
 National Health Interview Survey of 2003 conducted by the U.S. National Center for Health Statistics.
-\url{http://www.cdc.gov/nchs/nhis.htm}
+\url{https://www.cdc.gov/nchs/nhis.htm}
 }
 
 \seealso{

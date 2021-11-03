@@ -27,7 +27,7 @@ A list with components:
 }
 
 \references{
-Valliant, R., Dever, J., Kreuter, F. (2013, chap. 13). \emph{Practical Tools for Designing and Weighting Survey Samples}. New York: Springer.
+Valliant, R., Dever, J., Kreuter, F. (2018, chap. 13). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
 }
 
 \author{

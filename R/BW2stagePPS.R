@@ -1,9 +1,17 @@
 
-BW2stagePPS <- function(X, pp, psuID){
+BW2stagePPS <- function(X, pp, psuID, lonely.SSU = "mean"){
     M <- length(unique(psuID))
     Ni <- table(psuID)
     cl.tots <- by(X, INDICES = psuID, FUN = sum)
     cl.vars <- by(X, INDICES = psuID, FUN = var)
+    cl.vars.miss <- is.na(cl.vars)
+    if (lonely.SSU == "mean"){
+      cl.vars[cl.vars.miss] <- mean(cl.vars[!cl.vars.miss])
+    }
+    else if (lonely.SSU == "zero"){
+      cl.vars[cl.vars.miss] <- 0
+    }
+    else {stop("Illegal value of lonely.SSU: ", lonely.SSU, "\n")}
 
     tU <- sum(cl.tots)
     S2U1 <- sum(pp * (cl.tots/pp - tU)^2)
