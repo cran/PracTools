@@ -1,368 +1,283 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Simple Random Sampling</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Richard Valliant, Jill A. Dever, and Frauke Kreuter" />
+
+<meta name="date" content="2021-12-20" />
+
+<title>Sample Size Calculation in Single-stage Sampling</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
   }
-};
-</script>
-
-<!-- Styles for R syntax highlighter -->
-<style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
+  .sourceCode {
+    overflow: visible;
+  }
 </style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
-</script>
-
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
-   a, a:visited {
-      text-decoration: underline;
-   }
 
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
 
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
 }
 </style>
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
 
 
 
 </head>
 
 <body>
+
+
+
+
+<h1 class="title toc-ignore">Sample Size Calculation in Single-stage Sampling</h1>
+<h4 class="author">Richard Valliant, Jill A. Dever, and Frauke Kreuter</h4>
+<h4 class="date">2021-12-20</h4>
+
+
+
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   TeX: { equationNumbers: { autoNumber: "AMS" } }
 });
 </script>
-
-<p>A basic issue in sample design is how many units should be selected at each stage in order to efficiently estimate population values. If strata are used, the number of units to allocate to each stratum must be determined. In this vignette, we review some basic techniques for sample size determination in single-stage samples using the package <code>PracTools</code> [@Valliant.2019] that contains specialized routines to facilitate the calculations, most of which are not found in other packages. We briefly summarize some of selection methods and associated formulas used in designing single-stage samples and describe the capabilities of <code>PracTools</code>.  Technical background is in @VDK.2018, ch. 3. First, the package must be loaded with </p>
-
-<pre><code class="r">library(PracTools)
-</code></pre>
-
+<p>A basic issue in sample design is how many units should be selected at each stage in order to efficiently estimate population values. If strata are used, the number of units to allocate to each stratum must be determined. In this vignette, we review some basic techniques for sample size determination in single-stage samples using the package <code>PracTools</code> <span class="citation">(Richard Valliant, Dever, and Kreuter 2019)</span> that contains specialized routines to facilitate the calculations, most of which are not found in other packages. We briefly summarize some of selection methods and associated formulas used in designing single-stage samples and describe the capabilities of <code>PracTools</code>. Technical background is in <span class="citation">R. Valliant, Dever, and Kreuter (2018)</span>, ch. 3. First, the package must be loaded with</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PracTools)</span></code></pre></div>
 <p>Alternatively, <code>require(PracTools)</code> can be used.</p>
-
-<p>Complex samples can involve any or all of stratification, clustering, multistage sampling, and sampling with varying probabilities. Many texts cover these topics, including @Cochran.77, @Lohr.99, @SSW.92, and @VDK.2018. Here we discuss single-stage designs with and without stratification and formulas that are needed for determining sample allocations. The <code>PracTools</code> package will not select samples, but the R <code>sampling</code> package [@Tille.2016] will select almost all the types used in practice.</p>
-
+<p>Complex samples can involve any or all of stratification, clustering, multistage sampling, and sampling with varying probabilities. Many texts cover these topics, including <span class="citation">Cochran (1977)</span>, <span class="citation">Lohr (1999)</span>, <span class="citation">Särndal, Swensson, and Wretman (1992)</span>, and <span class="citation">R. Valliant, Dever, and Kreuter (2018)</span>. Here we discuss single-stage designs with and without stratification and formulas that are needed for determining sample allocations. The <code>PracTools</code> package will not select samples, but the R <code>sampling</code> package <span class="citation">(Tillé and Matei 2016)</span> will select almost all the types used in practice.</p>
+<div id="simple-random-sampling" class="section level2">
 <h2>Simple Random Sampling</h2>
-
-<p>Simple random sampling without replacement (<em>srswor</em>) is a method of probability sampling in which all samples of a given size \(n\) have the same probability of selection. The function <code>sample</code> in R base [@Rcore] will select simple random samples either with or without replacement. One way of determining an <em>srswor</em> sample size is to specify that a population value \(\small \theta\) be estimated with a certain coefficient of variation (<em>CV</em>) which is defined as the ratio of the standard error of the estimator, \(\small \hat{\theta}\), to the value of the parameter:  \(\small CV(\hat{\theta}) = \sqrt{Var(\hat{\theta})}/\theta\). For example, suppose that \(\small y_{k}\) is a value associated with element \(\small k\), \(\small U\) denotes the set of all elements in the universe, \(\small N\) is the number of elements in the population, and the population parameter to be estimated is the mean, \(\small \bar{y}_{U} = \sum_{k \in U}y_{k}/N\). With a simple random sample, this can be estimated by the sample mean, \(\small \bar{y}_{s} = \sum_{k \in s}y_{k}/n\), where \(\small s\) is the set of sample elements and \(\small n\) is the sample size. Setting the required \(\small CV\) of \(\small \bar{y}_{s}\) to some desired value \(\small CV_{0}\) in an <em>srswor</em> leads to a sample size of
-\[\small n=\frac{\frac{S_U^{2}}{\bar{y}_{U}^{2}}}{CV_{0}^{2} +\frac{S_U^{2}}{N\bar{y}_{U}^{2}}}\]</p>
-
-<p>The R function, <code>nCont</code>, will compute a sample size using either a target \(\small CV_{0}\) or a target variance, \(\small V_{0}\), of \(\small \bar{y}_s\) as input.  The parameters used by the function are shown below and are described in the help page for the function:</p>
-
-<pre><code>    nCont(CV0=NULL, V0=NULL, S2=NULL, ybarU=NULL, N=Inf, CVpop=NULL)
-</code></pre>
-
+<p>Simple random sampling without replacement (<em>srswor</em>) is a method of probability sampling in which all samples of a given size <span class="math inline">\(n\)</span> have the same probability of selection. The function <code>sample</code> in R base <span class="citation">(R Core Team 2020)</span> will select simple random samples either with or without replacement. One way of determining an <em>srswor</em> sample size is to specify that a population value <span class="math inline">\(\small \theta\)</span> be estimated with a certain coefficient of variation (<em>CV</em>) which is defined as the ratio of the standard error of the estimator, <span class="math inline">\(\small \hat{\theta}\)</span>, to the value of the parameter: <span class="math inline">\(\small CV(\hat{\theta}) = \sqrt{Var(\hat{\theta})}/\theta\)</span>. For example, suppose that <span class="math inline">\(\small y_{k}\)</span> is a value associated with element <span class="math inline">\(\small k\)</span>, <span class="math inline">\(\small U\)</span> denotes the set of all elements in the universe, <span class="math inline">\(\small N\)</span> is the number of elements in the population, and the population parameter to be estimated is the mean, <span class="math inline">\(\small \bar{y}_{U} = \sum_{k \in U}y_{k}/N\)</span>. With a simple random sample, this can be estimated by the sample mean, <span class="math inline">\(\small \bar{y}_{s} = \sum_{k \in s}y_{k}/n\)</span>, where <span class="math inline">\(\small s\)</span> is the set of sample elements and <span class="math inline">\(\small n\)</span> is the sample size. Setting the required <span class="math inline">\(\small CV\)</span> of <span class="math inline">\(\small \bar{y}_{s}\)</span> to some desired value <span class="math inline">\(\small CV_{0}\)</span> in an <em>srswor</em> leads to a sample size of <span class="math display">\[\small n=\frac{\frac{S_U^{2}}{\bar{y}_{U}^{2}}}{CV_{0}^{2} +\frac{S_U^{2}}{N\bar{y}_{U}^{2}}}\]</span></p>
+<p>The R function, <code>nCont</code>, will compute a sample size using either a target <span class="math inline">\(\small CV_{0}\)</span> or a target variance, <span class="math inline">\(\small V_{0}\)</span>, of <span class="math inline">\(\small \bar{y}_s\)</span> as input. The parameters used by the function are shown below and are described in the help page for the function:</p>
+<pre><code>    nCont(CV0=NULL, V0=NULL, S2=NULL, ybarU=NULL, N=Inf, CVpop=NULL)</code></pre>
 <ul>
-<li><strong>Example 1: Sample size for a target CV.</strong>
-Suppose that we estimate from a previous survey that the population CV of some variable is 2.0. If the population is extremely large and <code>CV0</code> (the target CV ) is set to 0.05, then the call
-to the R function is <code>nCont(CV0 = 0.05, CVpop = 2)</code>. The resulting sample size is 1,600. If the population size is <em>N</em> = 500, then <code>nCont(CV0 = 0.05,CVpop = 2, N = 500)</code> results in a sample size of 381 after rounding. The finite population correction (<em>fpc</em>) factor has a substantial effect in the latter case.</li>
+<li><strong>Example 1: Sample size for a target CV.</strong> Suppose that we estimate from a previous survey that the population CV of some variable is 2.0. If the population is extremely large and <code>CV0</code> (the target CV ) is set to 0.05, then the call to the R function is <code>nCont(CV0 = 0.05, CVpop = 2)</code>. The resulting sample size is 1,600. If the population size is <em>N</em> = 500, then <code>nCont(CV0 = 0.05,CVpop = 2, N = 500)</code> results in a sample size of 381 after rounding. The finite population correction (<em>fpc</em>) factor has a substantial effect in the latter case.</li>
 </ul>
-
 <p>The function <code>nProp</code> will perform the same computation for estimated proportions.</p>
-
 <ul>
-<li><strong>Example 2: Sample sizes for a vector of target CVs.</strong>
-Often it will be useful to show a client the sample sizes for a series of precision targets. This will be especially true when the budget is uncertain and a researcher would like to think about options. We can ask for the sample sizes for a vector of values of <code>CV0</code> from 0.01 to 0.21 in increments of 0.02 with:
-<code>
-ceiling(nCont(CV0 = seq(0.01, 0.21, 0.02), CVpop=2))
-[1] 40000  4445  1600   817   494   331   237   178   139   111    91
-</code>
-<code>ncont</code> returns unrounded sample sizes having quite a few decimal places; <code>ceiling</code> rounds to the next highest integer.</li>
+<li><strong>Example 2: Sample sizes for a vector of target CVs.</strong> Often it will be useful to show a client the sample sizes for a series of precision targets. This will be especially true when the budget is uncertain and a researcher would like to think about options. We can ask for the sample sizes for a vector of values of <code>CV0</code> from 0.01 to 0.21 in increments of 0.02 with:</li>
 </ul>
-
+<pre><code>    ceiling(nCont(CV0 = seq(0.01, 0.21, 0.02), CVpop=2))
+    [1] 40000  4445  1600   817   494   331   237   178   139   111    91</code></pre>
+<p><code>ncont</code> returns unrounded sample sizes having quite a few decimal places; <code>ceiling</code> rounds to the next highest integer.</p>
+<div id="using-a-margin-of-error-to-find-sample-sizes" class="section level3">
 <h3>Using a margin of error to find sample sizes</h3>
-
-<p>Many investigators prefer to think of setting a tolerance for how close the estimate should be to the population value.  If the tolerance, sometimes called the <em>margin of error</em> (MOE), is \(\small e\) and the goal is to be within  \(\small e\) of the population mean with probability \(\small 1-\alpha\), this translates to
-\begin{equation}
-\small Pr \left(\left|\bar{y}<em>{s} -\bar{y}</em>{U} \right|\le e\right)=1-\alpha.
-\end{equation}
-This is equivalent to setting the half-width of a \(\small 100\left(1-\alpha \right)\) two-sided confidence interval (CI) to \(\small e=z_{1-\alpha\left/2\right.} \sqrt{V\left(\bar{y}_{s} \right)}\), assuming that \(\small \bar{y}_{s}\) can be treated as being normally distributed.  The term \(\small z_{1-\alpha\left/2\right.}\) is the \(\small 100\left(1-\alpha\left/2\right. \right)\) percentile of the standard normal distribution, i.e., the point with \(\small 1-\alpha\left/2\right.\) of the area to its left.  On the other hand, if we require
-\begin{equation}
-   \small Pr \left(\left|\frac{\bar{y}<em>{s} -\bar{y}</em>{U}}{\bar{y}_{U}} \right|\le e\right)=1-\alpha, \end{equation}</p>
-
-<p>this corresponds to setting \(\small e=z_{1-\alpha\left/2\right. }CV\left(\bar{y}_{s}\right)\).   If we set the MOE in (1) to \(\small e_{0}\), then the above equation can be manipulated to give the required sample size as</p>
-
-<p>\begin{equation}
-  \small n=\frac{z<em>{1-\alpha\left/2\right.}<sup>{2}</sup> S_U<sup>{2}}{e</sup></em>{0}<sup>{2}+z_{1-\alpha\left/2\right.}<sup>{2}</sup></sup> S_U<sup>{2}\left/N\right.}.</sup>
-\end{equation}</p>
-
-<p>Similarly, if the MOE in (2) is set to \(\small e_{0}\), we obtain
-\begin{equation}
-   \small n=\frac{z<em>{1-\alpha\left/2\right.}<sup>{2}</sup> S_U<sup>{2}\left/</sup> \bar{y}</em>{U}<sup>{2}\right.}{e_{0}<sup>{2}</sup></sup> +z<em>{1-\alpha \left/2\right.}<sup>{2}</sup> S_U<sup>{2}\left/</sup> \left(N\bar{y}</em>{U}<sup>{2}</sup> \right)\right.}
-\end{equation}
-The functions <code>nContMoe</code> and <code>nPropMoe</code> will make the sample size calculations based on MOEs for continuous variables and for proportions. </p>
-
+<p>Many investigators prefer to think of setting a tolerance for how close the estimate should be to the population value. If the tolerance, sometimes called the <em>margin of error</em> (MOE), is <span class="math inline">\(\small e\)</span> and the goal is to be within <span class="math inline">\(\small e\)</span> of the population mean with probability <span class="math inline">\(\small 1-\alpha\)</span>, this translates to <span class="math display">\[\begin{equation}
+\small Pr \left(\left|\bar{y}_{s} -\bar{y}_{U} \right|\le e\right)=1-\alpha.
+\end{equation}\]</span> This is equivalent to setting the half-width of a <span class="math inline">\(\small 100\left(1-\alpha \right)\)</span> two-sided confidence interval (CI) to <span class="math inline">\(\small e=z_{1-\alpha\left/2\right.} \sqrt{V\left(\bar{y}_{s} \right)}\)</span>, assuming that <span class="math inline">\(\small \bar{y}_{s}\)</span> can be treated as being normally distributed. The term <span class="math inline">\(\small z_{1-\alpha\left/2\right.}\)</span> is the <span class="math inline">\(\small 100\left(1-\alpha\left/2\right. \right)\)</span> percentile of the standard normal distribution, i.e., the point with <span class="math inline">\(\small 1-\alpha\left/2\right.\)</span> of the area to its left. On the other hand, if we require <span class="math display">\[\begin{equation}
+   \small Pr \left(\left|\frac{\bar{y}_{s} -\bar{y}_{U}}{\bar{y}_{U}} \right|\le e\right)=1-\alpha, \end{equation}\]</span></p>
+<p>this corresponds to setting <span class="math inline">\(\small e=z_{1-\alpha\left/2\right. }CV\left(\bar{y}_{s}\right)\)</span>. If we set the MOE in (1) to <span class="math inline">\(\small e_{0}\)</span>, then the above equation can be manipulated to give the required sample size as</p>
+<p><span class="math display">\[\begin{equation}
+  \small n=\frac{z_{1-\alpha\left/2\right.}^{2} S_U^{2}}{e_{0}^{2}+z_{1-\alpha\left/2\right.}^{2} S_U^{2}\left/N\right.}.
+\end{equation}\]</span></p>
+<p>Similarly, if the MOE in (2) is set to <span class="math inline">\(\small e_{0}\)</span>, we obtain <span class="math display">\[\begin{equation}
+   \small n=\frac{z_{1-\alpha\left/2\right.}^{2} S_U^{2}\left/ \bar{y}_{U}^{2}\right.}{e_{0}^{2} +z_{1-\alpha \left/2\right.}^{2} S_U^{2}\left/ \left(N\bar{y}_{U}^{2} \right)\right.}
+\end{equation}\]</span> The functions <code>nContMoe</code> and <code>nPropMoe</code> will make the sample size calculations based on MOEs for continuous variables and for proportions.</p>
 <ul>
-<li><strong>Example 3: Sample sizes  for proportions based on an MOE.</strong> 
-Suppose that we want to estimate a proportion for a characteristic where an advance estimate is \(\small p_{U} =0.5\). The MOE is to be \(\small e\) when \(\small \alpha =0.05\).  In other words, the sample should be large enough that a normal-approximation 95\% confidence interval should be \(\small 0.50\pm e\) as implied by (1).  For example, if \(\small e=0.03\) and the estimated proportion were actually 0.5, we want the confidence interval to be \(\small 0.50\pm 0.03=\left[0.47,0.53\right]\).  The sample size is highly dependent on the width of the confidence interval as seen in the following table.  Sample sizes are evaluated using the formula given in (3) with \(\small S_U^2 = Np_U(1-p_U)/(N-1)\), \(\small p_{U} =0.5\) and \(\small z_{0.975} =1.96\). The command to generate the sample sizes listed in the table below is</li>
+<li><strong>Example 3: Sample sizes for proportions based on an MOE.</strong> Suppose that we want to estimate a proportion for a characteristic where an advance estimate is <span class="math inline">\(\small p_{U} =0.5\)</span>. The MOE is to be <span class="math inline">\(\small e\)</span> when <span class="math inline">\(\small \alpha =0.05\)</span>. In other words, the sample should be large enough that a normal-approximation 95% confidence interval should be <span class="math inline">\(\small 0.50\pm e\)</span> as implied by (1). For example, if <span class="math inline">\(\small e=0.03\)</span> and the estimated proportion were actually 0.5, we want the confidence interval to be <span class="math inline">\(\small 0.50\pm 0.03=\left[0.47,0.53\right]\)</span>. The sample size is highly dependent on the width of the confidence interval as seen in the following table. Sample sizes are evaluated using the formula given in (3) with <span class="math inline">\(\small S_U^2 = Np_U(1-p_U)/(N-1)\)</span>, <span class="math inline">\(\small p_{U} =0.5\)</span> and <span class="math inline">\(\small z_{0.975} =1.96\)</span>. The command to generate the sample sizes listed in the table below is</li>
 </ul>
-
-<pre><code class="r">    ceiling(nPropMoe(moe.sw=1, e=seq(0.01,0.08,0.01), alpha=0.05, pU=0.5))
-#&gt; [1] 9604 2401 1068  601  385  267  196  151
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="right">\(e\)</th>
-<th align="right">\(n\)</th>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ceiling</span>(<span class="fu">nPropMoe</span>(<span class="at">moe.sw=</span><span class="dv">1</span>, <span class="at">e=</span><span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="fl">0.08</span>,<span class="fl">0.01</span>), <span class="at">alpha=</span><span class="fl">0.05</span>, <span class="at">pU=</span><span class="fl">0.5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 9604 2401 1068  601  385  267  196  151</span></span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right"><span class="math inline">\(e\)</span></th>
+<th align="right"><span class="math inline">\(n\)</span></th>
 <th align="right"></th>
-<th align="right">\(e\)</th>
-<th align="right">\(n\)</th>
+<th align="right"><span class="math inline">\(e\)</span></th>
+<th align="right"><span class="math inline">\(n\)</span></th>
 </tr>
-</thead><tbody>
-<tr>
+</thead>
+<tbody>
+<tr class="odd">
 <td align="right">0.01</td>
 <td align="right">9,604</td>
 <td align="right"></td>
 <td align="right">0.05</td>
 <td align="right">385</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="right">0.02</td>
 <td align="right">2,401</td>
 <td align="right"></td>
 <td align="right">0.06</td>
 <td align="right">267</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="right">0.03</td>
 <td align="right">1,068</td>
 <td align="right"></td>
 <td align="right">0.07</td>
 <td align="right">196</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="right">0.04</td>
 <td align="right">601</td>
 <td align="right"></td>
 <td align="right">0.08</td>
 <td align="right">151</td>
 </tr>
-</tbody></table>
-
-<p>The parameter <code>moe.sw=1</code> says to compute the sample size based on (3). <code>moe.sw=2</code> would use the MOE relative to \(\small \bar{y}_U\) in (4).</p>
-
+</tbody>
+</table>
+<p>The parameter <code>moe.sw=1</code> says to compute the sample size based on (3). <code>moe.sw=2</code> would use the MOE relative to <span class="math inline">\(\small \bar{y}_U\)</span> in (4).</p>
+</div>
+</div>
+<div id="stratified-simple-random-sampling" class="section level2">
 <h2>Stratified Simple Random Sampling</h2>
-
-<p>Simple random samples are rare in practice for several reasons.  Most surveys have multiple variables and domains for which estimates are desired.  Selecting a simple random sample runs the risk that one or more important domains will be poorly represented or omitted entirely.  In addition, variances of survey estimates often can be reduced by using a design that is not <em>srswor</em>.</p>
-
-<p>A design that remedies some of the problems noted for an <em>srswor</em> is referred to as stratified simple random sampling (without replacement) or <em>stsrswor</em>.  As the name indicates, an <em>srswor</em> design is administered within each design stratum.  Strata are defined with one or more variables known for <em>all</em> units and partition the entire population into mutually exclusive groups of units.  We might, for example, divide a population of business establishments into retail trade, wholesale trade, services, manufacturing, and other sectors.  A household population could be divided into geographic regions&mdash;north, south, east, and west.  For an <em>stsrswor</em>, we define the following terms:</p>
-
-<p>\(\small N_{h}\) = the known number of units in the population in stratum <em>h</em> (\(\small h=1,2,\ldots ,H\))</p>
-
-<p>\(\small n_{h}\)  = the size of the <em>srswor</em> selected in stratum <em>h</em></p>
-
-<p>\(\small y_{hi}\)  = the value of the <em>y</em> variable for unit <em>i</em> in stratum <em>h</em></p>
-
-<p>\(\small S_{Uh}^{2}=\sum_{i=1}^{N_{h}}\left(y_{hi}-\bar{y}_{U_h}\right)^{2}\left/ \left(N_{h} -1\right)\right.\), the population variance in stratum <em>h</em></p>
-
-<p>\(\small U_{h}\) = set of all units in the population from stratum <em>h</em></p>
-
-<p>\(\small s_{h}\)  = set of \(\small n_{h}\) sample units from stratum <em>h</em></p>
-
-<p>\(\small c_h\) = cost per sample unit in stratum <em>h</em></p>
-
-<p>The population mean of <em>y</em> is \(\small \bar{y}_{U} =\sum_{h=1}^{H}W_{h}\bar{y}_{U_h}\),
-where \(\small W_{h}=N_{h}\left/ N\right.\) and \(\small \bar{y}_{U_h}\) is the population mean in stratum <em>h</em>.  The sample estimator of \(\small \bar{y}_{U}\) based on an <em>stsrswor</em> is
-\begin{equation} 
-   \small \bar{y}<em>{st} =\sum</em>{h=1}<sup>{H}W_{h}</sup> \bar{y}<em>{s_h}, \notag
-\end{equation}
-where $\small \bar{y}</em>{s<em>h} =\sum</em>{i\in s<em>{h}}y</em>{hi}\left/n<em>{h}\right.$.  The population sampling variance of the stratified estimator of the mean is
-\begin{equation} 
-\small Var\left(\bar{y}</em>{st}\right) = \sum<em>{h=1}<sup>{H}W</sup></em>{h}<sup>{2}</sup> \frac{1-f<em>{h}}{n</em>{h}} S<em>{Uh}<sup>{2},</sup> \notag
-\end{equation}
-where $\small f</em>{h} = n<em>{h}\left/N</em>{h}\right.$.  The total cost of the sample is
-\[\small C = \sum_{h=1}^{H} c_h n_h.\]</p>
-
+<p>Simple random samples are rare in practice for several reasons. Most surveys have multiple variables and domains for which estimates are desired. Selecting a simple random sample runs the risk that one or more important domains will be poorly represented or omitted entirely. In addition, variances of survey estimates often can be reduced by using a design that is not <em>srswor</em>.</p>
+<p>A design that remedies some of the problems noted for an <em>srswor</em> is referred to as stratified simple random sampling (without replacement) or <em>stsrswor</em>. As the name indicates, an <em>srswor</em> design is administered within each design stratum. Strata are defined with one or more variables known for <em>all</em> units and partition the entire population into mutually exclusive groups of units. We might, for example, divide a population of business establishments into retail trade, wholesale trade, services, manufacturing, and other sectors. A household population could be divided into geographic regions—north, south, east, and west. For an <em>stsrswor</em>, we define the following terms:</p>
+<p><span class="math inline">\(\small N_{h}\)</span> = the known number of units in the population in stratum <em>h</em> (<span class="math inline">\(\small h=1,2,\ldots ,H\)</span>)</p>
+<p><span class="math inline">\(\small n_{h}\)</span> = the size of the <em>srswor</em> selected in stratum <em>h</em></p>
+<p><span class="math inline">\(\small y_{hi}\)</span> = the value of the <em>y</em> variable for unit <em>i</em> in stratum <em>h</em></p>
+<p><span class="math inline">\(\small S_{Uh}^{2}=\sum_{i=1}^{N_{h}}\left(y_{hi}-\bar{y}_{U_h}\right)^{2}\left/ \left(N_{h} -1\right)\right.\)</span>, the population variance in stratum <em>h</em></p>
+<p><span class="math inline">\(\small U_{h}\)</span> = set of all units in the population from stratum <em>h</em></p>
+<p><span class="math inline">\(\small s_{h}\)</span> = set of <span class="math inline">\(\small n_{h}\)</span> sample units from stratum <em>h</em></p>
+<p><span class="math inline">\(\small c_h\)</span> = cost per sample unit in stratum <em>h</em></p>
+<p>The population mean of <em>y</em> is <span class="math inline">\(\small \bar{y}_{U} =\sum_{h=1}^{H}W_{h}\bar{y}_{U_h}\)</span>, where <span class="math inline">\(\small W_{h}=N_{h}\left/ N\right.\)</span> and <span class="math inline">\(\small \bar{y}_{U_h}\)</span> is the population mean in stratum <em>h</em>. The sample estimator of <span class="math inline">\(\small \bar{y}_{U}\)</span> based on an <em>stsrswor</em> is <span class="math display">\[\begin{equation} 
+   \small \bar{y}_{st} =\sum_{h=1}^{H}W_{h} \bar{y}_{s_h}, \notag
+\end{equation}\]</span> where <span class="math inline">\(\small \bar{y}_{s_h} =\sum_{i\in s_{h}}y_{hi}\left/n_{h}\right.\)</span>. The population sampling variance of the stratified estimator of the mean is <span class="math display">\[\begin{equation} 
+\small Var\left(\bar{y}_{st}\right) = \sum_{h=1}^{H}W_{h}^{2} \frac{1-f_{h}}{n_{h}} S_{Uh}^{2}, \notag
+\end{equation}\]</span> where <span class="math inline">\(\small f_{h} = n_{h}\left/N_{h}\right.\)</span>. The total cost of the sample is <span class="math display">\[\small C = \sum_{h=1}^{H} c_h n_h.\]</span></p>
 <p>There are various ways of allocating the sample to the strata, including:</p>
-
-<ol>
-<li><p>Proportional to the \(\small N_h\) population counts </p></li>
-<li><p>Equal allocation (all \(\small n_h\) the same)</p></li>
-<li><p>Cost-constrained optimal in which the allocation minimizes the variance of \(\small \bar{y}_{st}\) subject to a fixed budget</p></li>
-<li><p>Variance-constrained optimal in which the allocation minimizes the total cost subject to a fixed variance target for \(\small \bar{y}_{st}\)</p></li>
-<li><p>Neyman allocation, which minimizes the variance of the estimated mean disregarding the \(\small c_h\) costs</p></li>
+<ol style="list-style-type: decimal">
+<li><p>Proportional to the <span class="math inline">\(\small N_h\)</span> population counts</p></li>
+<li><p>Equal allocation (all <span class="math inline">\(\small n_h\)</span> the same)</p></li>
+<li><p>Cost-constrained optimal in which the allocation minimizes the variance of <span class="math inline">\(\small \bar{y}_{st}\)</span> subject to a fixed budget</p></li>
+<li><p>Variance-constrained optimal in which the allocation minimizes the total cost subject to a fixed variance target for <span class="math inline">\(\small \bar{y}_{st}\)</span></p></li>
+<li><p>Neyman allocation, which minimizes the variance of the estimated mean disregarding the <span class="math inline">\(\small c_h\)</span> costs</p></li>
 </ol>
-
 <p>The R function, <code>strAlloc</code>, will compute the proportional, Neyman, cost-constrained, and variance-constrained allocations. The parameters accepted by the function are shown below.</p>
-
 <pre><code>   n.tot = fixed total sample size 
    Nh = vector of pop stratum sizes or pop stratum proportions (required parameter)
    Sh = stratum unit standard deviations, required unless alloc = &quot;prop&quot; 
@@ -371,161 +286,187 @@ where $\small f</em>{h} = n<em>{h}\left/N</em>{h}\right.$.  The total cost of th
    V0 = fixed variance target for estimated mean 
    CV0 = fixed CV target for estimated mean 
    ybarU = pop mean of y  
-   alloc = type of allocation, must be one of &quot;prop&quot;, &quot;neyman&quot;, &quot;totcost&quot;, &quot;totvar&quot;
-</code></pre>
-
+   alloc = type of allocation, must be one of &quot;prop&quot;, &quot;neyman&quot;, &quot;totcost&quot;, &quot;totvar&quot;</code></pre>
 <p>If the stratum standard deviations are unknown (as would usually be the case), estimates can be used.</p>
-
-<p>The parameters can only be used in certain combinations, which are checked at the beginning of the function. Basically, given an allocation, only the parameters required for the allocation are allowed and no more. For example, the Neyman allocation requires <code>Nh</code>, <code>Sh</code>, and <code>n.tot</code>. The function returns a list with three components&mdash;the allocation type, the vector of sample sizes, and the vector of sample proportions allocated to each stratum.  Three examples of allocations are Neyman, cost constrained, and variance constrained (via a target CV):</p>
-
-<pre><code class="r"># Neyman allocation
-Nh &lt;- c(215, 65, 252, 50, 149, 144)
-Sh &lt;- c(26787207, 10645109, 6909676, 11085034, 9817762, 44553355)
-strAlloc(n.tot = 100, Nh = Nh, Sh = Sh, alloc = &quot;neyman&quot;)
-#&gt; 
-#&gt;      
-#&gt; 
-#&gt;                       allocation = neyman
-#&gt;                               Nh = 215, 65, 252, 50, 149, 144
-#&gt;                               Sh = 26787207, 10645109, 6909676, 11085034, 9817762, 44553355
-#&gt;                               nh = 34.641683, 4.161947, 10.473487, 3.333804, 8.798970, 38.590108
-#&gt;                             nh/n = 0.34641683, 0.04161947, 0.10473487, 0.03333804, 0.08798970, 0.38590108
-#&gt; anticipated SE of estimated mean = 1727173
-
-# cost constrained allocation
-ch &lt;- c(1400, 200, 300, 600, 450, 1000)
-strAlloc(Nh = Nh, Sh = Sh, cost = 100000, ch = ch, alloc = &quot;totcost&quot;)
-#&gt; 
-#&gt;      
-#&gt; 
-#&gt;                       allocation = totcost
-#&gt;                               Nh = 215, 65, 252, 50, 149, 144
-#&gt;                               Sh = 26787207, 10645109, 6909676, 11085034, 9817762, 44553355
-#&gt;                               nh = 30.605403, 9.728474, 19.989127, 4.499121, 13.711619, 40.340301
-#&gt;                             nh/n = 0.2574608, 0.0818385, 0.1681538, 0.0378478, 0.1153458, 0.3393533
-#&gt; anticipated SE of estimated mean = 1636053
-
-# allocation with CV target of 0.05
-strAlloc(Nh = Nh, Sh = Sh, CV0 = 0.05, ch = ch, ybarU = 11664181, alloc = &quot;totvar&quot;)
-#&gt; 
-#&gt;      
-#&gt; 
-#&gt;                       allocation = totvar
-#&gt;                               Nh = 215, 65, 252, 50, 149, 144
-#&gt;                               Sh = 26787207, 10645109, 6909676, 11085034, 9817762, 44553355
-#&gt;                               nh = 104.54922, 33.23283, 68.28362, 15.36917, 46.83941, 137.80400
-#&gt;                             nh/n = 0.2574608, 0.0818385, 0.1681538, 0.0378478, 0.1153458, 0.3393533
-#&gt; anticipated SE of estimated mean = 583209.1
-</code></pre>
-
-<p>The output of <code>strAlloc</code> is a list with components: <code>allocation</code> (the type of allocation), <code>Nh</code>, <code>Sh</code>, <code>nh</code>, <code>nh/n</code>, and <code>anticipated SE of estimated mean</code>. If the results are assigned to an object, e.g.,
-<code>neyman &lt;- strAlloc(n.tot = 100, Nh = Nh, Sh = Sh, alloc = &quot;neyman&quot;)</code>,
-the components in the list can be accessed with syntax like <code>neyman$nh</code>.</p>
-
-<p>There are many variations on how to allocate a sample to strata. In most practical applications, there are multiple variables for which estimates are needed. This complicates the allocation problem because each variable may have a different optimal allocation. This type of multicriteria problem can be solved using mathematical programming as discussed in @VDK.2018, ch. 5. </p>
-
+<p>The parameters can only be used in certain combinations, which are checked at the beginning of the function. Basically, given an allocation, only the parameters required for the allocation are allowed and no more. For example, the Neyman allocation requires <code>Nh</code>, <code>Sh</code>, and <code>n.tot</code>. The function returns a list with three components—the allocation type, the vector of sample sizes, and the vector of sample proportions allocated to each stratum. Three examples of allocations are Neyman, cost constrained, and variance constrained (via a target CV):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Neyman allocation</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Nh <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">215</span>, <span class="dv">65</span>, <span class="dv">252</span>, <span class="dv">50</span>, <span class="dv">149</span>, <span class="dv">144</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Sh <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">26787207</span>, <span class="dv">10645109</span>, <span class="dv">6909676</span>, <span class="dv">11085034</span>, <span class="dv">9817762</span>, <span class="dv">44553355</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">strAlloc</span>(<span class="at">n.tot =</span> <span class="dv">100</span>, <span class="at">Nh =</span> Nh, <span class="at">Sh =</span> Sh, <span class="at">alloc =</span> <span class="st">&quot;neyman&quot;</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       allocation = neyman</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Nh = 215, 65, 252, 50, 149, 144</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Sh = 26787207, 10645109, 6909676, 11085034, 9817762, 44553355</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               nh = 34.641683, 4.161947, 10.473487, 3.333804, 8.798970, 38.590108</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             nh/n = 0.34641683, 0.04161947, 0.10473487, 0.03333804, 0.08798970, 0.38590108</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; anticipated SE of estimated mean = 1727173</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># cost constrained allocation</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ch <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1400</span>, <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">600</span>, <span class="dv">450</span>, <span class="dv">1000</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">strAlloc</span>(<span class="at">Nh =</span> Nh, <span class="at">Sh =</span> Sh, <span class="at">cost =</span> <span class="dv">100000</span>, <span class="at">ch =</span> ch, <span class="at">alloc =</span> <span class="st">&quot;totcost&quot;</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      </span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       allocation = totcost</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Nh = 215, 65, 252, 50, 149, 144</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Sh = 26787207, 10645109, 6909676, 11085034, 9817762, 44553355</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               nh = 30.605403, 9.728474, 19.989127, 4.499121, 13.711619, 40.340301</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             nh/n = 0.2574608, 0.0818385, 0.1681538, 0.0378478, 0.1153458, 0.3393533</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; anticipated SE of estimated mean = 1636053</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co"># allocation with CV target of 0.05</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="fu">strAlloc</span>(<span class="at">Nh =</span> Nh, <span class="at">Sh =</span> Sh, <span class="at">CV0 =</span> <span class="fl">0.05</span>, <span class="at">ch =</span> ch, <span class="at">ybarU =</span> <span class="dv">11664181</span>, <span class="at">alloc =</span> <span class="st">&quot;totvar&quot;</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      </span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       allocation = totvar</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Nh = 215, 65, 252, 50, 149, 144</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Sh = 26787207, 10645109, 6909676, 11085034, 9817762, 44553355</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               nh = 104.54922, 33.23283, 68.28362, 15.36917, 46.83941, 137.80400</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             nh/n = 0.2574608, 0.0818385, 0.1681538, 0.0378478, 0.1153458, 0.3393533</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; anticipated SE of estimated mean = 583209.1</span></span></code></pre></div>
+<p>The output of <code>strAlloc</code> is a list with components: <code>allocation</code> (the type of allocation), <code>Nh</code>, <code>Sh</code>, <code>nh</code>, <code>nh/n</code>, and <code>anticipated SE of estimated mean</code>. If the results are assigned to an object, e.g., <code>neyman &lt;- strAlloc(n.tot = 100, Nh = Nh, Sh = Sh, alloc = &quot;neyman&quot;)</code>, the components in the list can be accessed with syntax like <code>neyman$nh</code>.</p>
+<p>There are many variations on how to allocate a sample to strata. In most practical applications, there are multiple variables for which estimates are needed. This complicates the allocation problem because each variable may have a different optimal allocation. This type of multicriteria problem can be solved using mathematical programming as discussed in <span class="citation">R. Valliant, Dever, and Kreuter (2018)</span>, ch. 5.</p>
+</div>
+<div id="probability-proportional-to-size-sampling" class="section level2">
 <h2>Probability Proportional to Size Sampling</h2>
-
-<p>Probability proportional to size (<em>pps</em>), single-stage sampling is used in situations where an auxiliary variable (i.e., a covariate) is available on the frame that is related to the variable(s) to be collected in a survey. For example, the number of employees in a business establishment one year ago is probably related to the number of employees the establishment has in the current time period. </p>
-
-<p>The variance formula for an estimated mean in a <em>pps</em> sample selected without replacement is too complex to be useful in determining a sample size. Thus, a standard workaround is to use the with-replacement (<em>ppswr</em>) variance formula to calculate a sample size. The result may be somewhat larger than needed to hit a precision target, but if the sample is reduced by nonresponse, beginning with a larger sample is prudent anyway. The simplest estimator of the mean that is usually studied with <em>ppswr</em> sampling is called &ldquo;<em>p</em>-expanded with replacement&#39;&#39; or <em>pwr</em> (see @SSW.92, ch.2) and is defined as
-\begin{equation}
-   \small \hat{\bar{y}}<em>{\textit{pwr}} =\frac{1}{Nn} \sum</em>{i \in s}\frac{y<em>{i}}{p</em>{i}} \notag
-\end{equation}
-where \(\small p_i\) is the probability that unit \(\small i\) would be selected in a sample of size 1. The variance of \(\small \hat{\bar{y}}_{\textit{pwr}}\) in <em>ppswr</em> sampling is
-\begin{equation} \label{eq:vpwr}
-    \small Var\left(\hat{\bar{y}}<em>{pwr} \right)=\frac{1}{N<sup>{2}</sup> n} \sum</em>{U}p<em>{i} \left(\frac{y</em>{i}}{p<em>{i}} - t_U\right)<sup>{2}</sup>  \equiv \frac{V</em>{1}}{N<sup>{2}n}</sup>
-\end{equation}
-where \(\small t_U\) is the population total of \(\small y\).  </p>
-
-<p>If the desired coefficient of variation is \(\small CV_{0}\), \(\small \eqref{eq:vpwr}\) can be solved to give the sample size as
-\begin{equation} \label{eq:n.pwr}
-    \small n=\frac{V<em>{1}}{N<sup>{2}}</sup> \frac{1}{\bar{y}</em>{U}<sup>{2}</sup> CV_{0}<sup>{2}}\;.</sup>
-\end{equation}</p>
-
-<p><img src="data:image/png;base64,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" alt="Figure 1. Plot of expenditures vs. beds in hospital population"/></p>
-
+<p>Probability proportional to size (<em>pps</em>), single-stage sampling is used in situations where an auxiliary variable (i.e., a covariate) is available on the frame that is related to the variable(s) to be collected in a survey. For example, the number of employees in a business establishment one year ago is probably related to the number of employees the establishment has in the current time period.</p>
+<p>The variance formula for an estimated mean in a <em>pps</em> sample selected without replacement is too complex to be useful in determining a sample size. Thus, a standard workaround is to use the with-replacement (<em>ppswr</em>) variance formula to calculate a sample size. The result may be somewhat larger than needed to hit a precision target, but if the sample is reduced by nonresponse, beginning with a larger sample is prudent anyway. The simplest estimator of the mean that is usually studied with <em>ppswr</em> sampling is called ``<em>p</em>-expanded with replacement’’ or <em>pwr</em> (see <span class="citation">Särndal, Swensson, and Wretman (1992)</span>, ch.2) and is defined as <span class="math display">\[\begin{equation}
+   \small \hat{\bar{y}}_{\textit{pwr}} =\frac{1}{Nn} \sum_{i \in s}\frac{y_{i}}{p_{i}} \notag
+\end{equation}\]</span> where <span class="math inline">\(\small p_i\)</span> is the probability that unit <span class="math inline">\(\small i\)</span> would be selected in a sample of size 1. The variance of <span class="math inline">\(\small \hat{\bar{y}}_{\textit{pwr}}\)</span> in <em>ppswr</em> sampling is <span class="math display">\[\begin{equation} \label{eq:vpwr}
+    \small Var\left(\hat{\bar{y}}_{pwr} \right)=\frac{1}{N^{2} n} \sum_{U}p_{i} \left(\frac{y_{i}}{p_{i}} - t_U\right)^{2}  \equiv \frac{V_{1}}{N^{2}n}
+\end{equation}\]</span> where <span class="math inline">\(\small t_U\)</span> is the population total of <span class="math inline">\(\small y\)</span>.</p>
+<p>If the desired coefficient of variation is <span class="math inline">\(\small CV_{0}\)</span>, <span class="math inline">\(\small \eqref{eq:vpwr}\)</span> can be solved to give the sample size as <span class="math display">\[\begin{equation} \label{eq:n.pwr}
+    \small n=\frac{V_{1}}{N^{2}} \frac{1}{\bar{y}_{U}^{2} CV_{0}^{2}}\;.
+\end{equation}\]</span></p>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Figure 1. Plot of expenditures vs. beds in hospital population</p>
+</div>
 <ul>
-<li><strong>Example 4: Sample size in a <em>pps</em> sample.</strong> 
-We use <code>smho.N874</code>, which is one of the example populations in the <code>PracTools</code> package, to illustrate a <em>pps</em> sample size calculation. Figure 1 plots annual expenditures per hospital versus number of beds for the 670 hospitals that have inpatient beds. Although the relationship is fairly diffuse, the correlation of beds and expenditures is 0.70 so that <em>pps</em> sampling with beds as a measure of size could be efficient. The code below evaluates \(\small \eqref{eq:n.pwr}\) giving a <em>pps</em> sample of \(\small n = 57\), which will produce an anticipated <em>CV</em> of 0.149. In contrast, an <em>srs</em> of \(\small n = 82\) would be necessary to obtain the same size <em>CV</em>.</li>
+<li><strong>Example 4: Sample size in a <em>pps</em> sample.</strong> We use <code>smho.N874</code>, which is one of the example populations in the <code>PracTools</code> package, to illustrate a <em>pps</em> sample size calculation. Figure 1 plots annual expenditures per hospital versus number of beds for the 670 hospitals that have inpatient beds. Although the relationship is fairly diffuse, the correlation of beds and expenditures is 0.70 so that <em>pps</em> sampling with beds as a measure of size could be efficient. The code below evaluates <span class="math inline">\(\small \eqref{eq:n.pwr}\)</span> giving a <em>pps</em> sample of <span class="math inline">\(\small n = 57\)</span>, which will produce an anticipated <em>CV</em> of 0.149. In contrast, an <em>srs</em> of <span class="math inline">\(\small n = 82\)</span> would be necessary to obtain the same size <em>CV</em>.</li>
 </ul>
-
-<pre><code class="r">require(PracTools)
-data(&quot;smho.N874&quot;)
-
-y &lt;- smho.N874[,&quot;EXPTOTAL&quot;]
-x &lt;- smho.N874[, &quot;BEDS&quot;]
-y &lt;- y[x&gt;0]
-x &lt;- x[x&gt;0]
-ybarU &lt;- mean(y)
-
-(N &lt;- length(x))
-#&gt; [1] 670
-CV0 &lt;- 0.15
-
-  # calculate V1 based on pp(x) sample
-pik &lt;- x/sum(x)
-T &lt;- sum(y)
-(V1 &lt;- sum( pik*(y/pik - T)^2))
-#&gt; [1] 9.53703e+19
-
-n &lt;- V1 / (N*ybarU*CV0)^2
-(n &lt;- ceiling(n))
-#&gt; [1] 57
-
-  # Anticipated SE for the pps sample
-(cv.pps &lt;- sqrt(V1/(N^2*n)) / ybarU)
-#&gt; [1] 0.1495183
-
-  # sample size for an srs to produce the same SE
-ceiling(nCont(CV0 = cv.pps, S2 = var(y), ybarU = ybarU, N = N))
-#&gt; [1] 82
-</code></pre>
-
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(PracTools)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;smho.N874&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> smho.N874[,<span class="st">&quot;EXPTOTAL&quot;</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> smho.N874[, <span class="st">&quot;BEDS&quot;</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> y[x<span class="sc">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x[x<span class="sc">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ybarU <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>(N <span class="ot">&lt;-</span> <span class="fu">length</span>(x))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 670</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>CV0 <span class="ot">&lt;-</span> <span class="fl">0.15</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate V1 based on pp(x) sample</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>pik <span class="ot">&lt;-</span> x<span class="sc">/</span><span class="fu">sum</span>(x)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="fu">sum</span>(y)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>(V1 <span class="ot">&lt;-</span> <span class="fu">sum</span>( pik<span class="sc">*</span>(y<span class="sc">/</span>pik <span class="sc">-</span> T)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 9.53703e+19</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> V1 <span class="sc">/</span> (N<span class="sc">*</span>ybarU<span class="sc">*</span>CV0)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>(n <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(n))</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 57</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Anticipated SE for the pps sample</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>(cv.pps <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(V1<span class="sc">/</span>(N<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>n)) <span class="sc">/</span> ybarU)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.1495183</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample size for an srs to produce the same SE</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ceiling</span>(<span class="fu">nCont</span>(<span class="at">CV0 =</span> cv.pps, <span class="at">S2 =</span> <span class="fu">var</span>(y), <span class="at">ybarU =</span> ybarU, <span class="at">N =</span> N))</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 82</span></span></code></pre></div>
 <p>The <code>PracTools</code> package includes a variety of other functions relevant to the design of single-stage samples that are not discussed in this vignette:</p>
-
-<table><thead>
-<tr>
+<table>
+<colgroup>
+<col width="45%" />
+<col width="54%" />
+</colgroup>
+<thead>
+<tr class="header">
 <th align="left">Function</th>
 <th align="left">Description</th>
 </tr>
-</thead><tbody>
-<tr>
-<td align="left"><img width=100/></td>
-<td align="left"><img width=500/></td>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><img width="100/"></td>
+<td align="left"><img width="500/"></td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left"><code>gammaFit</code></td>
-<td align="left">Iteratively computes estimate of \(\small \gamma\) in a model with \(\small E_M(y) = \mathbf{x}^T\boldsymbol{\beta}\) and \(\small \sigma^2 \mathbf{x}^\gamma\). This is useful in determining a measure of size for <em>pps</em> sampling.</td>
+<td align="left">Iteratively computes estimate of <span class="math inline">\(\small \gamma\)</span> in a model with <span class="math inline">\(\small E_M(y) = \mathbf{x}^T\boldsymbol{\beta}\)</span> and <span class="math inline">\(\small \sigma^2 \mathbf{x}^\gamma\)</span>. This is useful in determining a measure of size for <em>pps</em> sampling.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left"><code>nDep2sam</code></td>
 <td align="left">Compute a simple random sample size for estimating the difference in means when samples overlap</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left"><code>nDomain</code></td>
 <td align="left">Compute a simple random sample size using either a target coefficient of variation or target variance for an estimated mean or total for a domain</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left"><code>nLogOdds</code></td>
 <td align="left">Calculate the simple random sample size for estimating a proportion using the log-odds transformation</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left"><code>nProp</code></td>
 <td align="left">Compute the simple random sample size for estimating a proportion based on different precision requirements</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left"><code>nProp2sam</code></td>
 <td align="left">Compute a simple random sample size for estimating the difference in proportions when samples overlap</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left"><code>nWilson</code></td>
 <td align="left">Calculate a simple random sample size for estimating a proportion using the Wilson method</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Cochran.77" class="csl-entry">
+Cochran, W. G. 1977. <em>Sampling Techniques</em>. New York: John Wiley &amp; Sons, Inc.
+</div>
+<div id="ref-Lohr.99" class="csl-entry">
+Lohr, S. L. 1999. <em>Sampling: Design and Analysis</em>. Pacific Grove CA: Duxbury Press.
+</div>
+<div id="ref-Rcore" class="csl-entry">
+R Core Team. 2020. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="http://www.R-project.org/">http://www.R-project.org/</a>.
+</div>
+<div id="ref-SSW.92" class="csl-entry">
+Särndal, C.-E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.
+</div>
+<div id="ref-Tille.2016" class="csl-entry">
+Tillé, Y., and A. Matei. 2016. <em><span class="nocase">sampling:</span> Survey Sampling, Version 2.8</em>. <a href="http://CRAN.R-project.org/package=sampling">http://CRAN.R-project.org/package=sampling</a>.
+</div>
+<div id="ref-VDK.2018" class="csl-entry">
+Valliant, R., J. A. Dever, and F. Kreuter. 2018. <em>Practical Tools for Designing and Weighting Survey Samples</em>. 2nd ed. New York: Springer-Verlag.
+</div>
+<div id="ref-Valliant.2019" class="csl-entry">
+Valliant, Richard, Jill A. Dever, and Frauke Kreuter. 2019. <em>PracTools: Tools for Designing and Weighting Survey Samples, Version 1.2.1</em>. <a href="https://CRAN.R-project.org/package=PracTools">https://CRAN.R-project.org/package=PracTools</a>.
+</div>
+</div>
+</div>
 
-<h2>References</h2>
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>
