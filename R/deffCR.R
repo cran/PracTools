@@ -43,7 +43,7 @@ deffCR <- function(w, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, y){
                 nh.star.num <- sum(nh.star.num^2)
                 nh.star.den <- sum(wsub^2)
                 nh.star[h] <- nh.star.num / nh.star.den
-                rhoh[h] <- (strdeff[h] - (1 + cv2h[h])) / (1 + cv2h[h]*(nh.star[h]-1))
+                rhoh[h] <- (strdeff[h] - (1 + cv2h[h])) / ((1 + cv2h[h])*(nh.star[h]-1))
                 sig2h[h] <- nh[h] / (nh[h]-1) * sum(wsub*(ysub - sum(wsub*ysub)/sum(wsub))^2) / (sum(wsub)-1)
                 deff.s[h] <- Wh[h]^2/ nh[h] * n * sig2h[h] / sig2
             }
@@ -71,7 +71,7 @@ deffCR <- function(w, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, y){
             strmns <- survey::svymean(~y, design=sam.dsgn, deff=TRUE)
             strdeff <- survey::deff(strmns)
             cv2h <- (nh-1)/nh * var(w) / mean(w)^2
-            rhoh <- (strdeff - (1 + cv2h)) / (1 + cv2h*(nh.star-1))
+            rhoh <- (strdeff - (1 + cv2h)) / ((1 + cv2h)*(nh.star-1))
             deff.w = 1 + cv2h
             deff.c = 1 + (nh.star-1)*rhoh
             out <- list(cbind(deff.w = deff.w, deff.c = deff.c, deff.s = NULL),

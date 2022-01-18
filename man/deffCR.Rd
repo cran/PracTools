@@ -43,7 +43,7 @@ require(sampling)
 require(reshape)
 data(MDarea.pop)
 Ni <- table(MDarea.pop$TRACT)
-m <- 10
+m <- 20
 probi <- m*Ni / sum(Ni)
     # select sample of clusters
 set.seed(-780087528)
@@ -53,7 +53,7 @@ sam <- sampling::cluster(data=MDarea.pop, clustername="TRACT", size=m, method="s
 samclus <- getdata(MDarea.pop, sam)
 samclus <- rename(samclus, c(Prob = "pi1"))
     # treat sample clusters as strata and select srswor from each
-nbar <- 4
+nbar <- 8
 s <- sampling::strata(data = as.data.frame(samclus), stratanames = "TRACT",
             size = rep(nbar,m), method="srswor")
     # extracts the observed data

@@ -1,5 +1,5 @@
-929cd68ed40b2b6847920585825805ba *DESCRIPTION
-01ac6a35e2037ea23349bfd1be71a7e9 *NAMESPACE
+c9c9fd626091401d3a799d910b085f68 *DESCRIPTION
+b67b1301614fbd7fb3d23efa6abdf0d4 *NAMESPACE
 db96875358f786c5e33becc7cf231b53 *R/BW2stagePPS.R
 3a82a1649d1c69f96a9e87d770ae0a93 *R/BW2stagePPSe.R
 8312ba32fe84f0e3ad5790604f95c9da *R/BW2stageSRS.R
@@ -15,7 +15,7 @@ a18c8db3ebf5a84a02b86f3a870b729e *R/clusOpt2fixedPSU.R
 a435f4d35526216202020792f71393ea *R/clusOpt3.R
 cad4beac054adc985910ac726b19e2de *R/clusOpt3fixedPSU.R
 288589cf5808a11d465971159f93b446 *R/deff.R
-bd9e65fb2b62a8fb3312fb0b858e6717 *R/deffCR.R
+bba1eeedb76b0685476398067563bd33 *R/deffCR.R
 61ab5d0cf7fd9e7d5e842e3dbb7a7f17 *R/deffH.R
 00d68162fe4cf570edbbe1a57b549370 *R/deffK.R
 950ddbd591644aa2938a5914294e65cd *R/deffS.R
@@ -50,10 +50,10 @@ e3025f1a32de5a18f37604fb32734f58 *data/nhis.large.RData
 be91cc78dde1f7a9b6072a0a6b25e1ac *data/smho98.RData
 e1d3fdf0525cdce3d94a7158a89fa918 *inst/doc/Singlestage-samsize.R
 5aafe4696f2ab48a67103b53f82dc580 *inst/doc/Singlestage-samsize.Rmd
-8b7d005e14c37429065af6423ff3be2e *inst/doc/Singlestage-samsize.pdf
+cfa2285ce6877aece3f373c6bc94d4a0 *inst/doc/Singlestage-samsize.pdf
 280da808385d1d2ba55a4b4c52391696 *inst/doc/Varcomps-multistage.R
 99717a25f44feaa5623e02d5e22f8608 *inst/doc/Varcomps-multistage.Rmd
-258971fa0f3d0e56bbf969ec17eaddf6 *inst/doc/Varcomps-multistage.pdf
+eee624b47c7cf05e7e2b537c4720cc45 *inst/doc/Varcomps-multistage.pdf
 67c4c1d2254f0055b960f6882b6ac896 *man/BW2stagePPS.Rd
 900c38dcde5d900f070cfdc268960a6a *man/BW2stagePPSe.Rd
 5cc1e74aca8114fb0a7a3b310e93b2b3 *man/BW2stageSRS.Rd
@@ -72,7 +72,7 @@ e44489ef7516b83d02bb4ef0d6be82bc *man/clusOpt2fixedPSU.Rd
 3f6274b365aac05cf96a2d20e5afc5ee *man/clusOpt3.Rd
 c89538c2f3c88c512ba36bd48f026e02 *man/clusOpt3fixedPSU.Rd
 e0d3c6e0ebf94bb21496153cdb5e4ff8 *man/deff.Rd
-e1ab5587bd03df0b67a50faaeddfa57e *man/deffCR.Rd
+7ce4a45a39390a5f80c77141ae2634d7 *man/deffCR.Rd
 6bb66ef323fd4820e7dc6dbd4153d919 *man/deffH.Rd
 671592c76782b7ed866d42f304667869 *man/deffK.Rd
 18c9d52f08af86922d8db18efb360d45 *man/deffS.Rd
@@ -101,9 +101,9 @@ f304df272c04e5deedb734c7f9206922 *man/smho98.Rd
 8b8123e0f970fe73b858f2adde81c5d3 *man/strAlloc.Rd
 e3ad1d7320371dadb20b2e536b034de3 *man/wtdvar.Rd
 5aafe4696f2ab48a67103b53f82dc580 *vignettes/Singlestage-samsize.Rmd
-ee5aec5d1e7ff70cdde8f876ec773c0d *vignettes/Singlestage-samsize.html
+c5ddc8f4f2f67b057db97c2daa4b5743 *vignettes/Singlestage-samsize.html
 99717a25f44feaa5623e02d5e22f8608 *vignettes/Varcomps-multistage.Rmd
-e3681a8b0647e692c6c3c55e44a00ea3 *vignettes/Varcomps-multistage.html
+58635824ce8bf52e7f3bc2a5a67524b6 *vignettes/Varcomps-multistage.html
 c9d3b42a2ea7e92fce8144faf6250bee *vignettes/hosp.png
 bb406067874d526e076801e0d431329a *vignettes/practools.bib
 52c9abaa2717b291eb6b28f11e774f8b *vignettes/test.pdf
