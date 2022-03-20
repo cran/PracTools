@@ -1,6 +1,5 @@
 
 BW3stagePPSe <- function(dat, v, Ni, Qi, Qij, m, lonely.SSU = "mean", lonely.TSU = "mean"){
-  browser()
     y <- dat[, v]
         # 3rd stage conditional wts
     wk.ij <- dat$w / dat$w2ij
