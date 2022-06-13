@@ -50,8 +50,7 @@ NRFUopt <- function(Ctot=NULL, c1, c2, theta, CV0=NULL, CVpop=NULL, N=Inf, type.
          "CV" = CV0.chk,
          "v.opt" = round(v.opt,4),
          "n1.opt" = n1.opt,
-         "Expected n2" = n2,
-         "Expected total cases (2-phase)" = n1.opt + n2,
+         "Expected number of phase-1 nonrespondents sampled for phase-2, n2" = n2,
          "srs sample for same cv" = n.srs,
          "Cost Ratio: Two phase to srs" = round(c.ratio,3))
 }

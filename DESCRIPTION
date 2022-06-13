@@ -1,8 +1,8 @@
 Package: PracTools
 Type: Package
 Title: Tools for Designing and Weighting Survey Samples
-Version: 1.2.6
-Date: 2022-03-20
+Version: 1.2.7
+Date: 2022-06-09
 Author: Richard Valliant, Jill A. Dever, Frauke Kreuter
 Maintainer: Richard Valliant <valliant@umich.edu>
 Description: Functions and datasets to support Valliant, Dever, and Kreuter, Practical Tools for Designing and Weighting Survey Samples (2nd edition, 2018). Contains functions for sample size calculation for survey samples using stratified or clustered one-, two-, and three-stage sample designs. Other functions compute variance components for multistage designs and sample sizes in two-phase designs. A number of example data sets are included.
@@ -13,7 +13,7 @@ LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2022-03-20 17:03:12 UTC; rv
+Packaged: 2022-06-13 16:14:19 UTC; rv
 Depends: R (>= 2.10)
 Repository: CRAN
-Date/Publication: 2022-03-20 17:20:02 UTC
+Date/Publication: 2022-06-13 16:40:04 UTC

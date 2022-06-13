@@ -35,7 +35,6 @@ NRFUopt(Ctot=NULL, c1, c2, theta, CV0=NULL, CVpop=NULL, N=Inf, type.sw)
   \item{v.opt}{optimal fraction of first-phase nonrespondents to select for second-phase follow-up}
   \item{n1.opt}{optimal number of units to sample at first-phase}
   \item{"Expected n2"}{expected number of respondents obtained at second-phase}
-  \item{"Expected total cases (2-phase)"}{expected number of respondents across both phases}
   \item{"srs sample for same cv"}{size of single-phase simple random sample (\emph{srs}) needed to obtain same CV as the two-phase sample}
   \item{"Cost Ratio: Two phase to srs"}{ratio of expected cost for two-phase sample to cost of single-phase \emph{srs}}
 }
