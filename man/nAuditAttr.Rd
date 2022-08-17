@@ -30,11 +30,11 @@ nAuditAttr(TolRate=0.05, AccDev, CL, N=5000)
 
 \value{
  List object with values:
-      \item{"Pop.Size"}{population size}
-      \item{"Tol.Dev.Rate"}{proportion of records with errors in population}
-      \item{"Acceptable.Errors"}{largest number of errors, found in the sample, that will meet audit standards}
-      \item{"Sample.Size.Hypergeometric"}{minimum sample size needed to detect \code{AccDev} errors in the sample computed via the hypergeometric distribution}
-      \item{"Sample.Size.Binomial"}{minimum sample size needed to detect \code{AccDev} errors in the sample computed via the binomial distribution}
+      \item{Pop.Size}{population size}
+      \item{Tol.Dev.Rate}{proportion of records with errors in population}
+      \item{Acceptable.Errors}{largest number of errors, found in the sample, that will meet audit standards}
+      \item{Sample.Size.Hypergeometric}{minimum sample size needed to detect \code{AccDev} errors in the sample computed via the hypergeometric distribution}
+      \item{Sample.Size.Binomial}{minimum sample size needed to detect \code{AccDev} errors in the sample computed via the binomial distribution}
 }
 
 \references{

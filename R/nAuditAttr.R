@@ -9,7 +9,7 @@ nAuditAttr <- function(TolRate = 0.05, AccDev, CL, N = 5000){
   n.sam <- 1:N
 
   ## Sample Size: Hypergeometric
-  K <- ceiling(N * TolRate)
+  K <- floor(N * TolRate)
   cdf <- phyper(q=AccDev, m=K, n=N-K, k=n.sam)
   if (any(cdf <= 1 - CL))
        {min.nhyper <- min(n.sam[cdf <= 1 - CL])}
