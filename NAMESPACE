@@ -18,11 +18,14 @@ export(BW2stagePPS ,
        dub,
        gamEst ,
        gammaFit ,
+       GeoDistPSU ,
+       GeoDistMOS ,
        HMT ,
        nAuditAttr ,
        nAuditMUS ,
        nCont ,
-       nContMoe ,
+       nContMoe,
+       nContOpt,
        nDomain,
        nDep2sam ,
        nLogOdds ,
@@ -35,9 +38,16 @@ export(BW2stagePPS ,
        pclass,
        strAlloc ,
        wtdvar)
+importFrom("graphics",
+           "grid",
+           "hist",
+           "plot")
 importFrom("stats",
+           "as.dist",
            "binomial",
+           "cutree",
            "glm",
+           "hclust",
            "lsfit",
            "median",
            "pbinom",
@@ -50,3 +60,15 @@ importFrom("stats",
            "var",
            "weighted.mean")
 importFrom("utils", "head")
+importFrom("geosphere",
+           "distm",
+           "distHaversine")
+importFrom("usmap",
+           "plot_usmap",
+           "usmap_transform")
+importFrom("dplyr",
+           "full_join",
+           "inner_join")
+importFrom("ggplot2",
+           "geom_point")
+

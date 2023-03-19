@@ -10,7 +10,6 @@ Compute a simple random sample size using either a target coefficient of variati
 \usage{
 nCont(CV0=NULL, V0=NULL, S2=NULL, ybarU=NULL, N=Inf, CVpop=NULL)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{CV0}{
  target value of coefficient of variation of \eqn{\bar{y_s}}

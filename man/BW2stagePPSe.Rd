@@ -44,8 +44,9 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp, lonely.SSU = "mean")
      of a total when the same number of elements are selected within each sample PSU.
      This function can also be used if PSUs are selected by \emph{srswr} by appropriate definition of \code{pp}.
 
-     If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate
-   an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample.
+     If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample.
+     
+    If any PSUs have one-draw probabilities of 1 (pp=1), the function will be halted. Any such PSUs should be removed before calling the function.
 }
 
 \value{

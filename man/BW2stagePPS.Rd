@@ -34,6 +34,8 @@ BW2stagePPS(X, pp, psuID, lonely.SSU = "mean")
 
    If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate
    an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample.
+   
+   If any PSUs have one-draw probabilities of 1 (pp=1), they will be excluded from all computations.
 
    (Use \code{\link{BW2stagePPSe}} if only a sample of PSUs and elements is available.)
 }

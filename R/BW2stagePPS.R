@@ -1,5 +1,13 @@
-
 BW2stagePPS <- function(X, pp, psuID, lonely.SSU = "mean"){
+    if (any(pp >=1)){
+        pick <- (1:length(pp))[pp < 1]
+        warning(paste(sum(pp >= 1), " PSUs are excluded from computations because pp >= 1.\n\n"))
+        keep <- (psuID %in% pick)
+        X <- X[keep]
+        pp <-  pp[pick]
+        psuID <- psuID[keep]
+    }
+
     M <- length(unique(psuID))
     Ni <- table(psuID)
     cl.tots <- by(X, INDICES = psuID, FUN = sum)

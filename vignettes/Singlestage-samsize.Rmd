@@ -25,7 +25,7 @@ MathJax.Hub.Config({
 </script>
 
 
-A basic issue in sample design is how many units should be selected at each stage in order to efficiently estimate population values. If strata are used, the number of units to allocate to each stratum must be determined. In this vignette, we review some basic techniques for sample size determination in single-stage samples using the package `PracTools` [@Valliant.2019] that contains specialized routines to facilitate the calculations, most of which are not found in other packages. We briefly summarize some of selection methods and associated formulas used in designing single-stage samples and describe the capabilities of `PracTools`.  Technical background is in @VDK.2018, ch. 3. First, the package must be loaded with 
+A basic issue in sample design is how many units should be selected at each stage in order to efficiently estimate population values. If strata are used, the number of units to allocate to each stratum must be determined. In this vignette, we review some basic techniques for sample size determination in single-stage samples using the package `PracTools` [@Valliant.2023] that contains specialized routines to facilitate the calculations, most of which are not found in other packages. We briefly summarize some of selection methods and associated formulas used in designing single-stage samples and describe the capabilities of `PracTools`.  Technical background is in @VDK.2018, ch. 3. First, the package must be loaded with 
 ```{r setup}
 library(PracTools)
 ```

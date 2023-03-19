@@ -38,8 +38,8 @@ nAuditMUS(MUSVar, Value.sw, CL = 0.90, Error.sw, Tol.Error, Exp.Error = 0)
  List object with values:
       \item{Value.Range}{Whether the MUS variable is for positive, negative, or absolute values as defined by \code{Value.sw}}
       \item{Error.Type}{Amount or Percent as defined by \code{Error.sw}}
-      \item{Tol.Error.Rate}{The tolerable error expressed as a percentage of items if \code{Error.sw} = "Percent" or "Pct" or as a proportion of total monetary units otherwise}
-      \item{Exp.Error.Rate}{The expected error expressed as a percentage of items if \code{Error.sw} = "Percent" or "Pct" or as a proportion of total monetary value otherwise}
+      \item{Tol.Error.Rate}{The tolerable error expressed as a percentage of items if \code{Error.sw} = "Percent" or "Pct" or as a percentage of total monetary value otherwise}
+      \item{Exp.Error.Rate}{The expected error expressed as a percentage of items if \code{Error.sw} = "Percent" or "Pct" or as a percentage of total monetary value otherwise}
       \item{Number.Records}{The population count of records in the value range based on selecting ones with positive, negative or absolute value of \code{MUSVar}}
       \item{Sample.Size}{Minimum sample size needed to meet tolerable and expected error rate requirements}
       \item{Number.HighVal}{Number of records that are high value (exceed the interval used for systematic sampling) and will be certainties in the sample}

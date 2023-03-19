@@ -1,5 +1,9 @@
 
 BW2stagePPSe <- function(Ni, ni, X, psuID, w, m, pp, lonely.SSU = "mean"){
+    if (any(pp >=1)){
+        stop(paste(sum(pp >= 1), " PSUs have pp >= 1. These should be removed before running the function.\n\n"))
+    }
+
     fi <- ni / Ni
     t.pwr <- sum(w*X)
     pi.star <- m * pp

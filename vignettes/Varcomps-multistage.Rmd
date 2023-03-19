@@ -4,7 +4,7 @@ author: "Richard Valliant, Jill A. Dever, and Frauke Kreuter"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 #output: rmarkdown::pdf_document
-header_includes: \usepackage{amsmath}, usepackage{knitr}
+header_includes: \usepackage{amsmath}, \usepackage{knitr}
 bibliography: practools.bib
 
 vignette: >
@@ -127,7 +127,7 @@ Expressions $\small \eqref{eq:relvarsrs}$ and $\small \eqref{eq:deltavar.2st}$ a
 The next example uses the `MDarea.pop` from `PracTools`. This dataset is based on the U.S. Census counts from the year 2000 for Anne Arundel County in the US state of Maryland. The geographic divisions used in this dataset are called tracts and block groups.  Tracts are constructed by the US Census Bureau to have a desired population size of 4,000 people.  Block groups (BGs) are smaller with a target size of 1,500 people.  Counts of persons in the dataset are the same for most tracts and block groups as in the 2000 Census.
 
 * **Example. Between and within variance components in *srs/srs* design**
-The R function `BW2stageSRS` will calculate the unit relvariance of a population, $\small B^{2} + W^{2}$ for comparison, the ratio $\small k=(B^2+W^2)/(S_{U}^{2}/\bar{y}_{U}^2)$, and the full version of $\small \delta$ in $\small \eqref{eq:delta}$.  The function assumes that the entire sampling frame is an input.  The full R code for this example is in the file `Example 9.2.R`, available at [bookfiles](https://umd.app.box.com/v/PracTools2ndEdition).  We first compute the results using the `PSU` and `SSU` variables as clusters. These fields are created so that all `PSU`s have the same size; likewise, all `SSU`s have the same size.  For the variable `y1` in the Maryland population, the code is
+The R function `BW2stageSRS` will calculate the unit relvariance of a population, $\small B^{2} + W^{2}$ for comparison, the ratio $\small k=(B^2+W^2)/(S_{U}^{2}/\bar{y}_{U}^2)$, and the full version of $\small \delta$ in $\small \eqref{eq:delta}$.  The function assumes that the entire sampling frame is an input.  The full R code for this example is in the file `Example 9.2.R`, available at @VDK.2018a.  We first compute the results using the `PSU` and `SSU` variables as clusters. These fields are created so that all `PSU`s have the same size; likewise, all `SSU`s have the same size.  For the variable `y1` in the Maryland population, the code is
 
 ```{r}
  require(PracTools)
