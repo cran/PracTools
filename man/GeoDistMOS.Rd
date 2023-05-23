@@ -24,14 +24,14 @@
 \value{
   A list with two components:
      \item{PSU.ID.Max.MOS}{A data frame containing the SSU ID value in character format (\code{Input.ID}), the original PSU ID (\code{psuID.orig}), and the new PSU ID after splitting for the maximum measure of size (\code{psuID.new}).}
-     \item{PSU.Max.MOS.Info}{A data frame containing the new PSU ID (\code{psuID.new}) after splitting for the maximum Measure of Size, the inclusion probability of the PSU ID given the input sample size n (\code{psuID.prob}), and the number of SSUs in the new PSU ID (\code{Number.SSUs}).}
+     \item{PSU.Max.MOS.Info}{A data frame containing the new PSU ID (\code{psuID.new}) after splitting for the maximum Measure of Size, the inclusion probability of the PSU ID given the input sample size n (\code{psuID.prob}), the measure of size of the new PSU (\code{MOS}), the number of SSUs in the new PSU ID (\code{Number.SSUs}), and the means of the SSUs latitudes and longitudes that were combined to form the new PSU (\code{PSU.Mean.Latitude} and \code{PSU.Mean.Longitude}).}
 }
 
 \author{
 George Zipf, Richard Valliant
 }
 \seealso{
-\code{\link{GeoDistPSU}}
+\code{\link{GeoDistPSU}}, \code{\link{GeoMinMOS}}
 }
 \examples{
 data(Test_Data_US)

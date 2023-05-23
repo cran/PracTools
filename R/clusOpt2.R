@@ -4,16 +4,13 @@ clusOpt2 <- function(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.s
     
     if (!is.null(CV0) & !is.null(tot.cost))
         stop("CV0 and tot.cost cannot both be non-null.\n")
-    if (length(C1) > 1 || length(C2) > 1 || length(delta)>1 ||
-            length(unit.rv)>1 || length(k)>1 || length(CV0)>1 || length(tot.cost)>1)
-        stop("C1, C2, delta, unit.rv, CV0, and tot.cost must all be scalars.\n")
 
     c.ratio <- C1/C2
     n.opt <- sqrt(c.ratio * (1-delta)/delta)
     
     if (cal.sw == 1){
         m.opt <- tot.cost / (C1 + C2*n.opt)
-        if (m.opt < 0) stop(paste("m.opt is negative. Check inputs. m.opt=",m.opt,"\n"))
+        if (any(m.opt < 0)) stop(paste("m.opt is negative. Check inputs. m.opt=",m.opt,"\n"))
         
         CV <- sqrt(unit.rv/m.opt/n.opt*k*(1 + delta*(n.opt-1)))
         output <-
@@ -30,7 +27,7 @@ clusOpt2 <- function(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.s
     }
     if (cal.sw == 2) {
         m.opt <- unit.rv * k * (1 + delta*(n.opt-1)) / n.opt / CV0^2
-        if (m.opt < 0) stop(paste("m.opt is negative. Check inputs. m.opt=",m.opt,"\n"))
+        if (any(m.opt < 0)) stop(paste("m.opt is negative. Check inputs. m.opt=",m.opt,"\n"))
         
         cost <- C1*m.opt + C2*m.opt*n.opt
         output <-

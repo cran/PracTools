@@ -1,4 +1,3 @@
-
 GeoDistMOS <- function(lat,              ## Latitude variable. Must be in decimal
                        long,             ## Longitude variable. Must be in decimal
                        psuID,            ## PSU Cluster ID
@@ -122,29 +121,31 @@ GeoDistMOS <- function(lat,              ## Latitude variable. Must be in decima
   row.names(ps) <- NULL
   
   ## Merge with un-split PSUs
-  orig.psu <- cbind.data.frame(Input.ID, psuID, MOS.var)
-  ps       <- dplyr::full_join(ps, orig.psu, by=c("Input.ID"))
+  orig.psu <- cbind.data.frame(Input.ID, psuID, MOS.var, lat, long)
+  ps <- full_join(ps, orig.psu, by=c("Input.ID"))
   ## Add psu.ID.orig and psu.ID.new to ps data frame
   ps$psuID.orig <- ifelse(is.na(ps$psuID.orig), ps$psuID, ps$psuID.orig)
-  ps$psuID.new  <- ifelse(is.na(ps$psuID.new), paste0(ps$psuID.orig, ".", "0"), ps$psuID.new)
+  ps$psuID.new  <- ifelse(is.na(ps$psuID.new),  paste0(ps$psuID.orig, ".", "0"), ps$psuID.new)
   
-  ## Create MOS data frame for histogram
-  mos            <- (tapply(ps$MOS.var, ps$psuID.new, sum) * n) / sum(MOS.var)
-  mos            <- as.data.frame(mos) 
-  mos$psuID.new  <- rownames(mos)
-  rownames(mos)  <- NULL
-  mos$psuID.prob <- sampling::inclusionprobabilities(mos$mos, n)
+  ## Create MOS data frame 
+  MOS.new         <- tapply(ps$MOS.var, ps$psuID.new, sum)  
+  MOS             <- as.data.frame(MOS.new) 
+  MOS$psuID.new   <- rownames(MOS)
+  rownames(MOS)   <- NULL
+  MOS$psuID.prob  <- sampling::inclusionprobabilities(MOS$MOS, n)
   ## Calculate number of SSUs in each PSU
-  mos$Number.SSUs <- table(ps$psuID.new)
-  
+  MOS$Number.SSUs <- table(ps$psuID.new)
+  MOS$PSU.Mean.Latitude  <- tapply(ps$lat,  ps$psuID.new, mean)
+  MOS$PSU.Mean.Longitude <- tapply(ps$long, ps$psuID.new, mean)
+ 
   ## Output data frame of PSUs split, split psuIDs, and matching information
   ## Remove un-needed variables and re-order columns
   ps  <- ps[, c(3, 1, 2)]
-  mos <- mos[, c(2, 3, 4)]
+  MOS <- MOS[, c(2, 3, 1, 4:6)]
   
   ## Output final MOS distribution
   out <- list(ps,
-              mos)
+              MOS)
   
   ## Name data frames in list
   names(out) <- c("PSU.ID.Max.MOS", "PSU.Max.MOS.Info")
@@ -153,6 +154,3 @@ GeoDistMOS <- function(lat,              ## Latitude variable. Must be in decima
   return(out)
   
   }
-
-
-

@@ -57,8 +57,10 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 \examples{
     # optimum for a fixed total budget
 clusOpt2(C1=750, C2=100, delta=0.05, unit.rv=1, k=1, tot.cost=100000, cal.sw=1)
+clusOpt2(C1=750, C2=100, delta=seq(0.05,0.25,0.05), unit.rv=1, k=1, tot.cost=100000, cal.sw=1)
     # optimum for a target CV
 clusOpt2(C1=750, C2=100, delta=0.01, unit.rv=1, k=1, CV0=0.05, cal.sw=2)
+
 }
 
 \keyword{methods}

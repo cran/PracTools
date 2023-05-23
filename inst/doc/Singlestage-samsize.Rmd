@@ -31,7 +31,7 @@ library(PracTools)
 ```
 Alternatively, `require(PracTools)` can be used.
 
-Complex samples can involve any or all of stratification, clustering, multistage sampling, and sampling with varying probabilities. Many texts cover these topics, including @Cochran.77, @Lohr.99, @SSW.92, and @VDK.2018. Here we discuss single-stage designs with and without stratification and formulas that are needed for determining sample allocations. The `PracTools` package will not select samples, but the R `sampling` package [@Tille.2016] will select almost all the types used in practice.
+Complex samples can involve any or all of stratification, clustering, multistage sampling, and sampling with varying probabilities. Many texts cover these topics, including @Cochran.1977, @Lohr.1999, @SSW.1992, and @VDK.2018. Here we discuss single-stage designs with and without stratification and formulas that are needed for determining sample allocations. The `PracTools` package will not select samples, but the R `sampling` package [@Tille.2016] will select almost all the types used in practice.
 
 ## Simple Random Sampling
 

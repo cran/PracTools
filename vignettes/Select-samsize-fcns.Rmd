@@ -1,0 +1,77 @@
+---
+title: "Selection of Appropriate PracTools Sample Size Function"
+author: "George Zipf, Richard Valliant"
+date: "2023-05-19"
+output: html_document
+header_includes: \usepackage{amsmath}, usepackage{knitr}
+bibliography: practools.bib
+
+vignette: >
+  %\VignetteIndexEntry{Selection of Appropriate PracTools Sample Size Function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+Among the most important decisions that a survey researcher must make, affecting time, budget, resource allocation, and the attainment of analytic objectives, is determination of the sample size. Despite the importance of this decision, a perusal of the internet and various software sources often show only the single sample size formula of 
+$$\small n = z^2 \left(p(1-p) \right)/e^2 $$ 
+where $z$ is a quantile from the standard normal distribution based on a confidence level and $\small e$ is based on the required margin of error. Sometimes the $\small t$-statistic is referenced instead of the $z$-score. While this can be the best sample size formula to use, it should not be defaulted to. Instead, the sample size formula selected should reflect the sample design and the particular estimation goals. This vignette is designed to help the PracTools (@Valliant.2023) user select the best sample size formula and the corresponding PracTools sample size function based on a series of survey design questions.
+
+## Considerations for Sample Size Determination
+
+At a high level, all that is needed to determine a simple random sample size is the confidence level $\small \alpha$, the required precision, the population variance or coefficient of variation, the population size $\small N$, sample unit cost if this is a consideration, and $\small \beta$ if power is needed. Furthermore, the population size can be treated as infinite for large $\small N$. However, there are many other factors that should be considered prior to sample size determination.
+
+* *Probability Distribution of the Measured Statistic.*
+How the measured statistic is distributed can have a considerable impact on the sample size. For example, let the estimated population statistics be “Count of Errors”, “Proportion of Errors”, and “Sum of Errors”. For the first statistic, a hypergeometric distribution may be assumed; for the second a binomial distribution may be assumed; and the last requires the population unit variance and does not assume a specific distribution. The different distribution assumptions will result in different sample sizes even with the same confidence level and precision.
+
+* *Precision Metric.*
+There are three ways of measuring precision for sample size calculations: Standard Error (SE), Coefficient of Variation (CV), and Margin of Error (MOE). Using SE for sample size calculations sets a target variance for a single analysis variable. CV is dimensionless; using CV for sample size calculations allows comparison of sample sizes based on a number of different variables. MOE is useful for sample size calculations when being within a certain percentage of a population value is desirable.
+
+
+* *Survey Design Complexity.*
+Here is when sample size calculations require more complex formulas. Stratification, multi-stage sampling, domain precision requirements, double sampling, and non-response follow-up can change the final sample depending on any number of factors. One of the primary advantages of the PracTools package is that it has sample size functions for complex design situations.
+
+* *Other.*
+Budget can also be a factor in that the total budget and different costs per sampling unit may result in different sample sizes. Also, estimated design effects (*deff*) from a complex survey design will likely impact the effective sample size. The impact of design effects is discussed below.
+
+## PracTools Sample Size Functions
+PracTools has many sample size functions, and the answers to a few basic questions should identify which are the best choice for the survey researcher:
+
+*	Is the sample SRS (simple random sample) or is it PPS (probability proportional to size)? This may affect how the variance used in the sample size formula is calculated.
+
+*	Is the sample multi-stage? If so, is the sample size at any stage fixed?
+
+*	Are there additional complexities (e.g., stratification, non-response follow-up, confidence limit constraints, comparison among two samples, etc.)?
+
+*	Is there cost and/or budget information? 
+
+*	What are the precision requirements?
+
+For the first question, SRS vs. PPS, the issue as it relates to sample size is how the variance is calculated for use in any sample size calculation. For the remaining issues, the following table may be useful for determining which PracTools sample size functions are most appropriate given the survey design. The functions are listed in alphabetical order.
+
+![](Samplefcn.png)
+
+Impact of Design Effect (*deff*):
+The *deff* is the ratio of the variance of the survey statistic under the complex design over the variance of the survey statistic under a simple random sample design.
+The effective sample size is the sample size in a complex sample divided by the *deff* for a particular statistic. The effective sample size is the size of a simple random sample needed to achieve the same variance as that obtained from the complex sample. For sample size calculation for a complex sample, one approach is to compute the SRSWR sample size then multiply it by a *deff*.
+
+
+For better or worse, there are several ways of calculating the *deff*, and depending on the assumptions used, can produce very different deff results. A frequently used deff formula was proposed by Kish is 1965, where:
+  $$\small deff_K = 1+relvar(w) = 1+ n^{-1} \sum_{i=1}^n (w_i- \bar{w})^2/\bar{w}^2$$ and $\small \{w_i\}_{i=1}^{n}$ is the set of sample weights. The Kish *deff* measures the increase in variances due to using variable weights when equal weights would be optimal.
+
+The Kish formula assumes that a stratified SRS with proportional allocation is optimal. This will be true if all strata population variances and costs are equal. However, $\small deff_K$ is not always relevant in surveys where variances differ across strata, where subgroups are intentionally sampled at different rates, and/or where different subgroups have substantially different response rates. Other design effect formulas take stratification, clustering, and unequal sampling probabilities more explicitly into account. In PracTools, these design effect functions can be calculated using `deffK`, `deffH`, `deffS`, or `deffCR`. Please see the PracTools documentation for more detail on how to use PracTool’s design effect functions. @Cochran.1977, @Lohr.1999, and @VDK.2018 cover the mathematical detail behind the formulas evaluated by the functions.
+
+
+**References**
+

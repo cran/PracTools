@@ -29,7 +29,7 @@ A list with two components:
 George Zipf, Richard Valliant
 }
 \seealso{
-\code{\link{GeoDistMOS}}
+\code{\link{GeoDistMOS}}, \code{\link{GeoMinMOS}}
 }
 \examples{
 data(Test_Data_US)
@@ -48,7 +48,7 @@ plot(g$PSU.Info$PSU.Mean.Longitude,
 grid(col = "grey40")
 
     # Plot GeoDistPSU output with map
-\dontrun{    
+\dontrun{
 library(ggplot2)
 library(sp)
 library(usmap)
