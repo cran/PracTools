@@ -62,7 +62,7 @@ For the first question, SRS vs. PPS, the issue as it relates to sample size is h
 
 ![](Samplefcn.png)
 
-Impact of Design Effect (*deff*):
+## Impact of Design Effect (*deff*):
 The *deff* is the ratio of the variance of the survey statistic under the complex design over the variance of the survey statistic under a simple random sample design.
 The effective sample size is the sample size in a complex sample divided by the *deff* for a particular statistic. The effective sample size is the size of a simple random sample needed to achieve the same variance as that obtained from the complex sample. For sample size calculation for a complex sample, one approach is to compute the SRSWR sample size then multiply it by a *deff*.
 

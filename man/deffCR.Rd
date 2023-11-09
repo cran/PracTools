@@ -4,7 +4,7 @@
 Chen-Rust design effect
 }
 \description{
-Chen-Rust design effect  for stratified, clustered, two-stage samples
+Chen-Rust design effect for an estimated mean from a stratified, clustered, two-stage samples
 }
 \usage{
 deffCR(w, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, y)
@@ -19,10 +19,11 @@ deffCR(w, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, y)
 
 }
 \details{
-The Chen-Rust \emph{deff} accounts for stratification, clustering, and unequal weights, but does not account for the use of any auxiliary data in the estimator of a mean. The Chen-Rust \emph{deff} returned here is appropriate for stratified, two-stage sampling.}
+The Chen-Rust \emph{deff} for an estimated mean accounts for stratification, clustering, and unequal weights, but does not account for the use of any auxiliary data in the estimator of a mean. The Chen-Rust \emph{deff} returned here is appropriate for stratified, two-stage sampling. Note that separate \emph{deff}'s are produced for weighting, clustering, and stratification within each stratum. These cannot be added across strata unless the stratum values of the coefficient of variation of the weights, the sample size of clusters, and the intracluster correlation of \code{y} are equal across all strata (see Chen and Rust 2017, p.117).
+}
 \value{
   A list with components:
-  \item{strata components}{Matrix with \emph{deff}'s due to weighting, clustering, and stratification for each stratum}
+  \item{strata components}{Matrix with number of sample first-stage units, intracluster correlation, coefficient of variation of the weights, and \emph{deff}'s due to weighting (\code{deff.w}), clustering (\code{deff.c}), and stratification (\code{deff.s})for each stratum. When \code{strvar} or \code{clvar} are \code{NULL} appropriate subsets of these are output.}
   \item{overall deff}{Design effect for full sample accounting for weighting, clustering, and stratification}
 }
 
@@ -67,7 +68,7 @@ for (h in 1:H){
     stratum <- c(stratum, rep(h,nh))
 }
 wt <- 1/(samdat$pi1*samdat$pi2) * runif(m*nbar)
-samdat <- cbind(subset(samdat, select = -c(Stratum)), stratum, wt)
+samdat <- cbind(subset(samdat, select = -c(stratum)), stratum, wt)
 deffCR(w = samdat$wt, strvar = samdat$stratum, clvar = samdat$TRACT, Wh=NULL, y=samdat$y2)
 }
 

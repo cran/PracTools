@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -90,11 +90,17 @@ certID <- m$PSU.Max.MOS.Info[certs, "psuID.new"]
 certID
 
 
-## ----BW2stagePPS.MOS----------------------------------------------------------
-
+## ----Onedraw.MOS--------------------------------------------------------------
+## Create vector of 1-draw probabilities
 pp <- tapply(Test_Data_US$Amount, Test_Data_US$psuID.new, sum)/sum(Test_Data_US$Amount)
+## Subset Test_Data_US for non-certainties
 sub.Test_Data_US <- Test_Data_US[!(Test_Data_US$psuID.new %in% certID),]
+## Subset vector of 1-draw probabilities for non-certainties
 sub.pp <- pp[-certs]
+
+## ----BW2stagePPS.MOS----------------------------------------------------------
+## Rescale sub.pp to sum to 1
+sub.pp <- sub.pp/sum(sub.pp)
 BW2stagePPS(X = sub.Test_Data_US$Y, pp = sub.pp, psuID = sub.Test_Data_US$psuID.new, 
             lonely.SSU = "zero")
 

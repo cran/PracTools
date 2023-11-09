@@ -34,7 +34,7 @@ In a survey population of geographic sampling units, it may be required that a s
 
 The following are useful guidelines for creating geography-based PSUs.
 
-1.  **Political Boundaries**. There are many situations where it makes sense to use political boundaries, e.g. states or counties, to separate geographic sampling units. GeoDistPSU does not separate sampling units based on political boundaries. If this step is necessary, it may make sense to split the data into politically-based data sets and apply GeoDistPSU on each politically bounded data set accordingly.
+1.  **Political Boundaries**. There are many situations where it makes sense to use political boundaries, e.g. states or counties, to separate geographic sampling units. *GeoDistPSU does not separate sampling units based on political boundaries.* If this step is necessary, it may make sense to split the data into politically-based data sets and apply GeoDistPSU on each politically bounded data set accordingly.
 2.  **Maximum Distance**. The area of a geography-based PSU should not exceed a maximum distance. This parameter can be used to limit the amount of within-PSU traveling that a data collector must do. Maximum distance is a required setting in GeoDistPSU. The user must select between "miles" and "kms" (kilometers) for the distance metric.
 3.  **Measure of Size (MOS)**. The MOS can be different quantities depending on the application, e.g., number of housing units or persons for a household survey or total dollar amount of accounts in an auditing sample. Ideally, each geography-based PSU would have a similar measure of size for sample selection purposes. In practice, there are likely to be geographic units whose MOS's are so large that the units are certainties. However, it is sometimes possible to split certainties into smaller geography-based PSUs. GeoDistMOS splits extremely large PSUs based on a user-defined MOS take-all threshold.
 
@@ -50,7 +50,7 @@ The process for creating geography-based PSUs with similar MOS's is as follows:
 
 1.  **Ensure each geographic sampling unit has a longitude and latitude in decimal format.** If the longitude and/or latitude are character or missing, the function will not work. It is recommended that the data be plotted or otherwise reviewed prior to creating geography-based PSUs as errors in geocoding can occur. If the data does not have the longitude and latitude coordinates, the R package tidygeocoder can be used to perform geocoding. The vignette for the tidygeocoder package, [@tidygeocoder.2021], provides an overview on how to use it. Again, check the results of tidygeocoder to ensure that all geographic sampling units have the correct latitude and longitude before using the GeoDistPSU function.
 2.  **Use GeoDistPSU function**. The GeoDistPSU function requires the following: Longitude, Latitude, a switch for either "miles" or "kms" (kilometers), and a maximum within-PSU distance value. GeoDistPSU output two data frames. The data frame PSU.ID provides the geography=based PSU (psuID) and the Input.ID for merging to the original input file if there is one. The other data frame, PSU.Info, contains geography-based PSU-level information. For example, output from this data frame can create a plot of the PSU centroids. A histogram of the maximum within-PSU distance can also provide useful information to the survey practitioner.
-3.  **If the sample design is probability proportional to size (pps), then it may be useful to apply the GeoDistMOS function**. The GeoDistMOS function requires the following: Longitude, Latitude, PSU ID, the sample size, the MOS variable, and the threshold value for certainties. The threshold value is a probability in the range (0, 1]; PSUs with a selection probability greater than or equal to the threshold are certainties. It is assumed that the sampling units in a PSU ID already are within the maximum PSU distance. If the PSU ID is taken from GeoDistPSU, then this is guaranteed. It is recommended that a histogram of the final MOS be reviewed.
+3.  **If the sample design is probability proportional to size (pps), then it may be useful to apply the GeoDistMOS function**. The GeoDistMOS function requires the following: Longitude, Latitude, PSU ID, the sample size, the MOS variable, and the threshold value for certainties. The threshold value is a probability in the range (0, 1]; PSUs with a selection probability greater than or equal to the threshold are certainties. *It is assumed that the sampling units in a PSU ID already are within the maximum PSU distance.* If the PSU ID is taken from GeoDistPSU, then this is guaranteed. It is recommended that a histogram of the final MOS be reviewed.
 
 ## Example
 
@@ -166,7 +166,7 @@ BW2stageSRS(X = Test_Data_US$Y, psuID = Test_Data_US$psuID, lonely.SSU = "zero")
 
 ```
 
-To perform the calculations using BW2stagePPS, it is necessary to have a vector of 1-draw inclusion probabilities for the PSUs, i.e., the selection probability of each PSU in a sample of size 1. For the MOS variable, we use the field, Amount, in Test_Data_US. Thus, this example illustrates the effects of selecting the PSU sample with probabilities proportional to Amount and computing relvariance components for Y. The code for BW2stagePPS, using the PSUs created by GeoDistPSU, is:
+To perform the calculations using BW2stagePPS, it is necessary to have a vector of 1-draw inclusion probabilities for the PSUs, i.e., the selection probability of each PSU in a sample of size 1. *This vector must sum to 1.* For the MOS variable, we use the field, Amount, in Test_Data_US. Thus, this example illustrates the effects of selecting the PSU sample with probabilities proportional to Amount and computing relvariance components for Y. The code for BW2stagePPS, using the PSUs created by GeoDistPSU, is:
 
 ```{r BW2stagePPS}
 
@@ -209,13 +209,22 @@ certID
 
 ```
 
-The certainties have psuID.new's of 1.1 and 2.1. Because a PSU selected with probability 1 will not contribute to the $\small B^2$ component of variance, we exclude them before calling BW2stagePPS.
+The certainties have psuID.new's of 1.1 and 2.1. Because a PSU selected with probability 1 will not contribute to the $\small B^2$ component of variance, we exclude them before calling BW2stagePPS. This is done by creating a subset of the data containing only the non-certainty PSUs, and the corresponding subset of the weights.
+
+```{r Onedraw.MOS}
+## Create vector of 1-draw probabilities
+pp <- tapply(Test_Data_US$Amount, Test_Data_US$psuID.new, sum)/sum(Test_Data_US$Amount)
+## Subset Test_Data_US for non-certainties
+sub.Test_Data_US <- Test_Data_US[!(Test_Data_US$psuID.new %in% certID),]
+## Subset vector of 1-draw probabilities for non-certainties
+sub.pp <- pp[-certs]
+```
+
+Note that in this step, by removing the certainties and their corresponding 1-draw probabilities, the sum of the sub.pp is now less than 1. (In fact, in this example the sum of sub.pp = 0.7829797). As stated above, the vector of 1-draw probabilities in the pp= parameter must equal 1. Accordingly, the 1-draw probabilities for the non-certainties need to be rescaled to total 1.
 
 ```{r BW2stagePPS.MOS}
-
-pp <- tapply(Test_Data_US$Amount, Test_Data_US$psuID.new, sum)/sum(Test_Data_US$Amount)
-sub.Test_Data_US <- Test_Data_US[!(Test_Data_US$psuID.new %in% certID),]
-sub.pp <- pp[-certs]
+## Rescale sub.pp to sum to 1
+sub.pp <- sub.pp/sum(sub.pp)
 BW2stagePPS(X = sub.Test_Data_US$Y, pp = sub.pp, psuID = sub.Test_Data_US$psuID.new, 
             lonely.SSU = "zero")
 

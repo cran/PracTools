@@ -1,7 +1,7 @@
 \name{deffS}
 \alias{deffS}
 \title{
-Spencer design effect for \emph{pps} sampling
+Spencer design effect for an estimated total from a \emph{pps} sample
 }
 \description{
 Compute the Spencer design effect for single-stage samples selected with probability proportional to a measure of size.
@@ -44,7 +44,7 @@ pop.dat$prbs.1d <- mos / sum(mos)
     # select pps sample
 require(sampling)
 n <- 80
-pk <- n * pop.dat$prbs.1d
+pk <- pop.dat$prbs.1d
 sam <- UPrandomsystematic(pk)
 sam <- sam==1
 sam.dat <- pop.dat[sam, ]

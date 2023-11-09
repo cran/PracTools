@@ -7,6 +7,8 @@ BW2stagePPS <- function(X, pp, psuID, lonely.SSU = "mean"){
         pp <-  pp[pick]
         psuID <- psuID[keep]
     }
+    
+    if (!(sum(pp)==1)) {stop("pp vector must sum to 1.\n") }
 
     M <- length(unique(psuID))
     Ni <- table(psuID)

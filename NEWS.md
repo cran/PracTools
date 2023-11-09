@@ -1,5 +1,21 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# Changes and Updates for PracTools package
+
+# PracTools 1.4.1
+
+*    Incorrect calculation of 1-draw selection probabilities corrected in vignette, Distance-and-MOS-PSUs.
+
+*    Added check that 1-draw selection probabilities in parameter pp sum to 1 in the functions, BW2stagePPS, BW3stagePPs, deff, and deffS.
+
+*    Added a new vignette titled "Design Effects and Effective Sample Size".
+
+*    deffCR output updated to include stratum estimates of rho and coefficients of variation of weights
+
 # PracTools 1.4
-**Changes and Updates for PracTools package**
 
 *    New functions,  CompMOS and GeoMinMOS, added. Edited clusOpt2 to allow vector input for some parameters. Vignette "Selection of Appropriate PracTools Sample Size Function" added.
     

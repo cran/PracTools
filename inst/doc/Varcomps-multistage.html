@@ -12,7 +12,7 @@
 
 <meta name="author" content="Richard Valliant, Jill A. Dever, and Frauke Kreuter" />
 
-<meta name="date" content="2023-05-22" />
+<meta name="date" content="2023-11-08" />
 
 <title>Variance Component Estimation in Multistage Sampling</title>
 
@@ -364,7 +364,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 Sampling</h1>
 <h4 class="author">Richard Valliant, Jill A. Dever, and Frauke
 Kreuter</h4>
-<h4 class="date">2023-05-22</h4>
+<h4 class="date">2023-11-08</h4>
 
 
 
@@ -381,7 +381,7 @@ covers some basic variance results for linear estimators in two-stage
 and three-stage sampling and how the components can be estimated with
 functions in <code>PracTools</code>. Technical background is in <span class="citation">Valliant, Dever, and Kreuter (2018b)</span>, ch.9.
 First, the package must be loaded with</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PracTools)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(PracTools)</span></code></pre></div>
 <p>Alternatively, <code>require(PracTools)</code> can be used.</p>
 <div id="two-stage-sampling" class="section level2">
 <h2>Two-stage Sampling</h2>
@@ -565,14 +565,14 @@ all <code>PSU</code>s have the same size; likewise, all
 <code>SSU</code>s have the same size. For the variable <code>y1</code>
 in the Maryland population, the code is</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">require</span>(PracTools)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">data</span>(MDarea.pop)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>PSU)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.007859299 1.455263645 1.462741186 1.463122944 1.000260988 0.005371592</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>SSU)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.03653178  1.42770886  1.46274119  1.46424065  1.00102510  0.02494930</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a> <span class="fu">require</span>(PracTools)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a> <span class="fu">data</span>(MDarea.pop)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a> <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>PSU)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; 0.007859299 1.455263645 1.462741186 1.463122944 1.000260988 0.005371592</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a> <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>SSU)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  0.03653178  1.42770886  1.46274119  1.46424065  1.00102510  0.02494930</span></span></code></pre></div>
 <p>The values of <span class="math inline">\(\small \delta\)</span> are
 0.005 for <code>PSU</code> and 0.025 for <code>SSU</code>. Next, to
 illustrate the dramatic effect that varying sizes of clusters can have,
@@ -581,13 +581,13 @@ we compute the same statistics as above using tracts and block groups
 of persons in each cluster. A new variable called <code>trtBG</code> is
 computed since the values of the variable, <code>BLKGROUP</code>, are
 nested within each tract:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>   trtBG <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span>MDarea.pop<span class="sc">$</span>TRACT <span class="sc">+</span> MDarea.pop<span class="sc">$</span>BLKGROUP</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0.2604683   1.8390286   1.4627412   2.0994969   1.4353167   0.1240623</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>trtBG)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0.3488622   1.9498600   1.4627412   2.2987221   1.5715167   0.1517635</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>   trtBG <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span>MDarea.pop<span class="sc">$</span>TRACT <span class="sc">+</span> MDarea.pop<span class="sc">$</span>BLKGROUP</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>   <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;   0.2604683   1.8390286   1.4627412   2.0994969   1.4353167   0.1240623</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>   <span class="fu">BW2stageSRS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">psuID=</span>trtBG)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt;   0.3488622   1.9498600   1.4627412   2.2987221   1.5715167   0.1517635</span></span></code></pre></div>
 <p>The value of <span class="math inline">\(\small \delta\)</span> is
 0.124 <code>TRACT</code>s are clusters and 0.152 when <code>trtBG</code>
 defines clusters. The measures of homogeneity increase substantially
@@ -609,8 +609,8 @@ case where PSUs are selected with varying probabilities but with
 replacement, and the sample within each PSU is selected by
 <em>srswor</em>. With-replacement designs may not often be used in
 practice but have simple variance formulae. The <em>pwr</em>-estimator
-of a total <span class="citation">(<strong>SSW.92?</strong>)</span> is
-<span class="math display">\[
+of a total <span class="citation">(Särndal, Swensson, and Wretman
+1992)</span> is <span class="math display">\[
 \small \hat{t}_{pwr} =\frac{1}{m} \sum _{i\in s}\frac{\hat{t}_{i}
 }{p_{i} }
 \]</span> where <span class="math inline">\(\small \hat{t}_{i}
@@ -673,23 +673,23 @@ appropriate for <em>ppswr</em> sampling of clusters. The code for
 is shown below. The variables, <code>pp.PSU</code> and
 <code>pp.SSU</code>, hold the one-draw probabilities <span class="math inline">\(\small p_{i}\)</span> that appear in <span class="math inline">\(\small \eqref{eq:v2st}\)</span>:</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a> pp.PSU <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>PSU) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> pp.SSU <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>SSU) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.PSU, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>PSU)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.007762335 1.455263403 1.462741186 1.463025738 1.000194534 0.005305672</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.SSU, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>SSU)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.03644120  1.42770995  1.46274119  1.46415115  1.00096392  0.02488896</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a> pp.PSU <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>PSU) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a> pp.SSU <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>SSU) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.PSU, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>PSU)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; 0.007762335 1.455263403 1.462741186 1.463025738 1.000194534 0.005305672</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.SSU, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>SSU)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  0.03644120  1.42770995  1.46274119  1.46415115  1.00096392  0.02488896</span></span></code></pre></div>
 <p>The code for PSUs that are tracts and block groups is</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> pp.trt <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>TRACT) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> pp.BG <span class="ot">&lt;-</span> <span class="fu">table</span>(trtBG) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.trt, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.009171403 1.453908596 1.462741186 1.463079999 1.000231629 0.006268559</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.BG, <span class="at">psuID=</span>trtBG)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.01602891  1.44780622  1.46274119  1.46383513  1.00074787  0.01094994</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a> pp.trt <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>TRACT) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a> pp.BG <span class="ot">&lt;-</span> <span class="fu">table</span>(trtBG) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.trt, <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 0.009171403 1.453908596 1.462741186 1.463079999 1.000231629 0.006268559</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a> <span class="fu">BW2stagePPS</span>(MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.BG, <span class="at">psuID=</span>trtBG)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;          B2          W2 unit relvar       B2+W2           k       delta </span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;  0.01602891  1.44780622  1.46274119  1.46383513  1.00074787  0.01094994</span></span></code></pre></div>
 <p>The between term when clusters are defined by <code>PSU</code> is
 about the same as when clusters are selected by <em>srs</em> because
 <code>PSU</code>’s all have the same size. With PSUs being either tracts
@@ -859,26 +859,26 @@ elements in a three-stage design. All three stages are selected by
 <em>srs</em>. The call to <code>BW3stagePPS</code> for the variable
 <code>y1</code> in an <em>srswr/srs/srs</em> design is:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a> M <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(MDarea.pop<span class="sc">$</span>TRACT))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a> trtBG <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span>MDarea.pop<span class="sc">$</span>TRACT <span class="sc">+</span> MDarea.pop<span class="sc">$</span>BLKGROUP</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a> pp.trt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span>M,M)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW3stagePPS</span>(<span class="at">X=</span>MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.trt,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT, <span class="at">ssuID=</span>trtBG)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           B           W          W2          W3 unit relvar          k1 </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0.2577266   1.8390286   0.2707206   2.1083645   1.4627412   1.4334423 </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          k2      delta1      delta2 </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.6264566   0.1229169   0.1137919</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a> M <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(MDarea.pop<span class="sc">$</span>TRACT))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a> trtBG <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span>MDarea.pop<span class="sc">$</span>TRACT <span class="sc">+</span> MDarea.pop<span class="sc">$</span>BLKGROUP</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a> pp.trt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span>M,M)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a> <span class="fu">BW3stagePPS</span>(<span class="at">X=</span>MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.trt,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>       <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT, <span class="at">ssuID=</span>trtBG)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;           B           W          W2          W3 unit relvar          k1 </span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;   0.2577266   1.8390286   0.2707206   2.1083645   1.4627412   1.4334423 </span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;          k2      delta1      delta2 </span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;   1.6264566   0.1229169   0.1137919</span></span></code></pre></div>
 <p>We repeat the calculation but assuming <em>ppswr</em> sampling of
 PSUs. The calculation for <code>y1</code> using tracts and block groups
 as the first- and second-stage sampling units is done via this call:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a> trtBG <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span>MDarea.pop<span class="sc">$</span>TRACT <span class="sc">+</span> MDarea.pop<span class="sc">$</span>BLKGROUP</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> pp.trt <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>TRACT) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">BW3stagePPS</span>(<span class="at">X=</span>MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.trt,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT, <span class="at">ssuID=</span>trtBG)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           B           W          W2          W3 unit relvar          k1 </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.009171403 1.453908596 0.271630074 1.687254100 1.462741186 1.000231629 </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          k2      delta1      delta2 </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.339187133 0.006268559 0.138665715</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a> trtBG <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">*</span>MDarea.pop<span class="sc">$</span>TRACT <span class="sc">+</span> MDarea.pop<span class="sc">$</span>BLKGROUP</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a> pp.trt <span class="ot">&lt;-</span> <span class="fu">table</span>(MDarea.pop<span class="sc">$</span>TRACT) <span class="sc">/</span> <span class="fu">nrow</span>(MDarea.pop)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a> <span class="fu">BW3stagePPS</span>(<span class="at">X=</span>MDarea.pop<span class="sc">$</span>y1, <span class="at">pp=</span>pp.trt,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>       <span class="at">psuID=</span>MDarea.pop<span class="sc">$</span>TRACT, <span class="at">ssuID=</span>trtBG)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;           B           W          W2          W3 unit relvar          k1 </span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; 0.009171403 1.453908596 0.271630074 1.687254100 1.462741186 1.000231629 </span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;          k2      delta1      delta2 </span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; 1.339187133 0.006268559 0.138665715</span></span></code></pre></div>
 <p>Notice that <span class="math inline">\(\small \delta_1 =
 0.123\)</span> with <em>srs</em> sampling of tracts but is 0.006 when
 tracts are sampled proportional to their population sizes.</p>
@@ -968,6 +968,10 @@ effects.</td>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-SSW.1992" class="csl-entry">
+Särndal, C.-E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted
+Survey Sampling</em>. New York: Springer-Verlag.
+</div>
 <div id="ref-VDK.2018a" class="csl-entry">
 Valliant, R., J. A. Dever, and F. Kreuter. 2018a. <em>Files for 2nd
 Edition of Practical Tools for Designing and Weighting Survey

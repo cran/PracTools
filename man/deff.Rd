@@ -67,7 +67,7 @@ mos <- pop.dat$x
 pop.dat$prbs.1d <- mos / sum(mos)
     # select pps sample
 n <- 80
-pk <- n * pop.dat$prbs.1d
+pk <- pop.dat$prbs.1d
 sam <- UPrandomsystematic(pk)
 sam <- sam==1
 

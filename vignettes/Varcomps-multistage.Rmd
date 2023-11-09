@@ -147,7 +147,7 @@ The value of $\small \delta$ is 0.124 `TRACT`s are clusters and 0.152 when `trtB
 
 ### More General Two-stage Designs
 
-Variances of estimators in two-stage designs more complicated than simple random sampling at each stage can be written as a sum of components.  However, these have limited usefulness in determining sample sizes for the same reason that $\small \eqref{eq:pivar}$ is not. A more convenient formulation is the case where PSUs are selected with varying probabilities but with replacement, and the sample within each PSU is selected by *srswor*.  With-replacement designs may not often be used in practice but have simple variance formulae.  The *pwr*-estimator of a total [@SSW.92] is
+Variances of estimators in two-stage designs more complicated than simple random sampling at each stage can be written as a sum of components.  However, these have limited usefulness in determining sample sizes for the same reason that $\small \eqref{eq:pivar}$ is not. A more convenient formulation is the case where PSUs are selected with varying probabilities but with replacement, and the sample within each PSU is selected by *srswor*.  With-replacement designs may not often be used in practice but have simple variance formulae.  The *pwr*-estimator of a total [@SSW.1992] is
 \[
 \small \hat{t}_{pwr} =\frac{1}{m} \sum _{i\in s}\frac{\hat{t}_{i} }{p_{i} }
 \]

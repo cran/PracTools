@@ -66,7 +66,7 @@ Demographic and health related variables from a U.S. national household survey
                   2 = No;
                   NA = missing)
 }
-    \item{\code{doc.visit}}{During 2 WEEKS before interview, did {person} see a doctor or
+    \item{\code{doc.visit}}{During 2 WEEKS before interview, did (person) see a doctor or
 	other health care professional at a doctor's office, a clinic,
 	an emergency room, or some other place? (excluding overnight hospital stay)?
                   (1 = Yes;
