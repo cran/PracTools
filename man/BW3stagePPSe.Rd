@@ -80,18 +80,18 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 \code{\link{BW2stagePPS}}, \code{\link{BW2stagePPSe}}, \code{\link{BW2stageSRS}}, \code{\link{BW3stagePPS}}
 }
 \examples{
-\dontrun{
+\donttest{
     # select 3-stage sample from Maryland population
 set.seed(-780087528)
-data(MDarea.pop)
-MDpop <- MDarea.pop
+data(MDarea.popA)
+MDpop <- MDarea.popA
 require(sampling)
 require(plyr)      # has function that allows renaming variables
     # make counts of SSUs and elements per PSU
 xx <- do.call("rbind",list(by(1:nrow(MDpop),MDpop$SSU,head,1)))
 pop.tmp <- MDpop[xx,]
 Ni <- table(pop.tmp$PSU)
-Qi <- table(MDarea.pop$PSU)
+Qi <- table(MDarea.popA$PSU)
 Qij <- table(MDpop$SSU)
 m <- 30         # no. of PSUs to select
 probi <- m*Qi / sum(Qi)
@@ -100,7 +100,7 @@ sam <- cluster(data=MDpop, clustername="PSU", size=m, method="systematic",
                pik=probi, description=TRUE)
     # extract data for the sample clusters
 samclus <- getdata(MDpop, sam)
-samclus <- rename(samclus, c(Prob = "p1i"))
+samclus <- rename(samclus, c("Prob" = "p1i"))
 samclus <- samclus[order(samclus$PSU),]
     # treat sample clusters as strata and select srswor of block groups from each
     # identify psu IDs for 1st instance of each ssuID
@@ -110,7 +110,7 @@ SSUs <- cbind(PSU=samclus$PSU[xx], SSU=samclus$SSU[xx])
 n <- 2
 s <- strata(data = as.data.frame(SSUs), stratanames = "PSU",
             size = rep(n,m), method="srswor")
-s <- rename(s, c(Prob = "p2i"))
+s <- rename(s, c("Prob" = "p2i"))
     # extract the SSU data
     # s contains selection probs of SSUs, need to get those onto data file
 SSUsam <- SSUs[s$ID_unit, ]
@@ -123,7 +123,7 @@ SSUdat <- merge(SSUdat, SSUsam[, c("p2i","SSU")], by="SSU")
 n.SSU <- m*n
 s <- strata(data = as.data.frame(SSUdat), stratanames = "SSU",
             size = rep(50,n.SSU), method="srswor")
-s <- rename(s, c(Prob = "p3i"))
+s <- rename(s, c("Prob" = "p3i"))
 samclus <- getdata(SSUdat, s)
 del <- (1:ncol(samclus))[dimnames(samclus)[[2]] \%in\% c("ID_unit","Stratum")]
 samclus <- samclus[, -del]

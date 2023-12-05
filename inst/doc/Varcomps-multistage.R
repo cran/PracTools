@@ -9,37 +9,37 @@ library(PracTools)
 
 ## -----------------------------------------------------------------------------
  require(PracTools)
- data(MDarea.pop)
- BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$PSU)
- BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$SSU)
+ data(MDarea.popA)
+ BW2stageSRS(MDarea.popA$y1, psuID=MDarea.popA$PSU)
+ BW2stageSRS(MDarea.popA$y1, psuID=MDarea.popA$SSU)
 
 ## -----------------------------------------------------------------------------
-   trtBG <- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
-   BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$TRACT)
-   BW2stageSRS(MDarea.pop$y1, psuID=trtBG)
+   trtBG <- 10*MDarea.popA$TRACT + MDarea.popA$BLKGROUP
+   BW2stageSRS(MDarea.popA$y1, psuID=MDarea.popA$TRACT)
+   BW2stageSRS(MDarea.popA$y1, psuID=trtBG)
 
 ## -----------------------------------------------------------------------------
- pp.PSU <- table(MDarea.pop$PSU) / nrow(MDarea.pop)
- pp.SSU <- table(MDarea.pop$SSU) / nrow(MDarea.pop)
- BW2stagePPS(MDarea.pop$y1, pp=pp.PSU, psuID=MDarea.pop$PSU)
- BW2stagePPS(MDarea.pop$y1, pp=pp.SSU, psuID=MDarea.pop$SSU)
+ pp.PSU <- table(MDarea.popA$PSU) / nrow(MDarea.popA)
+ pp.SSU <- table(MDarea.popA$SSU) / nrow(MDarea.popA)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.PSU, psuID=MDarea.popA$PSU)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.SSU, psuID=MDarea.popA$SSU)
 
 ## -----------------------------------------------------------------------------
- pp.trt <- table(MDarea.pop$TRACT) / nrow(MDarea.pop)
- pp.BG <- table(trtBG) / nrow(MDarea.pop)
- BW2stagePPS(MDarea.pop$y1, pp=pp.trt, psuID=MDarea.pop$TRACT)
- BW2stagePPS(MDarea.pop$y1, pp=pp.BG, psuID=trtBG)
+ pp.trt <- table(MDarea.popA$TRACT) / nrow(MDarea.popA)
+ pp.BG <- table(trtBG) / nrow(MDarea.popA)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.trt, psuID=MDarea.popA$TRACT)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.BG, psuID=trtBG)
 
 ## -----------------------------------------------------------------------------
- M <- length(unique(MDarea.pop$TRACT))
- trtBG <- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
+ M <- length(unique(MDarea.popA$TRACT))
+ trtBG <- 10*MDarea.popA$TRACT + MDarea.popA$BLKGROUP
  pp.trt <- rep(1/M,M)
- BW3stagePPS(X=MDarea.pop$y1, pp=pp.trt,
-       psuID=MDarea.pop$TRACT, ssuID=trtBG)
+ BW3stagePPS(X=MDarea.popA$y1, pp=pp.trt,
+       psuID=MDarea.popA$TRACT, ssuID=trtBG)
 
 ## -----------------------------------------------------------------------------
- trtBG <- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
- pp.trt <- table(MDarea.pop$TRACT) / nrow(MDarea.pop)
- BW3stagePPS(X=MDarea.pop$y1, pp=pp.trt,
-       psuID=MDarea.pop$TRACT, ssuID=trtBG)
+ trtBG <- 10*MDarea.popA$TRACT + MDarea.popA$BLKGROUP
+ pp.trt <- table(MDarea.popA$TRACT) / nrow(MDarea.popA)
+ BW3stagePPS(X=MDarea.popA$y1, pp=pp.trt,
+       psuID=MDarea.popA$TRACT, ssuID=trtBG)
 

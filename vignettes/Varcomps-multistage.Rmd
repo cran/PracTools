@@ -124,24 +124,24 @@ i.e., the population relvariance can be written as the sum of between and within
 
 Expressions $\small \eqref{eq:relvarsrs}$ and $\small \eqref{eq:deltavar.2st}$ are useful for sample size calculation since the number of sample PSUs and sample units per PSU are explicit in the formula.  Equation $\small \eqref{eq:deltavar.2st}$ also connects the variance of the estimated total to the variance that would be obtained from a simple random sample since $\small \tilde{V}/m\bar{n}$ is the relvariance of the estimated total in an *srswor* of size $\small m\bar{n}$ when the sampling fraction is small. The product $\small k[1 + \delta(\bar{n}-1)]$ is a type of design effect. When $\small k=1$, the term $\small 1+\delta \left(\bar{n}-1\right)$ is the approximate design effect found in many textbooks.
 
-The next example uses the `MDarea.pop` from `PracTools`. This dataset is based on the U.S. Census counts from the year 2000 for Anne Arundel County in the US state of Maryland. The geographic divisions used in this dataset are called tracts and block groups.  Tracts are constructed by the US Census Bureau to have a desired population size of 4,000 people.  Block groups (BGs) are smaller with a target size of 1,500 people.  Counts of persons in the dataset are the same for most tracts and block groups as in the 2000 Census.
+The next example uses the `MDarea.popA` from `PracTools`. This dataset is based on the U.S. Census counts from the year 2000 for Anne Arundel County in the US state of Maryland. The geographic divisions used in this dataset are called tracts and block groups.  Tracts are constructed by the US Census Bureau to have a desired population size of 4,000 people.  Block groups (BGs) are smaller with a target size of 1,500 people.  Counts of persons in the dataset are the same for most tracts and block groups as in the 2000 Census.
 
 * **Example. Between and within variance components in *srs/srs* design**
 The R function `BW2stageSRS` will calculate the unit relvariance of a population, $\small B^{2} + W^{2}$ for comparison, the ratio $\small k=(B^2+W^2)/(S_{U}^{2}/\bar{y}_{U}^2)$, and the full version of $\small \delta$ in $\small \eqref{eq:delta}$.  The function assumes that the entire sampling frame is an input.  The full R code for this example is in the file `Example 9.2.R`, available at @VDK.2018a.  We first compute the results using the `PSU` and `SSU` variables as clusters. These fields are created so that all `PSU`s have the same size; likewise, all `SSU`s have the same size.  For the variable `y1` in the Maryland population, the code is
 
 ```{r}
  require(PracTools)
- data(MDarea.pop)
- BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$PSU)
- BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$SSU)
+ data(MDarea.popA)
+ BW2stageSRS(MDarea.popA$y1, psuID=MDarea.popA$PSU)
+ BW2stageSRS(MDarea.popA$y1, psuID=MDarea.popA$SSU)
 ```
 
 The values of $\small \delta$ are 0.005 for `PSU` and 0.025 for `SSU`.  Next, to illustrate the dramatic effect that varying sizes of clusters can have, we compute the same statistics as above using tracts and block groups (BGs) within tracts as clusters. These vary substantially in the number of persons in each cluster. A new variable called `trtBG` is computed since the values of the variable, `BLKGROUP`, are nested within each tract:
 
 ```{r}
-   trtBG <- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
-   BW2stageSRS(MDarea.pop$y1, psuID=MDarea.pop$TRACT)
-   BW2stageSRS(MDarea.pop$y1, psuID=trtBG)
+   trtBG <- 10*MDarea.popA$TRACT + MDarea.popA$BLKGROUP
+   BW2stageSRS(MDarea.popA$y1, psuID=MDarea.popA$TRACT)
+   BW2stageSRS(MDarea.popA$y1, psuID=trtBG)
 ```
 The value of $\small \delta$ is 0.124 `TRACT`s are clusters and 0.152 when `trtBG` defines clusters. The measures of homogeneity increase substantially when tracts or BGs are clusters compared to the `PSU` and `SSU` results. This is entirely due to the increase in $\small B^{2}$ when units with highly variable sizes are used and an *srs* is selected.  For example, $\small B^{2} =0.0079$ for `y1` when `PSU` is a cluster but is 0.2605 when `TRACT` is a cluster. 
 
@@ -185,17 +185,17 @@ Expression $\small \eqref{eq:vpwr.2st}$ has the same form as $\small \eqref{eq:d
 This example repeats the calculations in the example above for the variables in the Maryland area population.  Assume that clusters will be selected proportional to the count of persons in each cluster.  The function `BW2stagePPS` computes the population values of $\small B^{2}$, $\small W^{2}$, and $\small \delta$ shown in $\small \eqref{eq:B2.2st.pwr}$, $\small \eqref{eq:W2.2st.pwr}$, and $\small \eqref{eq:delta.2st.pwr}$ which are appropriate for *ppswr* sampling of clusters.  The code for `y1` using `PSU` or `SSU` as clusters is shown below.  The variables, `pp.PSU` and `pp.SSU`, hold the one-draw probabilities $\small p_{i}$ that appear in $\small \eqref{eq:v2st}$:
 
 ```{r}
- pp.PSU <- table(MDarea.pop$PSU) / nrow(MDarea.pop)
- pp.SSU <- table(MDarea.pop$SSU) / nrow(MDarea.pop)
- BW2stagePPS(MDarea.pop$y1, pp=pp.PSU, psuID=MDarea.pop$PSU)
- BW2stagePPS(MDarea.pop$y1, pp=pp.SSU, psuID=MDarea.pop$SSU)
+ pp.PSU <- table(MDarea.popA$PSU) / nrow(MDarea.popA)
+ pp.SSU <- table(MDarea.popA$SSU) / nrow(MDarea.popA)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.PSU, psuID=MDarea.popA$PSU)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.SSU, psuID=MDarea.popA$SSU)
 ```
 The code for PSUs that are tracts and block groups is 
 ```{r}
- pp.trt <- table(MDarea.pop$TRACT) / nrow(MDarea.pop)
- pp.BG <- table(trtBG) / nrow(MDarea.pop)
- BW2stagePPS(MDarea.pop$y1, pp=pp.trt, psuID=MDarea.pop$TRACT)
- BW2stagePPS(MDarea.pop$y1, pp=pp.BG, psuID=trtBG)
+ pp.trt <- table(MDarea.popA$TRACT) / nrow(MDarea.popA)
+ pp.BG <- table(trtBG) / nrow(MDarea.popA)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.trt, psuID=MDarea.popA$TRACT)
+ BW2stagePPS(MDarea.popA$y1, pp=pp.BG, psuID=trtBG)
 ```
 The between term when clusters are defined by `PSU` is about the same as when clusters are selected by *srs* because `PSU`'s all have the same size. With PSUs being either tracts or block groups in the *ppswr/srswor* design, the between term is much smaller than the within, compared to the results in the *srs/srs* example.  For example, with  `y1` and *srs* sampling of tracts, $\small B^2=0.2604$ but for *pps* sampling of tracts $\small B^2=0.0091$. 
 
@@ -259,18 +259,18 @@ The R function, `BW3stagePPS`, will calculate $\small B^{2}$, $\small W^{2}$, $\
 * **Example. Variance components in three stage *srswr/srs/srs* and *ppswr/srs/srs* designs**.
 In the Maryland population suppose that suppose that tracts and BGs within tracts are the first- and second-stage units, and that persons are elements in a three-stage design. All three stages are selected by *srs*.  The call to `BW3stagePPS` for the variable `y1` in an *srswr/srs/srs* design is:
 ```{r}
- M <- length(unique(MDarea.pop$TRACT))
- trtBG <- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
+ M <- length(unique(MDarea.popA$TRACT))
+ trtBG <- 10*MDarea.popA$TRACT + MDarea.popA$BLKGROUP
  pp.trt <- rep(1/M,M)
- BW3stagePPS(X=MDarea.pop$y1, pp=pp.trt,
-       psuID=MDarea.pop$TRACT, ssuID=trtBG)
+ BW3stagePPS(X=MDarea.popA$y1, pp=pp.trt,
+       psuID=MDarea.popA$TRACT, ssuID=trtBG)
 ```
 We repeat the calculation but assuming *ppswr* sampling of PSUs.  The calculation for `y1` using tracts and block groups as the first- and second-stage sampling units is done via this call:
 ```{r}
- trtBG <- 10*MDarea.pop$TRACT + MDarea.pop$BLKGROUP
- pp.trt <- table(MDarea.pop$TRACT) / nrow(MDarea.pop)
- BW3stagePPS(X=MDarea.pop$y1, pp=pp.trt,
-       psuID=MDarea.pop$TRACT, ssuID=trtBG)
+ trtBG <- 10*MDarea.popA$TRACT + MDarea.popA$BLKGROUP
+ pp.trt <- table(MDarea.popA$TRACT) / nrow(MDarea.popA)
+ BW3stagePPS(X=MDarea.popA$y1, pp=pp.trt,
+       psuID=MDarea.popA$TRACT, ssuID=trtBG)
 ```
 Notice that $\small \delta_1 = 0.123$ with *srs* sampling of tracts but is 0.006 when tracts are sampled proportional to their population sizes.
 

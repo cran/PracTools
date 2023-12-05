@@ -5,11 +5,19 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.4.2
+
+*    Reduced the size of the MDarea.pop data file in order to meet the CRAN limitation of 5MB for an installed package. The reduced file is called MDarea.popA. The MDarea.pop file used in the book by Valliant, Dever, and Kreuter (2018) can still be downloaded in RData format from https://umd.app.box.com/v/PracTools2ndEdition.
+
+*    Checks on sum(pp)==1 in BW2stagePPS and BW3stagePPS were changed from exact equality to tolerances on equality.
+
+*    Various minor edits required for CRAN submission were made.
+
 # PracTools 1.4.1
 
 *    Incorrect calculation of 1-draw selection probabilities corrected in vignette, Distance-and-MOS-PSUs.
 
-*    Added check that 1-draw selection probabilities in parameter pp sum to 1 in the functions, BW2stagePPS, BW3stagePPs, deff, and deffS.
+*    Added check that 1-draw selection probabilities in parameter pp sum to 1 in the functions, BW2stagePPS and BW3stagePPs.
 
 *    Added a new vignette titled "Design Effects and Effective Sample Size".
 

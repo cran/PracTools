@@ -5,7 +5,6 @@
 Domain data
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
 \code{Domainy1y2} is a small data file used for an exercise in sample size calculations.
 }
 \usage{data(Domainy1y2)}

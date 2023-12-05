@@ -33,7 +33,7 @@ nContMoe <- function(moe.sw, e, alpha=0.05, CVpop=NULL, S2=NULL, ybarU=NULL, N=I
         }
     }
     if (sum(sapply(list(S2, ybarU, CVpop), is.null)) == 0){
-        cat("S2, ybarU, and CVpop all specified. CVpop ignored.\n")
+        message("S2, ybarU, and CVpop all specified. CVpop ignored.\n")
     }
 
     z <- qnorm(1 - alpha/2)

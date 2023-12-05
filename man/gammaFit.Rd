@@ -64,7 +64,7 @@ x <- hospital$x
 y <- hospital$y
 
 X <- cbind(sqrt(x), x)
-gammaFit(X = X, x = x, y = y, maxiter=100, tol=0.001)
+gammaFit(X = X, x = x, y = y, maxiter=100, tol=0.002)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

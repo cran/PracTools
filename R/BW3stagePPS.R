@@ -1,7 +1,8 @@
 
 BW3stagePPS <- function(X, pp, psuID, ssuID, lonely.SSU = "mean", lonely.TSU = "mean"){
-    if (!(sum(pp)==1)) {stop("pp vector must sum to 1.\n") }
-  
+    chk.pp <- abs(sum(pp) - 1) >= 1e-3
+    if (chk.pp){stop("pp vector must sum to 1.\n") }
+
     tUi <- by(X, INDICES = psuID, FUN = sum)
     tU <- sum(tUi)
 

@@ -1,5 +1,5 @@
-\name{MDarea.pop}
-\alias{MDarea.pop}
+\name{MDarea.popA}
+\alias{MDarea.popA}
 \docType{data}
 \title{
     Maryland area population
@@ -7,11 +7,11 @@
 \description{
     An artificial population of census tracts, block groups, and persons
 }
-\usage{data(MDarea.pop)}
+\usage{data(MDarea.popA)}
 \format{
-  A data frame with 403,997 persons on the following variables:
+  A data frame with 343,398 persons on the following variables:
   \describe{
-     \item{\code{PSU}}{A grouping of block groups (\code{BLKGROUP}) which has about 5050 persons}
+     \item{\code{PSU}}{A grouping of block groups (\code{BLKGROUP}) which has about 4290 persons}
      \item{\code{SSU}}{A grouping of block groups which has about 1010 persons}
 	 \item{\code{TRACT}}{A geographic area defined by the Census Bureau.  Tracts generally have between 1,500 and 8,000 people but have a much wider range in Anne Arundel county.}
      \item{\code{BLKGROUP}}{Block group. A geographic area defined by the Census Bureau.  Block groups generally have between 600 and 3,000 people.}
@@ -57,20 +57,24 @@
   }
 }
 \details{
-A dataset of 403,997 persons based on the 2000 decennial U.S. Census for Anne Arundel County
-in the state of Maryland. Person records were generated based on counts from the 2000 census.
+A dataset of 343,398 persons based on the 2000 decennial U.S. Census for Anne Arundel County
+in the US state of Maryland. Person records were generated based on counts from the 2000 census.
 Individual values for each person were generated using models.
 Groupings to form the variables \code{PSU} and \code{SSU} were done after sorting the census file by tract and block group within tract.
+
+Note that \code{MDarea.popA} is different from the dataset, \code{MDarea.pop}, that is used in the book by Valliant, Dever, and Kreuter (2018).  \code{MDarea.pop} is larger with 403,997 persons. \code{MDarea.popA} was created by taking an equal probability, systematic subsample from \code{MDarea.pop}. \code{MDarea.popA} does have the same numbers of \code{TRACT}s, \code{PSU}s, and \code{SSU}s as \code{MDarea.pop}. The smaller data set was created to meet the CRAN size limit on installed packages. The full population, \code{MDarea.pop}, can be downloaded from \code{https://umd.app.box.com/v/PracTools2ndEdition}.
 }
 
 \source{
 2000 U.S. decennial census, \code{http://www.census.gov/main/www/cen2000.html}
 }
-
+\references{
+Valliant, R., Dever, J., Kreuter, F. (2018). \emph{Practical Tools for Designing and Weighting Survey Samples, 2nd edition}. New York: Springer.
+}
 \examples{
-data(MDarea.pop)
-str(MDarea.pop)
-table(MDarea.pop$TRACT)
-table(MDarea.pop$TRACT, MDarea.pop$Hispanic)
+data(MDarea.popA)
+str(MDarea.popA)
+table(MDarea.popA$TRACT)
+table(MDarea.popA$TRACT, MDarea.popA$Hispanic)
 }
 \keyword{datasets}

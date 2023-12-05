@@ -74,16 +74,16 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-data(MDarea.pop)
-MDsub <- MDarea.pop[1:100000,]
+data(MDarea.popA)
+MDsub <- MDarea.popA[1:100000,]
 M <- length(unique(MDsub$PSU))
     # srs/srs/srs design
 pp.PSU <- rep(1/M,M)
-BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU, 
+BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU,
     lonely.SSU = "mean", lonely.TSU = "mean")
     # ppswr/srs/srs design
 pp.PSU <- table(MDsub$PSU) / nrow(MDsub)
-BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU, 
+BW3stagePPS(X=MDsub$y1, pp=pp.PSU, psuID=MDsub$PSU, ssuID=MDsub$SSU,
     lonely.SSU = "mean", lonely.TSU = "mean")
 }
 

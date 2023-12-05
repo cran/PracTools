@@ -15,12 +15,12 @@ gammaFit <- function(X, x, y, maxiter=100, show.iter=FALSE, tol=0.001){
     }
 
     if ((step >= maxiter) & !converged){
-        cat("Maximum no. of iterations reached without convergence.\n")
-        cat("g.hat = ", g.hat, "\n")
+        message("Maximum no. of iterations reached without convergence.\n")
+        message("g.hat = ", g.hat, "\n")
     }
     else{
-        cat("Convergence attained in ", step-1, "steps.\n")
-        cat("g.hat =", g.hat, "\n")
-    }
+      message("Convergence attained in ", step-1, " steps.\n")
+      message("g.hat =", g.hat, "\n")
+            }
     list(g.hat=g.hat, converged = converged, steps=step-1)
 }

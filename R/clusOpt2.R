@@ -1,7 +1,5 @@
 
 clusOpt2 <- function(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.sw){
-    options(warn = -1)
-    
     if (!is.null(CV0) & !is.null(tot.cost))
         stop("CV0 and tot.cost cannot both be non-null.\n")
 
@@ -44,4 +42,5 @@ clusOpt2 <- function(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.s
     }
     output
 }
+
 

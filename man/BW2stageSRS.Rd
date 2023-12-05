@@ -28,7 +28,7 @@ appropriate for a two-stage sample in which PSUs are selected via \emph{srs} (ei
 
    If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate
    an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample.
-   
+
     (Use \code{\link{BW2stagePPSe}} if only a sample of PSUs and elements are available.)
 }
 
@@ -56,8 +56,8 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-data(MDarea.pop)
-MDsub <- MDarea.pop[1:100000,]
+data(MDarea.popA)
+MDsub <- MDarea.popA[1:100000,]
     # psu's are defined by PSU variable
 BW2stageSRS(abs(MDsub$Hispanic-2), psuID=MDsub$PSU, lonely.SSU="mean")
     # psu's are defined by SSU variable

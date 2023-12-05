@@ -45,7 +45,7 @@ BW2stagePPSe(Ni, ni, X, psuID, w, m, pp, lonely.SSU = "mean")
      This function can also be used if PSUs are selected by \emph{srswr} by appropriate definition of \code{pp}.
 
      If a PSU contains multiple SSUs, some of which have missing data, or contains only one SSU, a value is imputed. If \code{lonely.SSU = "mean"}, the mean of the non-missing PSU contributions is imputed. If \code{lonely.SSU = "zero"}, a 0 is imputed. The former would be appropriate if a PSU contains multiple SSUs but one or more of them has missing data in which case R will normally calculate an NA. The latter would be appropriate if the PSU contains only one SSU which would be selected with certainty in any sample.
-     
+
     If any PSUs have one-draw probabilities of 1 (pp=1), the function will be halted. Any such PSUs should be removed before calling the function.
 }
 
@@ -72,19 +72,19 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 \code{\link{BW2stagePPS}}, \code{\link{BW2stageSRS}}, \code{\link{BW3stagePPS}}, \code{\link{BW3stagePPSe}}
 }
 \examples{
-\dontrun{
+\donttest{
 require(sampling)
 require(plyr)      # has function that allows renaming variables
-data(MDarea.pop)
-Ni <- table(MDarea.pop$TRACT)
+data(MDarea.popA)
+Ni <- table(MDarea.popA$TRACT)
 m <- 20
 probi <- m*Ni / sum(Ni)
     # select sample of clusters
-sam <- cluster(data=MDarea.pop, clustername="TRACT", size=m, method="systematic",
+sam <- cluster(data=MDarea.popA, clustername="TRACT", size=m, method="systematic",
                 pik=probi, description=TRUE)
     # extract data for the sample clusters
-samclus <- getdata(MDarea.pop, sam)
-samclus <- rename(samclus, c(Prob = "pi1"))
+samclus <- getdata(MDarea.popA, sam)
+samclus <- rename(samclus, c("Prob" = "pi1"))
 
 
     # treat sample clusters as strata and select srswor from each
@@ -92,7 +92,7 @@ s <- strata(data = as.data.frame(samclus), stratanames = "TRACT",
             size = rep(50,m), method="srswor")
 # extracts the observed data
 samdat <- getdata(samclus,s)
-samdat <- rename(samdat, c(Prob = "pi2"))
+samdat <- rename(samdat, c("Prob" = "pi2"))
 
     # extract pop counts for PSUs in sample
 pick <- names(Ni) \%in\% sort(unique(samdat$TRACT))

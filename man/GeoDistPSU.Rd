@@ -49,6 +49,7 @@ grid(col = "grey40")
 
     # Plot GeoDistPSU output with map
 \dontrun{
+  # install package sf to run usmap_transform
 library(ggplot2)
 library(sp)
 library(usmap)

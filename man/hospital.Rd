@@ -5,7 +5,6 @@
 Hospital Data
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
 The \code{hospital} data file is a national sample of short-stay hospitals with fewer than 1000 beds.
 }
 \usage{data(hospital)}

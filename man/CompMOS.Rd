@@ -58,10 +58,10 @@ exp.domain.rr <- c(1, 1)
 CompMOS(dsn = dsn, psuID  = psuID, n.PSU  = n.PSU, domain = domain,
         domain.req.n = domain.req.n, exp.domain.rr = exp.domain.rr)
 
-  # MDarea.pop has multiple rows for each TRACT; need to summarize TRACT/Age totals
+  # MDarea.popA has multiple rows for each TRACT; need to summarize TRACT/Age totals
   # for input to CompMOS
-data(MDarea.pop)
-MDpop <- MDarea.pop[,1:8]
+data(MDarea.popA)
+MDpop <- MDarea.popA[,1:8]
 MDpop$AgeGrp <- cut(MDpop$Age, breaks = c(0, 12, 17, 23),
                     labels = c("Age.44.or.under", "Age.45-64", "Age.65+"))
 

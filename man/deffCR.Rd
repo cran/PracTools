@@ -42,24 +42,24 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 \examples{
 require(sampling)
 require(reshape)
-data(MDarea.pop)
-Ni <- table(MDarea.pop$TRACT)
+data(MDarea.popA)
+Ni <- table(MDarea.popA$TRACT)
 m <- 20
 probi <- m*Ni / sum(Ni)
     # select sample of clusters
 set.seed(-780087528)
-sam <- sampling::cluster(data=MDarea.pop, clustername="TRACT", size=m, method="systematic",
+sam <- sampling::cluster(data=MDarea.popA, clustername="TRACT", size=m, method="systematic",
                 pik=probi, description=TRUE)
     # extract data for the sample clusters
-samclus <- getdata(MDarea.pop, sam)
-samclus <- rename(samclus, c(Prob = "pi1"))
+samclus <- getdata(MDarea.popA, sam)
+samclus <- rename(samclus, c("Prob" = "pi1"))
     # treat sample clusters as strata and select srswor from each
 nbar <- 8
 s <- sampling::strata(data = as.data.frame(samclus), stratanames = "TRACT",
             size = rep(nbar,m), method="srswor")
     # extracts the observed data
 samdat <- getdata(samclus,s)
-samdat <- rename(samdat, c(Prob = "pi2"))
+samdat <- rename(samdat, c("Prob" = "pi2"))
     # add a fake stratum ID
 H <- 2
 nh <- m * nbar / H
