@@ -1,6 +1,5 @@
 \name{clusOpt2fixedPSU}
 \alias{clusOpt2fixedPSU}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Optimal number of sample elements per PSU in a two-stage sample when the sample of PSUs is fixed
 }

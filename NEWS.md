@@ -5,6 +5,12 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.4.3
+
+*    nPPS function added that computes a sample size for a probability proportional to size, with replacement (ppswr) sample.
+
+*    unitVar function added that computes the population (unit) variances of a variable. Two alternatives in the output are the unweighted population variance and a unit variance appropriate for ppswr samples.
+
 # PracTools 1.4.2
 
 *    Reduced the size of the MDarea.pop data file in order to meet the CRAN limitation of 5MB for an installed package. The reduced file is called MDarea.popA. The MDarea.pop file used in the book by Valliant, Dever, and Kreuter (2018) can still be downloaded in RData format from https://umd.app.box.com/v/PracTools2ndEdition.

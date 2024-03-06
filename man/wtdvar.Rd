@@ -42,7 +42,5 @@ wts <- c(4, 6, 8)
 wtdvar(x=x, w=wts)
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{methods}
 \keyword{survey}

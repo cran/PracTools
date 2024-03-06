@@ -1,8 +1,8 @@
 Package: PracTools
 Type: Package
 Title: Designing and Weighting Survey Samples
-Version: 1.4.2
-Date: 2023-11-29
+Version: 1.4.3
+Date: 2024-03-05
 Authors@R: c(
    RV = person("Richard", "Valliant",
           email = "valliant@umich.edu",
@@ -27,6 +27,6 @@ LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2023-11-29 20:27:21 UTC; rv
+Packaged: 2024-03-05 18:30:03 UTC; rv
 Repository: CRAN
-Date/Publication: 2023-12-05 10:40:02 UTC
+Date/Publication: 2024-03-06 01:00:24 UTC

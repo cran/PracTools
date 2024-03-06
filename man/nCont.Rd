@@ -1,6 +1,5 @@
 \name{nCont}
 \alias{nCont}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Compute a simple random sample size for an estimated mean
 }
@@ -48,7 +47,6 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 }
 \seealso{
 \code{\link{nLogOdds}}, \code{\link{nProp}}, \code{\link{nPropMoe}}, \code{\link{nWilson}}
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 nCont(CV0=0.05, CVpop=2)
@@ -70,9 +68,5 @@ S2R <- sum(m$residuals^2/(length(x)-1))
 nCont(CV0=0.15, S2=S2R, ybarU=ybarU)
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-%\keyword{ ~kwd1 }
-%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
 \keyword{methods}
 \keyword{survey} 

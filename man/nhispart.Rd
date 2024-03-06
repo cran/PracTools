@@ -130,7 +130,6 @@ National Health Interview Survey of 2003 conducted by the U.S. National Center f
 \url{https://www.cdc.gov/nchs/nhis.htm}
 }
 
-
 \examples{
 data(nhispart)
 str(nhispart)

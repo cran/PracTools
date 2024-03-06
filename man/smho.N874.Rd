@@ -45,8 +45,6 @@ Mental Health Services Administration.
 
 \seealso{
 \code{\link{smho98}}
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%%}
 }
 \examples{
 data(smho.N874)

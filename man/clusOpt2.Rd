@@ -1,6 +1,5 @@
 \name{clusOpt2}
 \alias{clusOpt2}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Compute optimal sample sizes for a two-stage sample
 }

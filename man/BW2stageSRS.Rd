@@ -1,6 +1,5 @@
 \name{BW2stageSRS}
 \alias{BW2stageSRS}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Relvariance components for 2-stage sample
 }

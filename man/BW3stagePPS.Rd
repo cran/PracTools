@@ -1,6 +1,5 @@
 \name{BW3stagePPS}
 \alias{BW3stagePPS}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Relvariance components for 3-stage sample
 }

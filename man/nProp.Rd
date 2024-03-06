@@ -56,9 +56,5 @@ nProp(CV0=0.05, N=Inf, pU=0.01)
 nProp(V0=(0.005/1.96)^2, N=Inf, pU=0.01)
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-%\keyword{ ~kwd1 }
-%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
 \keyword{methods}
 \keyword{survey} 

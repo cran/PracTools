@@ -40,7 +40,6 @@ Richard Valliant, Jill A. Dever, Frauke Kreuter
 }
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 \code{\link{gammaFit}}
 }
 \examples{
@@ -51,7 +50,5 @@ y <- hospital$y
 X <- cbind(sqrt(x), x)
 gamEst(X1 = X, x1 = x, y1 = y, v1 = x)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{models}
 

@@ -1,6 +1,5 @@
 \name{NRFUopt}
 \alias{NRFUopt}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Sample sizes for a nonresponse follow-up study
 }

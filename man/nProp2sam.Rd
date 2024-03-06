@@ -1,6 +1,5 @@
 \name{nProp2sam}
 \alias{nProp2sam}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Simple random sample size for difference in proportions
 }

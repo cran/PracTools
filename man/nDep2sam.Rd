@@ -1,6 +1,5 @@
 \name{nDep2sam}
 \alias{nDep2sam}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Simple random sample size for difference in means
 }
@@ -77,9 +76,5 @@ nDep2sam(S2x=200, S2y=200,
             sig.level=0.05, pow=0.80)
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-%\keyword{ ~kwd1 }
-%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
 \keyword{methods}
 \keyword{survey} 
