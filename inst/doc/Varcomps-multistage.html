@@ -12,7 +12,7 @@
 
 <meta name="author" content="Richard Valliant, Jill A. Dever, and Frauke Kreuter" />
 
-<meta name="date" content="2024-03-05" />
+<meta name="date" content="2024-06-24" />
 
 <title>Variance Component Estimation in Multistage Sampling</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -150,6 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
+margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -364,7 +365,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 Sampling</h1>
 <h4 class="author">Richard Valliant, Jill A. Dever, and Frauke
 Kreuter</h4>
-<h4 class="date">2024-03-05</h4>
+<h4 class="date">2024-06-24</h4>
 
 
 
@@ -467,8 +468,8 @@ S_{U1}^{2} +\frac{M}{m} \sum _{i\in U}\frac{N_{i}^{2} }{n_{i} }
 \frac{N_{i} -n_{i} }{N_{i} } S_{U2i}^{2}
 \end{equation}\]</span> where <span class="math inline">\(\small
 S_{U1}^{2} =\frac{\sum _{i\in U}\left(t_{i} -\bar{t}_{U}
-\right)^{2}}{M-1}\)</span> with <span class="math inline">\(t_{i}\)</span> being the population total of <span class="math inline">\(\small y\)</span> in PSU <span class="math inline">\(\small i\)</span> and <span class="math inline">\(\small \bar{t}_{U} ={\sum _{i\in U}t_{i} /
-M}\)</span> is the mean total per PSU.</p>
+\right)^{2}}{M-1}\)</span> with <span class="math inline">\(t_{i}\)</span> being the population total of <span class="math inline">\(\small y\)</span> in PSU <span class="math inline">\(\small i\)</span> and <span class="math inline">\(\small \bar{t}_{U} ={\sum _{i\in
+U}t_{i}  /  M}\)</span> is the mean total per PSU.</p>
 <p>If <span class="math inline">\(\bar{n}\)</span> elements are selected
 in each PSU and the sampling fractions of PSUs and elements within PSUs
 are all small, then the relvariance can be written as <span class="math display">\[\begin{equation} \label{eq:relvarsrs}
@@ -706,7 +707,7 @@ population totals, <span class="math inline">\(\small t_{i} \left/ p_{i}
 \right.\)</span> around the population total, <span class="math inline">\(\small t_{U}\)</span>. When clusters are selected
 with probability proportional to <span class="math inline">\(\small
 N_{i}\)</span>, then <span class="math inline">\(\small t_{i} \left/
-p_{i} \right. = N_{i} \bar{y}_{Ui}\)</span>. If these one-cluster
+p_{i} \right.  = N_{i} \bar{y}_{Ui}\)</span>. If these one-cluster
 estimates of the population total are fairly accurate, as they are here,
 the <span class="math inline">\(\small B^{2}\)</span> term can be quite
 small. This leads to much smaller values of <span class="math inline">\(\small \delta\)</span> in <em>pps</em> sampling of
@@ -763,18 +764,18 @@ homogeneity:</p>
 <p><span class="math inline">\(\small k_{1} =
 (B^2+W^2)/\tilde{V}\)</span> with <span class="math inline">\(\small
 \tilde{V} = \frac{1}{Q-1} \sum_{i\in U} \sum_{j \in U_{i} } \sum_{k\in
-U_{ij} } \left(y_{k} - \bar{y}_{U} \right)^2 \left/ \bar{y}_U^2
+U_{ij} } \left(y_{k} - \bar{y}_{U} \right)^2  \left/ \bar{y}_U^2
 \right.\)</span> is the unit relvariance of <span class="math inline">\(\small y\)</span> in the population.</p>
 <p><span class="math inline">\(\small k_{2} = (W_{2}^2 +
 W_{3}^2)/\tilde{V}\)</span></p>
 <p><span class="math inline">\(\small\delta _{1} = B^2/(B^2 +
 W^2)\)</span></p>
 <p><span class="math inline">\(\small W^{2} = \frac{1}{t_{U}^{2} }
-\sum_{i\in U} Q_{i}^{2} S_{U3i}^{2} \left/ p_{i} \right.\)</span> with
+\sum_{i\in U} Q_{i}^{2} S_{U3i}^{2} \left/ p_{i}  \right.\)</span> with
 <span class="math inline">\(\small S_{U3i}^{2} =\frac{1}{Q_{i} -1} \sum
 _{j\in U_{i} }\sum _{k\in U_{ij} }\left(y_{k} -\bar{y}_{Ui}
 \right)^{2}\)</span> and <span class="math inline">\(\small \bar{y}_{Ui}
-= \sum _{j\in U_{i} } \sum_{k\in U_{ij} }y_{k} \left/ Q_{i}
+= \sum _{j\in U_{i} } \sum_{k\in U_{ij} }y_{k}  \left/  Q_{i}
 \right.\)</span>, i.e., <span class="math inline">\(\small
 S_{U3i}^{2}\)</span> is the element-level variance among all elements in
 PSU <span class="math inline">\(\small i\)</span></p>
@@ -967,7 +968,7 @@ effects.</td>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-SSW.1992" class="csl-entry">
 Särndal, C.-E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted
 Survey Sampling</em>. New York: Springer-Verlag.

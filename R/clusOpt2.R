@@ -2,7 +2,11 @@
 clusOpt2 <- function(C1, C2, delta, unit.rv, k=1, CV0=NULL, tot.cost=NULL, cal.sw){
     if (!is.null(CV0) & !is.null(tot.cost))
         stop("CV0 and tot.cost cannot both be non-null.\n")
-
+    if (cal.sw==1 & is.null(tot.cost))
+        stop("When cal.sw=1, tot.cost cannot be null.\n")
+    if (cal.sw==2 & is.null(CV0))
+        stop("When cal.sw=2, CV0 cannot be null.\n")
+  
     c.ratio <- C1/C2
     n.opt <- sqrt(c.ratio * (1-delta)/delta)
     
