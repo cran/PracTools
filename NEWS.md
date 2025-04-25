@@ -5,11 +5,15 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.6
+
+*    SampStop function added to implement a rule for stopping data collection for a sample based on anticipated amount of change in an estimated mean.
+
 # PracTools 1.5
 
 *    nEdge and nEdgeSRS functions added that compute sample sizes required for the normal approximation to the distribution of an estimator of the population mean to be accurate. nEdge applies to a stratified estimator while nEdgeSRS applies to an estimator of a mean from simple random sampling.
 
-*    wtd.moments function added that estimates the 2nd, 3rd, and 4th population moments of a singe variable. Skewness and kurtosis are also estimated.
+*    wtd.moments function added that estimates the 2nd, 3rd, and 4th population moments of a single variable. Skewness and kurtosis are also estimated.
 
 *    quad_roots function added that finds the roots of a quadratic equation.
 

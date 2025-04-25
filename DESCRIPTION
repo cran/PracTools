@@ -1,8 +1,8 @@
 Package: PracTools
 Type: Package
 Title: Designing and Weighting Survey Samples
-Version: 1.5
-Date: 2024-06-24
+Version: 1.6
+Date: 2025-04-25
 Authors@R: c(
    RV = person("Richard", "Valliant",
           email = "valliant@umich.edu",
@@ -20,13 +20,13 @@ Description: Functions and datasets to support Valliant, Dever, and Kreuter (201
 Suggests: doBy, foreign, lpSolve, markdown, plyr, pps, Rcpp, reshape,
         roxygen2, sampling, samplingbook, sp, survey, knitr, rmarkdown
 Depends: R (>= 3.5.0)
-Imports: dplyr, geosphere, ggplot2, graphics, usmap
+Imports: dplyr, geosphere, ggplot2, graphics, MASS, usmap
 License: GPL-3
 LazyLoad: yes
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2024-06-24 19:56:26 UTC; rv
+Packaged: 2025-04-25 15:15:57 UTC; rvall
 Repository: CRAN
-Date/Publication: 2024-06-24 20:30:02 UTC
+Date/Publication: 2025-04-25 18:20:06 UTC

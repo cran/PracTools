@@ -40,7 +40,7 @@ nAuditAttr(TolRate=0.05, AccDev, CL, N=5000)
 \references{
 GAO (2020). Financial Audit Manual, Volume 1, section 450.08. Washington DC; \url{https://www.gao.gov/assets/gao-18-601g.pdf}
 
-Stewart, Trevor R. (2012). \emph{Technical Notes on the AICPA Audit Guide: Audit Sampling}. American Institute of Certified Public Accountants, Inc. New York, NY 10036-8775; \url{https://us.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling_guide_technical_notes.pdf}
+Stewart, Trevor R. (2012). \emph{Technical Notes on the AICPA Audit Guide: Audit Sampling}. American Institute of Certified Public Accountants, Inc. New York, NY 10036-8775; \url{https://www.aicpa-cima.com/home}
 }
 
 \author{

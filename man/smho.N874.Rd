@@ -14,7 +14,7 @@ Data from the 1998 Survey of Mental Health Organizations (SMHO)
     \item{\code{EXPTOTAL}}{Total expenditures in 1998}
     \item{\code{BEDS}}{Total inpatient beds}
     \item{\code{SEENCNT}}{Unduplicated client/patient count seen during year}
-    \item{\code{EOYCNT}}{End of year count of patients on the role}
+    \item{\code{EOYCNT}}{End of year count of patients on an institution's roll}
     \item{\code{FINDIRCT}}{Hospital receives money from the state mental health agency (1=Yes; 2=No)}
     \item{\code{hosp.type}}{Hospital type
        (1 = Psychiatric;

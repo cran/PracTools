@@ -38,7 +38,7 @@ appropriate for a two-stage sample in which PSUs are selected via \emph{srs} (ei
   \item{unit relvar}{unit relvariance for population}
   \item{B2+W2}{\eqn{B^2 + W^2}}
   \item{k}{ratio of \eqn{B^2 + W^2} to unit relvariance}
-  \item{delta full}{intraclass correlation estimated as \eqn{B^2/(B^2 + W^2)}}
+  \item{delta full}{measure of homogeneity estimated as \eqn{B^2/(B^2 + W^2)}}
 }
 
 \references{
