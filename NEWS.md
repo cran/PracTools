@@ -5,6 +5,10 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.6.1
+
+*   An error trap was added to deffCR to check whether the sample size is less than or equal to the sum of weights in each stratum. If not, the function stops with an error message.
+
 # PracTools 1.6
 
 *    SampStop function added to implement a rule for stopping data collection for a sample based on anticipated amount of change in an estimated mean.

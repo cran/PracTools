@@ -10,7 +10,7 @@ Chen-Rust design effect for an estimated mean from a stratified, clustered, two-
 deffCR(w, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, y)
 }
 \arguments{
-  \item{w}{vector of weights for a sample}
+  \item{w}{vector of weights for a sample; weights should be scaled for estimating population totals}
   \item{strvar}{vector of stratum identifiers; equal in length to that of \code{w}. }
   \item{clvar}{vector of cluster identifiers; equal in length to that of \code{w}. }
   \item{Wh}{vector of the proportions of elements that are in each stratum; length is number of strata.}
@@ -20,6 +20,8 @@ deffCR(w, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, y)
 }
 \details{
 The Chen-Rust \emph{deff} for an estimated mean accounts for stratification, clustering, and unequal weights, but does not account for the use of any auxiliary data in the estimator of a mean. The Chen-Rust \emph{deff} returned here is appropriate for stratified, two-stage sampling. Note that separate \emph{deff}'s are produced for weighting, clustering, and stratification within each stratum. These cannot be added across strata unless the stratum values of the coefficient of variation of the weights, the sample size of clusters, and the intracluster correlation of \code{y} are equal across all strata (see Chen and Rust 2017, p.117).
+
+The weights in \code{w} should be scaled for estimating population totals. If the weights sum to the sample size or less in any stratum or overall, an error will result. This can occur if normalized weights are used.
 }
 \value{
   A list with components:

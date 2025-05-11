@@ -1,4 +1,3 @@
-
 deffCR <- function (w, strvar = NULL, clvar = NULL, Wh = NULL, nest = FALSE, y) {
 
   if (is.null(w) == TRUE) 
@@ -9,6 +8,11 @@ deffCR <- function (w, strvar = NULL, clvar = NULL, Wh = NULL, nest = FALSE, y) 
     stop("w has missing values, which are not allowed.\n")
   if (any(is.na(y)) == TRUE) 
     stop("y has missing values, which are not allowed.\n") 
+    # Check scale of weights
+  if (is.null(strvar)){
+    if (sum(w) <= length(w)) stop("Sum of weights is less than or equal to sample size. 
+                                  deffCR requires weights that are scaled for estimating population totals.")
+  }
 
   n <- length(w)
   sig2 <- n/(n - 1) * sum(w * (y - sum(w * y)/sum(w))^2)/(sum(w) - 1)
@@ -16,6 +20,14 @@ deffCR <- function (w, strvar = NULL, clvar = NULL, Wh = NULL, nest = FALSE, y) 
     ## Note: unique does not sort. Use sort(unique(strvar))
     strat <- sort(unique(strvar))
     H <- length(strat)
+    chk.w <- vector(length = H)
+    for (h in strat) {
+      indx <- (1:length(strat))[strat==h]
+      chk.w[indx] <- sum(w[strvar == h]) <= length(w[strvar == h])
+      if (chk.w[indx]) warning("Sum of stratum weights is less than or equal to sample size in stratum ",h,". deffCR requires weights that are scaled for estimating population totals.\n") 
+    }
+    if (any(chk.w)) stop("Sum of stratum weights is less than or equal to sample size in at least one stratum. Rescale weights so that are scaled for estimating population totals.\n")
+    
     ## Note: table does sort
     nh <- as.vector(table(strvar))
     sig2h <- deff.s <- cv2h <- vector("numeric", length = H)
@@ -100,4 +112,3 @@ deffCR <- function (w, strvar = NULL, clvar = NULL, Wh = NULL, nest = FALSE, y) 
   }
   return(out)
 }
-
