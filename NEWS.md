@@ -5,6 +5,10 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.7
+
+*   Vignette added for SampStop function. SampStop output revised to include numbers of current respondents and nonrespondents, data for which are inputs to the function.
+
 # PracTools 1.6.1
 
 *   An error trap was added to deffCR to check whether the sample size is less than or equal to the sum of weights in each stratum. If not, the function stops with an error message.

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="George Zipf, Richard Valliant" />
+
+<meta name="date" content="2025-09-29" />
+
+<title>Deciding When to Stop: The SampStop function</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Deciding When to Stop: The SampStop
+function</h1>
+<h4 class="author">George Zipf, Richard Valliant</h4>
+<h4 class="date">2025-09-29</h4>
+
+
+
+<p>In many real-world situations, the survey practitioner will be asked
+whether it is acceptable to stop sampling before data on all the items
+in the sample have been collected. Frequently the request is made by the
+project manager for budget reasons, particularly if non-responders are
+expensive to reach. The project manager may also have a pressing need to
+deliver results as soon as possible, with the expected value of the
+estimate being more important than the confidence interval. In fact,
+survey practitioners are often asked whether continuing the sample will
+affect the population estimate at all. This vignette highlights the
+PracTools::SampStop function, which gives the survey practitioner a
+mathematical tool to make this decision.</p>
+<div id="framing-the-problem-a-statistical-approach" class="section level2">
+<h2>Framing the Problem: A Statistical Approach</h2>
+<p>SampStop uses the article “A new stopping rule for surveys” (<span class="citation">Wagner and Raghunathan (2010)</span>) as the basis for
+this approach. Wagner and Raghunathan acknowledge the bias issues raised
+by non-response in deciding whether to stop a survey, and approach
+development of the stopping rule by examining changes in the estimate
+from the accumulating data, noting that “if additional data do not
+change the estimate, then the rules suggest that data collection can be
+stopped”. In contrast, if additional data would change the estimate
+importantly, this implies that the current set of respondents would give
+biased estimates and that data collection should continue.</p>
+<p>Their stopping rule is based on imputation methods, comparing a first
+estimate from the currently collected data plus imputed uncollected data
+with a second estimate based on collecting additional data and imputing
+the remaining (now reduced) uncollected data. This assumes that data
+collection is attempted for all current nonresponders but that only a
+proportion of them will respond. If the probability is large that the
+difference in these estimates is below an acceptable threshold, then
+data collection can be stopped.</p>
+<p>This approach has two features which for some readers may be
+counter-intuitive. The first is that the probability of the two
+estimates being acceptably similar should be <em>large</em> to stop
+sampling (i.e. to stop sampling, the null hypothesis of equivalence in
+the estimates needs to be accepted). The second, and more
+counter-intuitive, feature is that the variance of the difference in the
+estimates increases as the anticipated response rate among current
+nonresponders increases. That is, even though a larger responding sample
+would be obtained by working through the current nonresponders, the
+increasing sample size is not accompanied by a decrease in variance of
+the estimated difference. Almost always, a survey practitioner expects a
+variance of an estimate to decrease as the collected sample increases.
+This is true -– but also not how the stopping rule works. Details are in
+<span class="citation">Wagner and Raghunathan (2010)</span>.</p>
+<p>The stopping rule is based on the comparing the estimate for the
+observed sample, i.e. the estimates (denoted by <span class="math inline">\(e_{i}\)</span>) that would exist if data
+collection stopped immediately and the remaining values were imputed,
+and the estimate if data collection continued for some specified
+additional sample and the values of the reduced set of nonresponders
+were imputed. These estimates, <span class="math inline">\(e_{1}\)</span> and <span class="math inline">\(e_{2}\)</span>, are:</p>
+<p><span class="math display">\[\begin{align*}
+&amp;e_{1} = \frac{1}{n}\left(\sum_{i=1}^{n_{1}} y_{i} +
+\sum_{i=n_{1}+1}^{n}\hat{y}_{i} \right) \\
+
+&amp;e_{2} = \frac{1}{n}\left(\sum_{i=1}^{n_{1}+n_{2}p}y_{i} +
+\sum_{i=n_{1}+n_{2}p +1}^{n}\hat{y}_{i} \right)
+\end{align*}\]</span></p>
+<p>where <em>n<sub>1</sub></em> is the size of the current set of sample
+responders, <em>n<sub>2</sub></em> is the size of the current set of
+sample non-responders, and <em>p</em> is the proportion of remaining
+sample that is expected to be collected from the remaining sample (Note:
+<em>n<sub>1</sub></em> + <em>n<sub>2</sub></em> = <em>n</em>). It is
+then up to the survey practitioner to determine a cutoff <span class="math inline">\(\delta\)</span> for which (e<sub>1</sub> -
+e<sub>2</sub>) is not practically meaningful. This is done by
+considering the cutoff in conjunction with Pr(|<em>e<sub>1</sub></em> -
+<em>e<sub>2</sub></em>| &lt; <span class="math inline">\(\delta\)</span>
+| <strong>Z</strong>, <em>p</em>, <strong><span class="math inline">\(\beta\)</span></strong>, <span class="math inline">\(\sigma\)</span><sup>2</sup>). The reader is
+reminded that under this method, sampling may be stopped when the
+probability of |<em>e<sub>1</sub></em> - <em>e<sub>2</sub></em>| being
+less than the cutoff is <em>high</em>, i.e. that the difference between
+the estimate from the sampled population and the imputed estimate from
+the non-sampled population is <em>small</em>.</p>
+</div>
+<div id="framing-the-solution-using-sampstop-as-guidance-for-stopping-sampling" class="section level2">
+<h2>Framing the Solution: Using SampStop as guidance for stopping
+sampling</h2>
+<p>SampStop requires the following as theoretical inputs:<br />
+1. The predicted values of the remaining sample<br />
+2. The expected response probability of the remaining sample</p>
+<p>For the SampStop function to work, the predicted values of the
+remaining sample are based on:<br />
+1. An lm object based on the completed sample predicting y<br />
+2. The formula part of the lm object for predicting y for the
+uncompleted sample<br />
+3. The full data set for the completed sample<br />
+4. The full data set for the uncompleted sample<br />
+5. Identification of the y variable<br />
+6. The expected response probability of the remaining sample (this can
+be a vector)<br />
+7. The potential difference between the estimated means for the
+completed sample and the uncompleted sample</p>
+<p>In short, while the theoretical inputs are easy enough to understand,
+setting up the function requires some care. (In addition to this
+vignette, please also refer to the PracTools reference manual when using
+SampStop.) The survey practitioner then uses the output of the SampStop
+to make a decision regarding continuation of the sample. How to
+interpret the output is discussed in the next section.</p>
+</div>
+<div id="example" class="section level2">
+<h2>Example</h2>
+<p>The following example uses quantitative covariates from the PracTools
+hospital dataset. In this example, the data is randomly split into N1
+and N2, with N1 representing the completed sample i.e., the current
+responders and N2 the current nonresponders. Note that the covariates
+must be available for the whole population, but that the linear model
+object is created on the sample data N1 alone. The number of current
+respondents is 50, the number of rows in N1.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(PracTools)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;kableExtra&#39;</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; The following object is masked from &#39;package:dplyr&#39;:</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;     group_rows</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">data</span>(hospital)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>HOSP <span class="ot">&lt;-</span> PracTools<span class="sc">::</span>hospital</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>HOSP<span class="sc">$</span>sqrt.x <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(HOSP<span class="sc">$</span>x)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>sam <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(HOSP), <span class="dv">50</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>N1.resp <span class="ot">&lt;-</span> HOSP[sam, ]</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>N2.nonresp  <span class="ot">&lt;-</span> HOSP[<span class="sc">-</span>sam, ]</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="do">## Create lm object using &quot;known&quot; data; no intercept model</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>lm.obj  <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> sqrt.x <span class="sc">+</span> x, <span class="at">data =</span> N1.resp)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="do">## Create range of values to use as delta for difference in means</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">mean</span>(HOSP<span class="sc">$</span>y) <span class="sc">-</span> <span class="fu">mean</span>(HOSP<span class="sc">$</span>y) <span class="sc">*</span> <span class="fu">seq</span>(.<span class="dv">6</span>, <span class="dv">1</span>, <span class="at">by=</span><span class="fl">0.05</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="do">## Run SampStop function and output to object S</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">SampStop</span>(<span class="at">lm.obj  =</span> lm.obj,</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>              <span class="at">formula =</span> <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> sqrt.x <span class="sc">+</span> x,</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>              <span class="at">n1.data =</span> N1.resp, </span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>              <span class="at">yvar    =</span> <span class="st">&quot;y&quot;</span>, </span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>              <span class="at">n2.data =</span> N2.nonresp, </span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>              <span class="at">p       =</span> <span class="fu">seq</span>(<span class="fl">0.2</span>, <span class="fl">0.6</span>, <span class="at">by=</span><span class="fl">0.05</span>), </span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>              <span class="at">delta   =</span> delta, </span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>              <span class="at">seed    =</span> .Random.seed[<span class="dv">413</span>]) </span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(S<span class="sc">$</span>Input,  <span class="at">caption =</span> <span class="st">&quot;SampStop Input&quot;</span>)</span></code></pre></div>
+<table>
+<caption>SampStop Input</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No. of current respondents</td>
+<td align="left">50</td>
+</tr>
+<tr class="even">
+<td align="left">No. of current nonrespondents</td>
+<td align="left">343</td>
+</tr>
+<tr class="odd">
+<td align="left">Formula</td>
+<td align="left">y ~ 0 + sqrt.x + x</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(S<span class="sc">$</span>Output, <span class="at">n=</span><span class="dv">15</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">&quot;SampStop Output: First 15 Observations&quot;</span>)</span></code></pre></div>
+<table>
+<caption>SampStop Output: First 15 Observations</caption>
+<colgroup>
+<col width="15%" />
+<col width="16%" />
+<col width="9%" />
+<col width="16%" />
+<col width="12%" />
+<col width="9%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Pr(response)</th>
+<th align="right">Exp no. resps</th>
+<th align="right">y1 mean</th>
+<th align="right">diff in means</th>
+<th align="right">se of diff</th>
+<th align="right">z-score</th>
+<th align="right">Pr(smaller diff)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">325.9</td>
+<td align="right">40.82</td>
+<td align="right">7.98</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="even">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">285.1</td>
+<td align="right">40.82</td>
+<td align="right">6.99</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">244.4</td>
+<td align="right">40.82</td>
+<td align="right">5.99</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="even">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">203.7</td>
+<td align="right">40.82</td>
+<td align="right">4.99</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">162.9</td>
+<td align="right">40.82</td>
+<td align="right">3.99</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="even">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">122.2</td>
+<td align="right">40.82</td>
+<td align="right">2.99</td>
+<td align="right">0.997</td>
+</tr>
+<tr class="odd">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">81.5</td>
+<td align="right">40.82</td>
+<td align="right">2.00</td>
+<td align="right">0.954</td>
+</tr>
+<tr class="even">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">40.7</td>
+<td align="right">40.82</td>
+<td align="right">1.00</td>
+<td align="right">0.682</td>
+</tr>
+<tr class="odd">
+<td align="right">0.20</td>
+<td align="right">69</td>
+<td align="right">789.7</td>
+<td align="right">0.0</td>
+<td align="right">40.82</td>
+<td align="right">0.00</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">789.7</td>
+<td align="right">325.9</td>
+<td align="right">50.95</td>
+<td align="right">6.40</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">789.7</td>
+<td align="right">285.1</td>
+<td align="right">50.95</td>
+<td align="right">5.60</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="even">
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">789.7</td>
+<td align="right">244.4</td>
+<td align="right">50.95</td>
+<td align="right">4.80</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">789.7</td>
+<td align="right">203.7</td>
+<td align="right">50.95</td>
+<td align="right">4.00</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="even">
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">789.7</td>
+<td align="right">162.9</td>
+<td align="right">50.95</td>
+<td align="right">3.20</td>
+<td align="right">0.999</td>
+</tr>
+<tr class="odd">
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">789.7</td>
+<td align="right">122.2</td>
+<td align="right">50.95</td>
+<td align="right">2.40</td>
+<td align="right">0.984</td>
+</tr>
+</tbody>
+</table>
+<p>The above output shows the first 15 observations from the SampStop
+function. As can be seen, the SampStop function produces a table
+containing:<br />
+- Pr(response), which is <em>p</em> from above, and can be entered as a
+vector<br />
+- Exp no. resps, which is the expected number of respondents in N2<br />
+- y1 mean, which is the mean of the <em>n<sub>1</sub></em>
+respondents<br />
+- diff in means, which are the <span class="math inline">\(\delta\)</span> values used in the probability
+equation above<br />
+- se of diff, which is the standard error of the difference in mean
+values<br />
+- z-score, which is Z-score for Pr(|<em>e<sub>1</sub></em> -
+<em>e<sub>2</sub></em>| &lt; <span class="math inline">\(\delta\)</span>
+| <strong>Z</strong>, <em>p</em>, <strong><span class="math inline">\(\beta\)</span></strong>, <span class="math inline">\(\sigma\)</span><sup>2</sup>), and<br />
+- Pr(smaller diff), which is the likelihood that the true difference is
+<em>less</em> than the estimated difference</p>
+<p>This table can be plotted to better understand the implications of
+using various values of <span class="math inline">\(\delta\)</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="do">## Convert S to data frame</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(S<span class="sc">$</span>Output)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="do">## Create factor category over probability of response and number of responders</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>p.nresp <span class="ot">&lt;-</span> <span class="fu">paste</span>(S1<span class="sc">$</span><span class="st">`</span><span class="at">Pr(response)</span><span class="st">`</span>, S1<span class="sc">$</span><span class="st">`</span><span class="at">Exp no. resps</span><span class="st">`</span>, <span class="at">sep=</span><span class="st">&quot;, &quot;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">ggplot</span>(S1, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">diff in means</span><span class="st">`</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>              <span class="at">y =</span> <span class="st">`</span><span class="at">Pr(smaller diff)</span><span class="st">`</span>, </span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>              <span class="at">colour =</span> <span class="fu">factor</span>(p.nresp))) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Probability of Response by Delta&quot;</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;delta&quot;</span>, </span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Pr(|e1 - e2|&lt;= delta)&quot;</span>, </span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&quot;Pr(Resp), Number </span><span class="sc">\n</span><span class="st">of Responders&quot;</span>) </span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<p>While the above plot looks complicated, it really just provides the
+survey practitioner a contour map of the two variables needed to make a
+go/no-go decision on continuing the sample: 1) what is an acceptable
+delta level; and 2) what is the acceptable probability of that delta
+being greater than the true value. For example, if the survey
+practitioner needs to be 90% certain that the difference
+|<em>e<sub>1</sub></em> - <em>e<sub>2</sub></em>| be 100 or less and the
+anticipated response rate among the current nonrespondents is 0.3, then
+roughly 103 more sample responders are needed. If precision or certainty
+are less important, then less sample is needed, depending on what the
+survey practitioner ultimately decides.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The survey practitioner who does not enjoy unlimited time and
+resources will almost certainly encounter a professional situation where
+they are asked if the sampling process can be stopped. While there may
+be many intuitive reasons to do so, the SampStop function gives the
+survey practitioner a tool which provides mathematical support and
+justification for their position.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Wagner.2010" class="csl-entry">
+Wagner, J., and T. E. Raghunathan. 2010. <span>“A New Stopping Rule for
+Surveys.”</span> <em>Statistics in Medicine</em> 29: 1014–24.
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

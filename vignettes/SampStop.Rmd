@@ -1,0 +1,141 @@
+---
+title: "Deciding When to Stop: The SampStop function"
+author: "George Zipf, Richard Valliant"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+header_includes: \usepackage{amsmath}, usepackage{knitr}
+bibliography: practools.bib
+
+vignette: >
+  %\VignetteIndexEntry{Deciding When to Stop: The SampStop function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In many real-world situations, the survey practitioner will be asked whether it is acceptable to stop sampling before data on all the items in the sample have been collected. Frequently the request is made by the project manager for budget reasons, particularly if non-responders are expensive to reach. The project manager may also have a pressing need to deliver results as soon as possible, with the expected value of the estimate being more important than the confidence interval. In fact, survey practitioners are often asked whether continuing the sample will affect the population estimate at all. This vignette highlights the PracTools::SampStop function, which gives the survey practitioner a mathematical tool to make this decision.
+
+
+
+## Framing the Problem: A Statistical Approach
+
+SampStop uses the article “A new stopping rule for surveys” (@Wagner.2010) as the basis for this approach. Wagner and Raghunathan acknowledge the bias issues raised by non-response in deciding whether to stop a survey, and approach development of the stopping rule by examining changes in the estimate from the accumulating data, noting that “if additional data do not change the estimate, then the rules suggest that data collection can be stopped”. In contrast, if additional data would change the estimate importantly, this implies that the current set of respondents would give biased estimates and that data collection should continue.
+
+Their stopping rule is based on imputation methods, comparing a first estimate from the currently collected data plus imputed uncollected data with a second estimate based on collecting additional data and imputing the remaining (now reduced) uncollected data. This assumes that data collection is attempted for all current nonresponders but that only a proportion of them will respond. If the probability is large that the difference in these estimates is below an acceptable threshold, then data collection can be stopped.
+
+This approach has two features which for some readers may be counter-intuitive. The first is that the probability of the two estimates being acceptably similar should be *large* to stop sampling (i.e. to stop sampling, the null hypothesis of equivalence in the estimates needs to be accepted). The second, and more counter-intuitive, feature is that the variance of the difference in the estimates increases as the anticipated response rate among current nonresponders increases. That is, even though a larger responding sample would be obtained by working through the current nonresponders, the increasing sample size is not accompanied by a decrease in variance of the estimated difference. Almost always, a survey practitioner expects a variance of an estimate to decrease as the collected sample increases. This is true -– but also not how the stopping rule works. Details are in @Wagner.2010.
+
+The stopping rule is based on the comparing the estimate for the observed sample, i.e. the estimates (denoted by $e_{i}$) that would exist if data collection stopped immediately and the remaining values were imputed, and the estimate if data collection continued for some specified additional sample and the values of the reduced set of nonresponders were imputed. These estimates, $e_{1}$ and $e_{2}$, are:  
+
+\begin{align*}
+&e_{1} = \frac{1}{n}\left(\sum_{i=1}^{n_{1}} y_{i} + \sum_{i=n_{1}+1}^{n}\hat{y}_{i} \right) \\
+
+&e_{2} = \frac{1}{n}\left(\sum_{i=1}^{n_{1}+n_{2}p}y_{i} + \sum_{i=n_{1}+n_{2}p +1}^{n}\hat{y}_{i} \right)
+\end{align*}
+
+where *n~1~* is the size of the current set of sample responders, *n~2~* is the size of the current set of sample non-responders, and *p* is the proportion of remaining sample that is expected to be collected from the remaining sample (Note: *n~1~* + *n~2~* = *n*). It is then up to the survey practitioner to determine a cutoff $\delta$ for which (e~1~ - e~2~) is not practically meaningful. This is done by considering  the cutoff in conjunction with  Pr(|*e~1~* - *e~2~*| < $\delta$ | **Z**, *p*, **$\beta$**, $\sigma$^2^). The reader is reminded that under this method, sampling may be stopped when the probability of |*e~1~* - *e~2~*| being less than the cutoff is *high*, i.e. that the difference between the estimate from the sampled population and the imputed estimate from the non-sampled population is *small*.
+
+
+## Framing the Solution: Using SampStop as guidance for stopping sampling
+
+SampStop requires the following as theoretical inputs:  
+1.	The predicted values of the remaining sample  
+2.	The expected response probability of the remaining sample  
+
+For the SampStop function to work, the predicted values of the remaining sample are based on:  
+1.	An lm object based on the completed sample predicting y   
+2.	The formula part of the lm object for predicting y for the uncompleted sample  
+3.	The full data set for the completed sample  
+4.	The full data set for the uncompleted sample  
+5.	Identification of the y variable  
+6.	The expected response probability of the remaining sample (this can be a vector)  
+7.	The potential difference between the estimated means for the completed sample and the uncompleted sample  
+
+In short, while the theoretical inputs are easy enough to understand, setting up the function requires some care. (In addition to this vignette, please also refer to the PracTools reference manual when using SampStop.) The survey practitioner then uses the output of the SampStop to make a decision regarding continuation of the sample. How to interpret the output is discussed in the next section.
+
+
+## Example
+
+The following example uses quantitative covariates from the PracTools hospital dataset. In this example, the data is randomly split into N1 and N2, with N1 representing the completed sample i.e., the current responders and N2 the current nonresponders. Note that the covariates must be available for the whole population, but that the linear model object is created on the sample data N1 alone. The number of current respondents is 50, the number of rows in N1.
+
+
+```{r Ex1, echo=TRUE, eval=TRUE}
+
+library(PracTools)
+library(kableExtra)
+data(hospital)
+HOSP <- PracTools::hospital
+HOSP$sqrt.x <- sqrt(HOSP$x)
+sam <- sample(nrow(HOSP), 50)
+N1.resp <- HOSP[sam, ]
+N2.nonresp  <- HOSP[-sam, ]
+
+## Create lm object using "known" data; no intercept model
+lm.obj  <- lm(y ~ 0 + sqrt.x + x, data = N1.resp)
+
+## Create range of values to use as delta for difference in means
+delta <- mean(HOSP$y) - mean(HOSP$y) * seq(.6, 1, by=0.05)
+
+## Run SampStop function and output to object S
+S <- SampStop(lm.obj  = lm.obj,
+              formula = ~ 0 + sqrt.x + x,
+              n1.data = N1.resp, 
+              yvar    = "y", 
+              n2.data = N2.nonresp, 
+              p       = seq(0.2, 0.6, by=0.05), 
+              delta   = delta, 
+              seed    = .Random.seed[413]) 
+
+kableExtra::kable(S$Input,  caption = "SampStop Input")
+kableExtra::kable(head(S$Output, n=15),
+      caption = "SampStop Output: First 15 Observations")
+```
+
+The above output shows the first 15 observations from the SampStop function. As can be seen, the SampStop function produces a table containing:  
+- Pr(response), which is *p* from above, and can be entered as a vector  
+- Exp no. resps, which is the expected number of respondents in N2  
+- y1 mean, which is the mean of the *n~1~* respondents  
+- diff in means, which are the $\delta$ values used in the probability equation above  
+- se of diff, which is the standard error of the difference in mean values  
+- z-score, which is Z-score for Pr(|*e~1~* - *e~2~*| < $\delta$ | **Z**, *p*, **$\beta$**, $\sigma$^2^), and  
+- Pr(smaller diff), which is the likelihood that the true difference is *less* than the estimated difference  
+
+This table can be plotted to better understand the implications of using various values of $\delta$.
+
+```{r Ex1.plot, echo=TRUE, eval=TRUE, fig.align="center", fig.width = 7}
+
+library(ggplot2)
+## Convert S to data frame
+S1 <- as.data.frame(S$Output)
+
+## Create factor category over probability of response and number of responders
+p.nresp <- paste(S1$`Pr(response)`, S1$`Exp no. resps`, sep=", ")
+
+ggplot(S1, aes(x = `diff in means`, 
+              y = `Pr(smaller diff)`, 
+              colour = factor(p.nresp))) +
+  geom_point() +
+  geom_line(linewidth=1.1) +
+  scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) + 
+  labs(title = "Probability of Response by Delta",
+       x = "delta", 
+       y = "Pr(|e1 - e2|<= delta)", 
+       colour = "Pr(Resp), Number \nof Responders") 
+
+```
+
+While the above plot looks complicated, it really just provides the survey practitioner a contour map of the two variables needed to make a go/no-go decision on continuing the sample: 1) what is an acceptable delta level; and 2) what is the acceptable probability of that delta being greater than the true value. For example, if the survey practitioner needs to be 90% certain that the difference |*e~1~* - *e~2~*| be 100 or less and the anticipated response rate among the current nonrespondents is 0.3, then roughly 103 more sample responders are needed. If precision or certainty are less important, then less sample is needed, depending on what the survey practitioner ultimately decides.
+
+
+
+## Conclusion
+
+The survey practitioner who does not enjoy unlimited time and resources will almost certainly encounter a professional situation where they are asked if the sampling process can be stopped. While there may be many intuitive reasons to do so, the SampStop function gives the survey practitioner a tool which provides mathematical support and justification for their position.
+
+
