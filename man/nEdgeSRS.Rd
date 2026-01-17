@@ -43,7 +43,9 @@ Using an Edgeworth approximation in Sugden, Smith, and Jones (SSJ, 2000) to the 
 
 When \code{dat} is a sample, the weights (\code{wts}) used in the estimator of the mean (or total) are assumed to be scaled for estimating population totals. They can be inverse selection probabilities, i.e. ones used in the \eqn{\pi}-estimator, or weights that have been adjusted to account for nonresponse or coverage errors.
 
-The remainder term in the approximation used in \code{nEdgeSRS} is \eqn{O(n^{-1})}. In contrast, the function \code{nEdge} uses a \eqn{O(n^{-1/2})} approximation but applies to an overall mean from a stratified simple random sample for which several different allocations can be specified. The total sample size returned by \code{nEdge} is based on the overall Edgeworth approximation for the distribution of the population mean estimator; the resulting stratum sample sizes may not be large enough so that the normal approximation is adequate for each stratum estimator.
+The remainder term in the approximation used in \code{nEdgeSRS} is \eqn{O(n^{-3/2})}. The function \code{nEdge} also uses a 
+\eqn{O(n^{-3/2})} approximation but applies to an overall mean from a stratified simple random sample for which several different allocations 
+can be specified. 
 }
 \value{
   List with values:
@@ -72,9 +74,8 @@ Richard Valliant
 }
 \examples{
 require(PracTools)
-#   test using HMT pop
-require(PracTools)
 set.seed(1289129963)
+#   test using HMT pop
 pop <- HMT(N=10000, H=5)
     # using pop with no strata
 nEdgeSRS(ci.lev=0.95, side="one.sided", dat=pop, pop.sw=TRUE, hcol=NULL, ycol="y")

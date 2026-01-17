@@ -5,6 +5,10 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.7.5
+
+*   deffCR was revised to allow the possibility that some strata use 1-stage sampling and others use 2-stage. The help page was revised to describe new parameters and the model underlying the Chen-Rust formula for a design effect.
+
 # PracTools 1.7
 
 *   Vignette added for SampStop function. SampStop output revised to include numbers of current respondents and nonrespondents, data for which are inputs to the function.

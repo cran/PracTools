@@ -16,9 +16,17 @@ wtd.moments(y, w=NULL, pop.sw=TRUE)
 }
 
 \details{
-The \eqn{r^{th}} population moment is defined as \eqn{m_r = (1/N) \sum_{k \in U} (y_k - \bar{y}_U)^r} where \emph{U} is the set of population units, \emph{N} is the population size, and \eqn{\bar{y}_U} is the population mean. When the input is for the whole population, \code{wtd.moments} evaluates this directly for \eqn{r=2, 3, 4}. When the input is for a sample, the \eqn{r^{th}} moment is estimated as \eqn{\hat{m}_r = (K/\hat{N}) \sum_{k \in s} ( w_k (y_k - \hat{\bar{y}}_U)^r ), r=2, 3, 4} where \eqn{s} is the set of sample units, \eqn{w_k} is the weight for sample unit \eqn{k}, \eqn{\hat{N} = \sum_s w_k}, and \eqn{\hat{\bar{y}}_U = \sum_{k \in s} w_k y_k / \hat{N}}. When \eqn{r=2}, \eqn{K=n/(n-1)} so that the estimator equals the unbiased variance estimator if the sample is a simple random sample; if \eqn{r=3,4}, then \eqn{K=1}. The function also computes or estimates the population skewness, defined as \eqn{m_3/m_2^{3/2}} and the population kurtosis, \eqn{m_4/m_2^2}.
+The \eqn{r^{th}} population moment is defined as \eqn{m_r = (1/N) \sum_{k \in U} (y_k - \bar{y}_U)^r} where \emph{U} is the set of population units, 
+\emph{N} is the population size, and \eqn{\bar{y}_U} is the population mean. 
+When the input is for the whole population, \code{wtd.moments} evaluates this directly for \eqn{r=2, 3, 4}. 
+When the input is for a sample, the \eqn{r^{th}} moment is estimated as \eqn{\hat{m}_r = (K/\hat{N}) \sum_{k \in s} ( w_k (y_k - \hat{\bar{y}}_U)^r ), r=2, 3, 4} 
+where \eqn{s} is the set of sample units, \eqn{w_k} is the weight for sample unit \eqn{k}, \eqn{\hat{N} = \sum_s w_k}, and 
+\eqn{\hat{\bar{y}}_U = \sum_{k \in s} w_k y_k / \hat{N}}. 
+When \eqn{r=2}, \eqn{K=n/(n-1)} so that the estimator equals the unbiased variance estimator if the sample is a simple random sample; 
+if \eqn{r=3,4}, then \eqn{K=1}. The function also computes or estimates the population skewness, defined as \eqn{m_3/m_2^{3/2}} 
+and the population kurtosis, \eqn{m_4/m_2^2}.
 
-The weights should be scaled for estimating population totals. The sample can be obtained from any complex design.
+The weights should be scaled for estimating population totals. The sample can be obtained from any complex design. The estimators produced by \code{wtd.moments} are consistent for general sample designs but not unbiased (except for \eqn{r=2} and SRS).
 }
 \value{
  Vector with values:

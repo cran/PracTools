@@ -81,7 +81,6 @@ George Zipf, Richard Valliant
 library(PracTools)
 library(kableExtra)
     # Model with quantitative covariates
-data(PracTools::hospital)
 HOSP <- PracTools::hospital
 HOSP$sqrt.x <- sqrt(HOSP$x)
 sam <- sample(nrow(HOSP), 50)

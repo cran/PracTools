@@ -1,8 +1,10 @@
-deff <- function(w, x=NULL, y=NULL, p=NULL, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, type){
+deff <- function(w, x=NULL, y=NULL, p=NULL, strvar=NULL, clvar=NULL, Wh=NULL, nest=FALSE, stages=NULL, type){
     if (is.null(w)) stop("w is required for all deffs")
 
     if (!(type %in% c("kish", "henry", "spencer", "cr")))
-    stop("type must be one of kish, henry, spencer, or cr. \n")
+      stop("type must be one of kish, henry, spencer, or cr. \n")
+    if ((type == "cr") & is.null(stages))
+      stop("If type = cr, stages must be supplied. \n")
     if (type == "kish"){
         if (is.null(w)) stop("w is required for Kish deff")
         d <- deffK(w)
@@ -17,7 +19,7 @@ deff <- function(w, x=NULL, y=NULL, p=NULL, strvar=NULL, clvar=NULL, Wh=NULL, ne
     }
     if (type == "cr"){
         if (any(is.null(w)|is.null(y))) stop("w,  and y are required for Chen-Rust deff")
-        d <- deffCR(w=w, y=y, strvar=strvar, clvar=clvar, Wh=Wh)
+        d <- deffCR(w=w, y=y, strvar=strvar, clvar=clvar, clnest = nest, Wh=Wh, stages)
     }
     return(d)
 }
