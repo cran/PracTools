@@ -12,7 +12,7 @@
 
 <meta name="author" content="George Zipf and Richard Valliant" />
 
-<meta name="date" content="2026-01-14" />
+<meta name="date" content="2026-09-16" />
 
 <title>Design Effects and Effective Sample Size</title>
 
@@ -151,7 +151,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
-margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -365,7 +364,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Design Effects and Effective Sample
 Size</h1>
 <h4 class="author">George Zipf and Richard Valliant</h4>
-<h4 class="date">2026-01-14</h4>
+<h4 class="date">2026-09-16</h4>
 
 
 
@@ -394,7 +393,7 @@ of a chosen parameter.</p>
 estimating both the complex sample variance and the SRS variance and
 taking the ratio. In specific cases, formulas have been derived that
 account for different features of sample designs and analysis variables.
-Some of these are available in the PracTools package <span class="citation">(Valliant, Dever, and Kreuter 2023)</span>.</p>
+Some of these are available in the PracTools package <span class="citation">(Valliant et al. 2023)</span>.</p>
 <p>A <em>deff</em> is specific to a particular estimator. The
 <em>deff</em>’s for estimated mean per capita income and the estimated
 proportion of persons who have received the latest coronavirus booster
@@ -470,7 +469,7 @@ will reduce the design effect (i.e. increase the effective sample size).
 When the sample is allocated optimally over the strata, then the design
 effect is necessarily less than or equal to one (<span class="citation">Cochran (1977)</span>, Section 5.6). Stratification is
 most effective when the <span class="math inline">\(\small y\)</span>’s
-for elements within each strata are homogeneous and the <span class="math inline">\(y\)</span>’s for elements between strata (i.e.,
+for elements within each strata are homogeneous and the <span class="math inline">\(y\)</span>‘s for elements between strata (i.e.,
 <span class="math inline">\(\small y\)</span>’s in different strata) are
 heterogeneous. As Kish states, the variance decreases “to the degree
 that the stratum means diverge and that homogeneity exists within
@@ -541,7 +540,7 @@ auxiliary variables under the model: <span class="math display">\[\small
 <p>Unlike the Spencer and Henry design effects, the Chen &amp; Rust
 design effect (2017) considers clustering but does not account for any
 covariates when deriving their <em>deff</em>. The model they assume
-includes strata and clustering and is an extension of work by <span class="citation">Gabler, Haeder, and Lahiri (1999)</span>:</p>
+includes strata and clustering and is an extension of work by <span class="citation">Gabler et al. (1999)</span>:</p>
 <p><span class="math display">\[\begin{equation}
     \small {{E}_{M}}\left( {{y}_{hij}} \right)={{\mu
 }_{h}},~~\text{  }Co{{v}_{M}}\left(
@@ -983,7 +982,7 @@ substantially different from those of the earlier survey, this must also
 be considered when determining a sample size. Finally, an overall
 <em>deff</em> for a two-stage (or more than two-stage) sample does not
 separate the first- and second-stage sample sizes. Additional
-calculations are needed for those; e.g., see <span class="citation">Valliant, Dever, and Kreuter (2018)</span>, ch. 9.</p>
+calculations are needed for those; e.g., see <span class="citation">Valliant et al. (2018)</span>, ch. 9.</p>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
@@ -1005,7 +1004,7 @@ analytic requirements.</p>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Chen.2017" class="csl-entry">
 Chen, S., and K. F. Rust. 2017. <span>“An Extension of Kish’s Formula
 for Design Effects to Two- and Three-Stage Designs with
@@ -1013,8 +1012,8 @@ Stratification.”</span> <em>Journal of Survey Statistics and
 Methodology</em> 5 (2): 111–30.
 </div>
 <div id="ref-Cochran.1977" class="csl-entry">
-Cochran, W. G. 1977. <em>Sampling Techniques</em>. New York: John Wiley
-&amp; Sons, Inc.
+Cochran, W. G. 1977. <em>Sampling Techniques</em>. John Wiley &amp;
+Sons, Inc.
 </div>
 <div id="ref-Gabler.1999" class="csl-entry">
 Gabler, S., S. Haeder, and P. Lahiri. 1999. <span>“A Model Based
@@ -1028,15 +1027,14 @@ Calibration Weighting in Single–Stage Samples.”</span> <em>Survey
 Methodology</em> 41: 315–31.
 </div>
 <div id="ref-Kish.1965" class="csl-entry">
-Kish, L. 1965. <em>Survey Sampling</em>. New York: John Wiley &amp;
-Sons, Inc.
+Kish, L. 1965. <em>Survey Sampling</em>. John Wiley &amp; Sons, Inc.
 </div>
 <div id="ref-Lumley.2010" class="csl-entry">
 Lumley, T. 2010. <em>Complex Surveys: A Guide to Analysis Using
-<span>R</span></em>. New York: John Wiley &amp; Sons, Inc.
+<span>R</span></em>. John Wiley &amp; Sons, Inc.
 </div>
 <div id="ref-Lumley.2020" class="csl-entry">
-———. 2020. <em>Survey: Analysis of Complex Survey Samples, Version
+Lumley, T. 2020. <em>Survey: Analysis of Complex Survey Samples, Version
 4.2-1</em>. <a href="https://CRAN.R-project.org/package=survey">https://CRAN.R-project.org/package=survey</a>.
 </div>
 <div id="ref-Spencer.2000" class="csl-entry">
@@ -1046,12 +1044,11 @@ Probabilities.”</span> <em>Survey Methodology</em> 26 (2): 137–38.
 </div>
 <div id="ref-VDK.2018" class="csl-entry">
 Valliant, R., J. A. Dever, and F. Kreuter. 2018. <em>Practical Tools for
-Designing and Weighting Survey Samples</em>. 2nd ed. New York:
-Springer-Verlag.
+Designing and Weighting Survey Samples</em>. 2nd ed. Springer-Verlag.
 </div>
 <div id="ref-Valliant.2023" class="csl-entry">
-———. 2023. <em>PracTools: Tools for Designing and Weighting Survey
-Samples, Version 1.4</em>. <a href="https://CRAN.R-project.org/package=PracTools">https://CRAN.R-project.org/package=PracTools</a>.
+Valliant, R., J. A. Dever, and F. Kreuter. 2023. <em>PracTools: Tools
+for Designing and Weighting Survey Samples, Version 1.4</em>. <a href="https://CRAN.R-project.org/package=PracTools">https://CRAN.R-project.org/package=PracTools</a>.
 </div>
 </div>
 </div>

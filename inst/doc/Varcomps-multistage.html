@@ -12,7 +12,7 @@
 
 <meta name="author" content="Richard Valliant, Jill A. Dever, and Frauke Kreuter" />
 
-<meta name="date" content="2026-01-14" />
+<meta name="date" content="2026-09-16" />
 
 <title>Variance Component Estimation in Multistage Sampling</title>
 
@@ -151,7 +151,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
-margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -366,7 +365,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 Sampling</h1>
 <h4 class="author">Richard Valliant, Jill A. Dever, and Frauke
 Kreuter</h4>
-<h4 class="date">2026-01-14</h4>
+<h4 class="date">2026-09-16</h4>
 
 
 
@@ -381,8 +380,8 @@ must be considered. These components of variance generally depend on the
 analysis variable and also on the form of the estimator. This vignette
 covers some basic variance results for linear estimators in two-stage
 and three-stage sampling and how the components can be estimated with
-functions in <code>PracTools</code>. Technical background is in <span class="citation">Valliant, Dever, and Kreuter (2018b)</span>, ch.9.
-First, the package must be loaded with</p>
+functions in <code>PracTools</code>. Technical background is in <span class="citation">Valliant et al. (2018b)</span>, ch.9. First, the
+package must be loaded with</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(PracTools)</span></code></pre></div>
 <p>Alternatively, <code>require(PracTools)</code> can be used.</p>
 <div id="two-stage-sampling" class="section level2">
@@ -560,12 +559,12 @@ k=(B^2+W^2)/(S_{U}^{2}/\bar{y}_{U}^2)\)</span>, and the full version of
 <span class="math inline">\(\small \delta\)</span> in <span class="math inline">\(\small \eqref{eq:delta}\)</span>. The function
 assumes that the entire sampling frame is an input. The full R code for
 this example is in the file <code>Example 9.2.R</code>, available at
-<span class="citation">Valliant, Dever, and Kreuter (2018a)</span>. We
-first compute the results using the <code>PSU</code> and
-<code>SSU</code> variables as clusters. These fields are created so that
-all <code>PSU</code>s have the same size; likewise, all
-<code>SSU</code>s have the same size. For the variable <code>y1</code>
-in the Maryland population, the code is</li>
+<span class="citation">Valliant et al. (2018a)</span>. We first compute
+the results using the <code>PSU</code> and <code>SSU</code> variables as
+clusters. These fields are created so that all <code>PSU</code>s have
+the same size; likewise, all <code>SSU</code>s have the same size. For
+the variable <code>y1</code> in the Maryland population, the code
+is</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a> <span class="fu">require</span>(PracTools)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a> <span class="fu">data</span>(MDarea.popA)</span>
@@ -611,8 +610,7 @@ case where PSUs are selected with varying probabilities but with
 replacement, and the sample within each PSU is selected by
 <em>srswor</em>. With-replacement designs may not often be used in
 practice but have simple variance formulae. The <em>pwr</em>-estimator
-of a total <span class="citation">(Särndal, Swensson, and Wretman
-1992)</span> is <span class="math display">\[
+of a total <span class="citation">(Särndal et al. 1992)</span> is <span class="math display">\[
 \small \hat{t}_{pwr} =\frac{1}{m} \sum _{i\in s}\frac{\hat{t}_{i}
 }{p_{i} }
 \]</span> where <span class="math inline">\(\small \hat{t}_{i}
@@ -729,14 +727,14 @@ block groups) are often created to have about the same population
 sizes.</p>
 <p>The variance formulae for a three-stage design with <em>ppswor</em>
 selection of first-stage units is complex enough that it is not useful
-for sample size planning. See <span class="citation">Valliant, Dever,
-and Kreuter (2018b)</span>, sec. 9.2.4 for details. To obtain a simpler
-formula, suppose that <span class="math inline">\(\small
-\bar{n}\)</span> SSUs are sampled in each sample PSU, the sampling
-fractions of SSUs in each PSU, <span class="math inline">\(\small
-\bar{n} \left/ N_{i} \right.\)</span>, are small, and <span class="math inline">\(\small \bar{\bar{q}}\)</span> elements are
-selected in each sample SSU. The relvariance of the
-<em>pwr</em>-estimator is then</p>
+for sample size planning. See <span class="citation">Valliant et al.
+(2018b)</span>, sec. 9.2.4 for details. To obtain a simpler formula,
+suppose that <span class="math inline">\(\small \bar{n}\)</span> SSUs
+are sampled in each sample PSU, the sampling fractions of SSUs in each
+PSU, <span class="math inline">\(\small \bar{n} \left/ N_{i}
+\right.\)</span>, are small, and <span class="math inline">\(\small
+\bar{\bar{q}}\)</span> elements are selected in each sample SSU. The
+relvariance of the <em>pwr</em>-estimator is then</p>
 <p><span class="math display">\[\begin{equation} \label{ZEqnNum518915}
    \small \frac{V\left(\hat{t}_{pwr} \right)}{t_{U}^{2} } = \frac{B^{2}
 }{m} +\frac{W_{2}^{2} }{m\bar{n}} + \frac{W_{3}^{2} }{m\bar{n}{\kern
@@ -887,10 +885,10 @@ tracts are sampled proportional to their population sizes.</p>
 <p>An important practical, sample design problem that we do not cover in
 this vignette is how to estimate variance components and measures of
 homogeneity from a complex, multistage sample. This topic is covered in
-detail in section 9.4 of <span class="citation">Valliant, Dever, and
-Kreuter (2018b)</span>. The <code>PracTools</code> package includes a
-variety of other functions relevant to two- and three-stage sampling
-that are also not discussed in this vignette:</p>
+detail in section 9.4 of <span class="citation">Valliant et al.
+(2018b)</span>. The <code>PracTools</code> package includes a variety of
+other functions relevant to two- and three-stage sampling that are also
+not discussed in this vignette:</p>
 <table>
 <colgroup>
 <col width="45%" />
@@ -969,10 +967,10 @@ effects.</td>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-SSW.1992" class="csl-entry">
 Särndal, C.-E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted
-Survey Sampling</em>. New York: Springer-Verlag.
+Survey Sampling</em>. Springer-Verlag.
 </div>
 <div id="ref-VDK.2018a" class="csl-entry">
 Valliant, R., J. A. Dever, and F. Kreuter. 2018a. <em>Files for 2nd
@@ -980,8 +978,9 @@ Edition of Practical Tools for Designing and Weighting Survey
 Samples</em>. <a href="https://umd.app.box.com/v/PracTools2ndEdition">https://umd.app.box.com/v/PracTools2ndEdition</a>.
 </div>
 <div id="ref-VDK.2018" class="csl-entry">
-———. 2018b. <em>Practical Tools for Designing and Weighting Survey
-Samples</em>. 2nd ed. New York: Springer-Verlag.
+Valliant, R., J. A. Dever, and F. Kreuter. 2018b. <em>Practical Tools
+for Designing and Weighting Survey Samples</em>. 2nd ed.
+Springer-Verlag.
 </div>
 </div>
 </div>

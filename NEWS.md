@@ -5,6 +5,14 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.7.6
+
+*   pclass was revised to account for the possibility that the estimated propensities have no meaningful variation. 
+In that case a warning is printed and a single adjustment class is returned with a single estimated propensity and a warning is printed. 
+A parameter, rng.preds, was added to set a cutoff for determining when a single adjustment class is to be returned. 
+A seed parameter was added so that the same set of weights can be reproduced in different runs.(changes suggested by Juan Pablo Ferreira)
+
+
 # PracTools 1.7.5
 
 *   deffCR was revised to allow the possibility that some strata use 1-stage sampling and others use 2-stage. The help page was revised to describe new parameters and the model underlying the Chen-Rust formula for a design effect.
