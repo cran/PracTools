@@ -5,6 +5,11 @@ output:
 ---
 # Changes and Updates for PracTools package
 
+# PracTools 1.8
+
+* nEdge was updated to use an order 1/n formula (as opposed to the order 1/sqrt(n) formula in versions 1.7.6 and earlier). 
+The function nEdgeSRS was removed. Both stratified and unstratified calculations should now use nEdge. The nEdge help file gives details.
+
 # PracTools 1.7.6
 
 *   pclass was revised to account for the possibility that the estimated propensities have no meaningful variation. 
